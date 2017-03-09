@@ -1,4 +1,4 @@
-﻿#include "PluginSDK.h"
+#include "PluginSDK.h"
 
 class sExtensions
 {

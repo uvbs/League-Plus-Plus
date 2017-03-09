@@ -1,8 +1,8 @@
-﻿#include "Kalista.h"
+#include "sExtensions.h"
 
 bool sExtensions::IsFarming()
 {
-	return Kalista::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeLaneClear || Kalista::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeLastHit || Kalista::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeMixed || Kalista::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeFreeze;
+	return GOrbwalking->GetOrbwalkingMode() == kModeLaneClear || GOrbwalking->GetOrbwalkingMode() == kModeLastHit || GOrbwalking->GetOrbwalkingMode() == kModeMixed || GOrbwalking->GetOrbwalkingMode() == kModeFreeze;
 }
 
 float sExtensions::GetDistance(IUnit* sender, IUnit* target)

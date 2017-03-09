@@ -11,30 +11,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sSpells.h">
+    <ClInclude Include="LPPConstants.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="sMenu.h">
+    <ClInclude Include="PluginData.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="sLogics.h">
+    <ClInclude Include="PluginSDK.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Kalista.h">
+    <ClInclude Include="Vector3.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="sSpells.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sMenu.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sLogics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Kalista.cpp">
+    <ClCompile Include="PluginSDK.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

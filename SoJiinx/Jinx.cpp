@@ -1,4 +1,4 @@
-﻿#include "PluginSDK.h"
+﻿#include "PluginSDK.h";
 #include "Jinx.h"
 #include <algorithm>
 #include <string>

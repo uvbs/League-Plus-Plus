@@ -75,14 +75,9 @@ PLUGIN_EVENT(void) OnRender()
 						if (enemy->GetHPBarPosition(barPosition))
 						{
 							auto healthPercent = max(0, enemy->GetHealth() - eDamage) / enemy->GetMaxHealth();
-							auto yPos = barPosition.y + 11;
+							auto yPos = barPosition.y + 10;
 							auto xPosDamage = barPosition.x + 10 + 103 * healthPercent;
 							auto xPosCurrentHp = barPosition.x + 10 + 103 * enemy->GetHealth() / enemy->GetMaxHealth();
-
-							if (eDamage > enemy->GetHealth())
-							{
-								Kalista::SDK->GetRenderer()->DrawTextW(Vec2(barPosition.x + 10, barPosition.y + 7), Vec4(255, 255, 255, 255), "Killable");
-							}
 
 							float differenceInHP = xPosCurrentHp - xPosDamage;
 							float pos1 = barPosition.x + 9 + (107 * healthPercent);
@@ -90,6 +85,11 @@ PLUGIN_EVENT(void) OnRender()
 							for (auto i = 0; i < differenceInHP; i++)
 							{
 								Kalista::SDK->GetRenderer()->DrawLine(Vec2(pos1 + i, yPos), Vec2(pos1 + i, yPos + 8), Vec4(105, 198, 5, 255));
+							}
+
+							if (eDamage > enemy->GetHealth())
+							{
+								Kalista::SDK->GetRenderer()->DrawTextW(Vec2(barPosition.x + 10, barPosition.y + 7), Vec4(255, 255, 255, 255), "Killable");
 							}
 						}
 					}

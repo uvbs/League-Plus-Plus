@@ -120,6 +120,9 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DEZREAL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Marcel\Documents\Visual Studio 2017\Projects\League-Plus-Plus\sExtensions;C:\Users\Marcel\Documents\Visual Studio 2017\Projects\League-Plus-Plus\L++ SDK</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>
+      </AdditionalUsingDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -155,17 +158,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Jinx.cpp" />
-    <ClCompile Include="sExtensions.cpp" />
     <ClCompile Include="sLogics.cpp" />
     <ClCompile Include="sMenu.cpp" />
     <ClCompile Include="sSpells.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sExtensions.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\League++ SDK\League++ SDK.vcxproj">
-      <Project>{c4f34039-845c-46dc-b274-aad96652de37}</Project>
+    <ProjectReference Include="..\L++ SDK\L++ SDK.vcxproj">
+      <Project>{6d7cabc4-7d3a-4203-87d3-2a76c2c50dc6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\sExtensions\sExtensions.vcxproj">
+      <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

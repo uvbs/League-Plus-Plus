@@ -4,9 +4,6 @@
     <ClCompile Include="Jinx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="sExtensions.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="sMenu.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -38,10 +35,5 @@
     <Filter Include="Source">
       <UniqueIdentifier>{daf0392b-a6b7-424e-ae3b-0e0bc5b90498}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="sExtensions.h">
-      <Filter>Header</Filter>
-    </None>
   </ItemGroup>
 </Project>
