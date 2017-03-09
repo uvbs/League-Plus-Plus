@@ -1,5 +1,16 @@
 #include "sExtensions.h"
 
+std::string sExtensions::format(const char* format, ...)
+{
+	va_list args;
+	va_start(args, format);
+	auto size = _vscprintf(format, args);
+	std::string result(++size, 0);
+	vsnprintf_s(const_cast<char*>(result.data()), size, _TRUNCATE, format, args);
+	va_end(args);
+	return result;
+}
+
 bool sExtensions::IsFarming()
 {
 	return GOrbwalking->GetOrbwalkingMode() == kModeLaneClear || GOrbwalking->GetOrbwalkingMode() == kModeLastHit || GOrbwalking->GetOrbwalkingMode() == kModeMixed || GOrbwalking->GetOrbwalkingMode() == kModeFreeze;

@@ -3,6 +3,7 @@
 class sExtensions
 {
 public:
+	static std::string format(const char* format, ...);
 	static bool IsFarming();
 	static float GetDistance(IUnit* sender, IUnit* target);
 	static float GetDistance(Vec3 senderPosition, Vec3 targetPosition);

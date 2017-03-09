@@ -1,4 +1,5 @@
 ﻿#include "Kalista.h"
+#include <string>
 
 void sLogics::Q()
 {
@@ -7,8 +8,8 @@ void sLogics::Q()
 
 void sLogics::W()
 {
-	auto dragonPosition = Vec3(9796.f, 4432.f, -71.f);
-	auto baronPosition = Vec3(5064.f, 10568.f, -71.f);
+	auto dragonPosition = Vec3(9796.f, -71.f, 4432.f);
+	auto baronPosition = Vec3(5064.f, -71.f, 10568.f);
 
 	if (!Kalista::Spells->W->IsReady())
 		return;
