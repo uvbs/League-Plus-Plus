@@ -7,17 +7,17 @@ bool sExtensions::IsFarming()
 
 float sExtensions::GetDistance(IUnit* sender, IUnit* target)
 {
-	return (sender->GetPosition() - target->GetPosition()).Length2D();
+	return (sender->GetPosition() - target->GetPosition()).Length();
 }
 
 float sExtensions::GetDistance(Vec3 senderPosition, Vec3 targetPosition)
 {
-	return (senderPosition - targetPosition).Length2D();
+	return (senderPosition - targetPosition).Length();
 }
 
 float sExtensions::GetRealDistance(IUnit* sender, IUnit* target)
 {
-	return (sender->ServerPosition() - target->ServerPosition()).Length2D() + sender->BoundingRadius() + target->BoundingRadius();
+	return (sender->ServerPosition() - target->ServerPosition()).Length() + sender->BoundingRadius() + target->BoundingRadius();
 }
 
 int sExtensions::CountAlliesInTargetRange(IUnit* target, float range)

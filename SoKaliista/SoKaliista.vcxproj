@@ -32,6 +32,11 @@
     <ClCompile Include="sMenu.cpp" />
     <ClCompile Include="sSpells.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\League++ SDK\League++ SDK.vcxproj">
+      <Project>{c4f34039-845c-46dc-b274-aad96652de37}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{d2ce8930-ca0e-44b7-8bdc-c17ff94430f6}</ProjectGuid>
