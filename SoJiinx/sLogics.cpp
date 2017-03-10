@@ -6,7 +6,7 @@ void sLogics::Q()
 	{
 		auto target = Jinx::SDK->GetOrbwalking()->GetLastTarget();
 
-		if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeLaneClear && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger() && target && target->IsCreep())
+		if (Jinx::Extensions->IsClearing() && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger() && target && target->IsCreep())
 		{
 
 		}
@@ -16,7 +16,7 @@ void sLogics::Q()
 		}
 		else
 		{
-			if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() != kModeCombo && Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() != kModeNone)
+			if (!Jinx::Extensions->IsComboing() && Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() != kModeNone)
 			{
 				Jinx::Spells->Q->CastOnPlayer();
 			}
@@ -30,7 +30,7 @@ void sLogics::Q()
 		{
 			if (Jinx::Extensions->GetDistance(Jinx::Player, target) < Jinx::FishboneRange() + 525)
 			{
-				if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo && Jinx::Menu->QCombo->Enabled() && Jinx::Extensions->CountEnemiesInTargetRange(target, 250) + 1 >= Jinx::Menu->QComboAoE->GetInteger() && (Jinx::Player->ManaPercent() > Jinx::Menu->ManaQCombo->GetInteger() || GDamage->GetAutoAttackDamage(Jinx::Player, target, false) * Jinx::Menu->QKillableAutoAttacks->GetInteger() > target->GetHealth()))
+				if (Jinx::Extensions->IsComboing() && Jinx::Menu->QCombo->Enabled() && Jinx::Extensions->CountEnemiesInTargetRange(target, 250) + 1 >= Jinx::Menu->QComboAoE->GetInteger() && (Jinx::Player->ManaPercent() > Jinx::Menu->ManaQCombo->GetInteger() || GDamage->GetAutoAttackDamage(Jinx::Player, target, false) * Jinx::Menu->QKillableAutoAttacks->GetInteger() > target->GetHealth()))
 				{
 					Jinx::Spells->Q->CastOnPlayer();
 				}
@@ -43,7 +43,7 @@ void sLogics::Q()
 		}
 		else
 		{
-			if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQCombo->GetInteger())
+			if (Jinx::Extensions->IsComboing() && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQCombo->GetInteger())
 			{
 				Jinx::Spells->Q->CastOnPlayer();
 			}
@@ -61,7 +61,7 @@ void sLogics::Q()
 				}
 			}
 
-			if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeLaneClear && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger())
+			if (Jinx::Extensions->IsClearing() && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger())
 			{
 				auto orbTarget = Jinx::SDK->GetOrbwalking()->GetLastTarget();
 
@@ -76,7 +76,7 @@ void sLogics::Q()
 
 void sLogics::W()
 {
-	if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo)
+	if (Jinx::Extensions->IsComboing())
 	{
 		if (Jinx::Menu->WCombo->Enabled())
 		{
@@ -92,7 +92,7 @@ void sLogics::W()
 		}
 	}
 
-	if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeMixed)
+	if (Jinx::Extensions->IsHarassing())
 	{
 		if (Jinx::Menu->WHarass->Enabled())
 		{
@@ -162,7 +162,7 @@ void sLogics::W()
 
 void sLogics::E()
 {
-	if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo)
+	if (Jinx::Extensions->IsComboing())
 	{
 		if (Jinx::Menu->ECombo->Enabled())
 		{

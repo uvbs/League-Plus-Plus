@@ -17,11 +17,8 @@ sMenu::sMenu(IMenu* menu)
 		Q = Main->AddMenu("Q Settings");
 		{
 			QCombo = Q->CheckBox("Combo Q", true);
-			QComboMinion = Q->CheckBox("Combo Q Minions", true);
 			QHarass = Q->CheckBox("Harass Q", true);
-			QClear = Q->CheckBox("Clear Q", true);
-			QClearMinimum = Q->AddInteger("^-> Minimum kill {x} minions", 1, 7, 3);
-			QFarmOutOfRange = Q->CheckBox("Lasthit unkillible minions w/o stacks", false);
+			QLastHitUnkillable = Q->CheckBox("Lasthit unkillable minions w/o stacks", false);
 		}
 
 		W = Main->AddMenu("W Settings");
@@ -40,6 +37,7 @@ sMenu::sMenu(IMenu* menu)
 			ELastHitUnkillable = E->CheckBox("LastHit unkillable minions", true);
 			ELaneClear = E->CheckBox("Clear E", true);
 			ELaneClearMinimum = E->AddInteger("^-> Minimum kill {x} minions", 2, 10, 4);
+			EStealJungle = E->CheckBox("Steal Jungle E", true);
 		}
 
 		R = Main->AddMenu("R Settings");

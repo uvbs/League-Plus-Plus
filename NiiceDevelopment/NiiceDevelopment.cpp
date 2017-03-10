@@ -22,6 +22,9 @@ PLUGIN_EVENT(void) OnRender()
 	{
 		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y), Vec4(255, 128, 0, 255), sExtensions::format("Screen Position | X: %d Y: %d", static_cast<int>(worldToScreenMouse.x), static_cast<int>(worldToScreenMouse.y)).c_str());
 		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 20), Vec4(255, 128, 0, 255), sExtensions::format("Game Position | X: %d Y: %d Z: %d", static_cast<int>(GGame->CursorPosition().x), static_cast<int>(GGame->CursorPosition().y), static_cast<int>(GGame->CursorPosition().z)).c_str());
+	
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 40), Vec4(255, 128, 0, 255), sExtensions::format("Left Mouse Button: %s", GetAsyncKeyState(VK_LBUTTON) ? "true" : "false").c_str());
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 60), Vec4(255, 128, 0, 255), sExtensions::format("Right Mouse Button: %s", GetAsyncKeyState(VK_RBUTTON) ? "true" : "false").c_str());
 	}
 
 	GRender->DrawCircle(GGame->CursorPosition(), Menu->AnalyzeRange->GetInteger(), Vec4(255, 0, 0, 255));

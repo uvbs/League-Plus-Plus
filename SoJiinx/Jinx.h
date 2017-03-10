@@ -76,9 +76,9 @@ inline void Jinx::FishboneToMinigun(IUnit* target)
 {
 	auto realDistance = Extensions->GetRealDistance(Player, target);
 
-	if (Extensions->GetRealDistance(Player, target) < GetRealPowPowRange(target) && Extensions->CountEnemiesInTargetRange(target, 250) < Menu->QComboAoE->GetInteger() && SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo || !target->IsHero() && Extensions->IsFarming())
+	if (Extensions->GetRealDistance(Player, target) < GetRealPowPowRange(target) && Extensions->CountEnemiesInTargetRange(target, 250) < Menu->QComboAoE->GetInteger() && Extensions->IsComboing() || !target->IsHero() && Extensions->IsFarming())
 	{
-		if (Player->ManaPercent() < Menu->ManaQCombo->GetInteger() && SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeCombo || 
+		if (Player->ManaPercent() < Menu->ManaQCombo->GetInteger() && Extensions->IsComboing() ||
 			SDK->GetDamage()->GetAutoAttackDamage(Player, target, false) * Menu->QKillableAutoAttacks->GetInteger() < target->GetHealth())
 		{
 			Spells->Q->CastOnPlayer();

@@ -66,9 +66,9 @@ PLUGIN_EVENT(void) OrbwalkBeforeAttack(IUnit* target)
 		Jinx::FishboneToMinigun(target);
 	}
 
-	if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() != kModeCombo && target->IsCreep())
+	if (!Jinx::Extensions->IsComboing() && target->IsCreep())
 	{
-		if (Jinx::SDK->GetOrbwalking()->GetOrbwalkingMode() == kModeLaneClear && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger() && Jinx::Extensions->CountMinionsInTargetRange(target, 250) + 1 >= Jinx::Menu->QMinions->GetInteger())
+		if (Jinx::Extensions->IsClearing() && Jinx::Player->ManaPercent() > Jinx::Menu->ManaQClear->GetInteger() && Jinx::Extensions->CountMinionsInTargetRange(target, 250) + 1 >= Jinx::Menu->QMinions->GetInteger())
 		{
 
 		}

@@ -17,11 +17,8 @@ public:
 
 	IMenu* Q;
 	IMenuOption* QCombo;
-	IMenuOption* QComboMinion;
 	IMenuOption* QHarass;
-	IMenuOption* QClear;
-	IMenuOption* QClearMinimum;
-	IMenuOption* QFarmOutOfRange;
+	IMenuOption* QLastHitUnkillable;
 
 	IMenu* W;
 	IMenuOption* WDragonKey;
@@ -37,6 +34,7 @@ public:
 	IMenuOption* ELastHitUnkillable;
 	IMenuOption* ELaneClear;
 	IMenuOption* ELaneClearMinimum;
+	IMenuOption* EStealJungle;
 
 	IMenu* R;
 	IMenuOption* RSaveAlly;

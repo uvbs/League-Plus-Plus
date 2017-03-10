@@ -11,6 +11,26 @@ std::string sExtensions::format(const char* format, ...)
 	return result;
 }
 
+bool sExtensions::IsComboing()
+{
+	return GOrbwalking->GetOrbwalkingMode() == kModeCombo;
+}
+
+bool sExtensions::IsHarassing()
+{
+	return GOrbwalking->GetOrbwalkingMode() == kModeMixed;
+}
+
+bool sExtensions::IsClearing()
+{
+	return GOrbwalking->GetOrbwalkingMode() == kModeLaneClear;
+}
+
+bool sExtensions::IsLasthitting()
+{
+	return GOrbwalking->GetOrbwalkingMode() == kModeLastHit;
+}
+
 bool sExtensions::IsFarming()
 {
 	return GOrbwalking->GetOrbwalkingMode() == kModeLaneClear || GOrbwalking->GetOrbwalkingMode() == kModeLastHit || GOrbwalking->GetOrbwalkingMode() == kModeMixed || GOrbwalking->GetOrbwalkingMode() == kModeFreeze;

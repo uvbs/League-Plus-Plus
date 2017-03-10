@@ -117,6 +117,23 @@ PLUGIN_EVENT(void) OrbwalkAfterAttack(IUnit* target)
 
 }
 
+PLUGIN_EVENT(void) OrbwalkNonKillableMinion(IUnit* minion)
+{
+	if (Kalista::Menu->ELastHitUnkillable->Enabled())
+	{
+		if (minion->IsValidTarget())
+		{
+			if (minion->HasBuff("kalistaexpungemarker"))
+			{
+				if (Kalista::SDK->GetDamage()->GetSpellDamage(Kalista::Player, minion, kSlotE) > minion->GetHealth())
+				{
+					Kalista::Spells->E->CastOnPlayer();
+				}
+			}
+		}
+	}
+}
+
 PLUGIN_EVENT(void) OnGapCloser(GapCloserSpell const& spell)
 {
 
@@ -124,29 +141,7 @@ PLUGIN_EVENT(void) OnGapCloser(GapCloserSpell const& spell)
 
 PLUGIN_EVENT(void) OnSpellCast(CastedSpell const& spell)
 {
-	if (!spell.Caster_->IsHero())
-		return;
 
-	if (!spell.Caster_->IsEnemy(Kalista::Player))
-		return;
-
-	if (!Kalista::Menu->RSaveAlly->Enabled())
-		return;
-
-	IUnit* soulboundChampion = nullptr;
-
-	for (auto ally : Kalista::SDK->GetEntityList()->GetAllHeros(true, false))
-	{
-		if (ally->HasBuff("kalistacoopstrikeally"))
-		{
-			soulboundChampion = ally;
-		}
-	}
-
-	if (soulboundChampion != nullptr && soulboundChampion->HealthPercent() <= Kalista::Menu->RSaveAllyHealth->GetInteger()) 
-	{
-		Kalista::Spells->R->CastOnPlayer();
-	}
 }
 
 PLUGIN_EVENT(void) OnLevelUp(IUnit* source, int level)
@@ -184,6 +179,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnRender, OnRender);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkBeforeAttack, OrbwalkBeforeAttack);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkAfterAttack, OrbwalkAfterAttack);
+	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkNonKillableMinion, OrbwalkNonKillableMinion);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnGapCloser, OnGapCloser);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnSpellCast, OnSpellCast);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnLevelUp, OnLevelUp);
@@ -202,6 +198,7 @@ PLUGIN_API void OnUnload()
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnRender, OnRender);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkBeforeAttack, OrbwalkBeforeAttack);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkAfterAttack, OrbwalkAfterAttack);
+	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkNonKillableMinion, OrbwalkNonKillableMinion);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnGapCloser, OnGapCloser);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnSpellCast, OnSpellCast);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnLevelUp, OnLevelUp);
