@@ -156,6 +156,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 		Jinx::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoJiinx</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You are not playing <b>Jinx</b>!</font>");
 		return;
 	}
+
 	Jinx::Menu = new sMenu(GPluginSDK->AddMenu("SoJiinx"));
 
 	Jinx::Spells->Create();
