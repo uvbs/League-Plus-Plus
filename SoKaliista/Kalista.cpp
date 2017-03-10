@@ -107,16 +107,6 @@ PLUGIN_EVENT(void) OnRender()
 	}
 }
 
-PLUGIN_EVENT(void) OrbwalkBeforeAttack(IUnit* target)
-{
-
-}
-
-PLUGIN_EVENT(void) OrbwalkAfterAttack(IUnit* target)
-{
-
-}
-
 PLUGIN_EVENT(void) OrbwalkNonKillableMinion(IUnit* minion)
 {
 	if (Kalista::Menu->ELastHitUnkillable->Enabled())
@@ -132,16 +122,6 @@ PLUGIN_EVENT(void) OrbwalkNonKillableMinion(IUnit* minion)
 			}
 		}
 	}
-}
-
-PLUGIN_EVENT(void) OnGapCloser(GapCloserSpell const& spell)
-{
-
-}
-
-PLUGIN_EVENT(void) OnSpellCast(CastedSpell const& spell)
-{
-
 }
 
 PLUGIN_EVENT(void) OnLevelUp(IUnit* source, int level)
@@ -177,11 +157,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnGameUpdate, OnGameUpdate);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnRender, OnRender);
-	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkBeforeAttack, OrbwalkBeforeAttack);
-	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkAfterAttack, OrbwalkAfterAttack);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOrbwalkNonKillableMinion, OrbwalkNonKillableMinion);
-	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnGapCloser, OnGapCloser);
-	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnSpellCast, OnSpellCast);
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnLevelUp, OnLevelUp);
 
 	Kalista::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoKaliista</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
@@ -196,11 +172,7 @@ PLUGIN_API void OnUnload()
 
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnGameUpdate, OnGameUpdate);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnRender, OnRender);
-	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkBeforeAttack, OrbwalkBeforeAttack);
-	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkAfterAttack, OrbwalkAfterAttack);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOrbwalkNonKillableMinion, OrbwalkNonKillableMinion);
-	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnGapCloser, OnGapCloser);
-	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnSpellCast, OnSpellCast);
 	Kalista::SDK->GetEventManager()->RemoveEventHandler(kEventOnLevelUp, OnLevelUp);
 
 	Kalista::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoKaliista</b></font> - <font color=\"#FFFFFF\">Unloaded</font>");
