@@ -139,7 +139,7 @@ void sLogics::E()
 			if (Kalista::SDK->GetDamage()->GetSpellDamage(Kalista::Player, enemy, kSlotE) <= enemy->GetHealth() + enemy->HPRegenRate() / 2)
 				continue;
 
-			if (enemy->HasBuffOfType(BUFF_Invulnerability) || enemy->HasBuffOfType(BUFF_SpellShield) || enemy->HasBuff("Undying Rage"))
+			if (enemy->HasBuffOfType(BUFF_Invulnerability) || enemy->HasBuffOfType(BUFF_SpellShield) || enemy->HasBuff("Undying Rage") || enemy->HasBuff("kindrednodeathbuff") || enemy->HasBuff("JudicatorIntervention"))
 				continue;
 			
 			Kalista::Spells->E->CastOnPlayer();
