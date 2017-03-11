@@ -180,7 +180,7 @@ void sLogics::E()
 
 		if (Kalista::Menu->EHarass->Enabled())
 		{
-			auto killableCreep = false;
+			IUnit* killableCreep = nullptr;
 
 			for (auto creep : Kalista::SDK->GetEntityList()->GetAllMinions(false, true, false))
 			{
@@ -193,14 +193,14 @@ void sLogics::E()
 				if (Kalista::Extensions->GetDistance(Kalista::Player, creep) >= Kalista::Spells->E->GetSpellRange())
 					continue;
 
-				if (Kalista::SDK->GetDamage()->GetSpellDamage(Kalista::Player, creep, kSlotE) <= creep->GetHealth() + creep->HPRegenRate())
+				if (Kalista::SDK->GetDamage()->GetSpellDamage(Kalista::Player, creep, kSlotE) < creep->GetHealth() + creep->HPRegenRate())
 					continue;
 
-				killableCreep = true;
+				killableCreep = creep;
 				break;
 			}
 
-			if (killableCreep)
+			if (killableCreep != nullptr)
 			{
 				for (auto enemy : Kalista::SDK->GetEntityList()->GetAllHeros(false, true))
 				{
@@ -210,7 +210,14 @@ void sLogics::E()
 					if (Kalista::Extensions->GetDistance(Kalista::Player, enemy) >= Kalista::Spells->E->GetSpellRange())
 						continue;
 
+					if (Kalista::Extensions->GetDistance(Kalista::Player, killableCreep) >= Kalista::Spells->E->GetSpellRange())
+						continue;
+
+					if (Kalista::SDK->GetDamage()->GetSpellDamage(Kalista::Player, killableCreep, kSlotE) < killableCreep->GetHealth() + killableCreep->HPRegenRate())
+						continue;
+
 					Kalista::Spells->E->CastOnPlayer();
+					killableCreep = nullptr;
 					break;
 				}
 			}
