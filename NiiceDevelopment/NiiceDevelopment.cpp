@@ -6,6 +6,52 @@
 PluginSetup("NiiceDevelopment");
 
 sMenu* Menu;
+ITexture* Background;
+IUnit* FocusedUnit = nullptr;
+bool LastClickBool = false;
+int ClickCount = 0;
+int LastClick = 0;
+Vec3 LastClickPosition = Vec3(0, 0, 0);
+
+PLUGIN_EVENT(void) OnGameUpdate()
+{
+	if (!GUtility->IsLeagueWindowFocused())
+		return;
+
+	if (GetAsyncKeyState(VK_LBUTTON)) {
+		if (LastClick <= GGame->TickCount() && ClickCount != 0)
+		{
+			LastClick = 9999999999;
+			ClickCount = 0;
+			FocusedUnit = nullptr;
+		}
+
+		if (!LastClickBool || ClickCount == 0)
+		{
+			LastClickBool = true;
+			ClickCount++;
+			LastClick = GGame->TickCount() + 100;
+			LastClickPosition = GGame->CursorPosition();
+		}
+
+		if (LastClickBool && sExtensions::GetDistance(GGame->CursorPosition(), LastClickPosition) < 50)
+		{
+			ClickCount++;
+			LastClickBool = false;
+		}
+
+		for (auto unit : GEntityList->GetAllUnits())
+		{
+			if (!unit->IsHero() && !unit->IsCreep() && !unit->IsJungleCreep() && !unit->IsTurret())
+				continue;
+
+			if (sExtensions::GetDistance(GGame->CursorPosition(), unit->GetPosition()) < 80)
+			{
+				FocusedUnit = unit;
+			}
+		}
+	}
+}
 
 PLUGIN_EVENT(void) OnRender()
 {
@@ -27,103 +73,68 @@ PLUGIN_EVENT(void) OnRender()
 		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 60), Vec4(255, 128, 0, 255), sExtensions::format("Right Mouse Button: %s", GetAsyncKeyState(VK_RBUTTON) ? "true" : "false").c_str());
 	}
 
-	GRender->DrawCircle(GGame->CursorPosition(), Menu->AnalyzeRange->GetInteger(), Vec4(255, 0, 0, 255));
+	if (FocusedUnit == nullptr)
+		return;
 
-	for (auto unit : GEntityList->GetAllUnits())
+	if (Menu->DrawGui->Enabled())
 	{
-		if ((unit->IsHero() && !Menu->DrawHeroes->Enabled() || !unit->IsHero() && Menu->DrawHeroes->Enabled()) &&
-			(unit->IsCreep() && !Menu->DrawCreeps->Enabled() || !unit->IsCreep() && Menu->DrawCreeps->Enabled()) &&
-			(unit->IsJungleCreep() && !Menu->DrawJungleCreeps->Enabled() || !unit->IsJungleCreep() && Menu->DrawJungleCreeps->Enabled()) &&
-			(unit->IsTurret() && !Menu->DrawTurrets->Enabled() || !unit->IsTurret() && Menu->DrawTurrets->Enabled()) ||
-			!unit->IsHero() && !unit->IsCreep() && !unit->IsJungleCreep() && !unit->IsTurret())
-			continue;
+		Background->Draw(Menu->GuiX->GetInteger(), Menu->GuiY->GetInteger());
+	
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + Background->GetSize().x / 2 - static_cast<std::string>(FocusedUnit->GetObjectName()).length() * 4 / 2, Menu->GuiY->GetInteger() + 22), Vec4(255, 255, 255, 255), FocusedUnit->GetObjectName());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + Background->GetSize().x / 2 - static_cast<std::string>(FocusedUnit->GetBaseSkinName()).length() * 4 / 2, Menu->GuiY->GetInteger() + 68), Vec4(255, 255, 255, 255), FocusedUnit->GetBaseSkinName());
+		
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 100), Vec4(255, 128, 0, 255), "Informations:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 120), Vec4(160, 160, 160, 255), "Type:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 120), Vec4(255, 255, 255, 255), sExtensions::format("%s (%d)", FocusedUnit->GetType() == FL_MISSILE ? "Missile" : FocusedUnit->GetType() == FL_TURRET ? "Turret" : FocusedUnit->GetType() == FL_HERO ? "Hero" : FocusedUnit->GetType() == FL_CREEP ? "Creep" : "invalid", FocusedUnit->GetType()).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 140), Vec4(160, 160, 160, 255), "Position (X | Y | Z):");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 140), Vec4(255, 255, 255, 255), sExtensions::format("%d | %d | %d", static_cast<int>(FocusedUnit->GetPosition().x), static_cast<int>(FocusedUnit->GetPosition().y), static_cast<int>(FocusedUnit->GetPosition().z)).c_str());
+	
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 200), Vec4(255, 128, 0, 255), "Properties:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 220), Vec4(160, 160, 160, 255), "SkinName:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 220), Vec4(255, 255, 255, 255), FocusedUnit->SkinName());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 240), Vec4(160, 160, 160, 255), "Health:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 240), Vec4(255, 255, 255, 255), sExtensions::format("%d / %d (%d Percent)", static_cast<int>(FocusedUnit->GetHealth()), static_cast<int>(FocusedUnit->GetMaxHealth()), static_cast<int>(FocusedUnit->HealthPercent())).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 260), Vec4(160, 160, 160, 255), "Mana:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 260), Vec4(255, 255, 255, 255), sExtensions::format("%d / %d (%d Percent)", static_cast<int>(FocusedUnit->GetMana()), static_cast<int>(FocusedUnit->GetMaxMana()), static_cast<int>(FocusedUnit->ManaPercent())).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 280), Vec4(160, 160, 160, 255), "BoundingRadius:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 280), Vec4(255, 255, 255, 255), std::to_string(static_cast<int>(FocusedUnit->BoundingRadius())).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 300), Vec4(160, 160, 160, 255), "IsValidObject:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 300), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsValidObject()).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 320), Vec4(160, 160, 160, 255), "IsVisible:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 320), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsVisible()).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 340), Vec4(160, 160, 160, 255), "IsTargetable:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 340), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsTargetable()).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 360), Vec4(160, 160, 160, 255), "IsDead:");
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 360), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsDead()).c_str());
+	
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 420), Vec4(255, 128, 0, 255), "Buffs:");
+		std::vector<void*> buffs;
+		FocusedUnit->GetAllBuffsData(buffs);
+		auto height = 20;
 
-		auto i = 0;
-		auto step = 20;
-
-		Vec3 worldToScreenUnit;
-		GGame->Projection(unit->GetPosition(), &worldToScreenUnit);
-
-		if (sExtensions::GetDistance(GGame->CursorPosition(), unit->GetPosition()) <= Menu->AnalyzeRange->GetInteger())
+		for (auto buff : buffs)
 		{
-			if (Menu->DrawInformations->Enabled())
+			if (GBuffData->IsValid(buff))
 			{
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(255, 128, 0, 255), "Informations:");
-				i += step;
-
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Type Name: %s", unit->GetType() == FL_MISSILE ? "Missile" : unit->GetType() == FL_TURRET ? "Turret" : unit->GetType() == FL_HERO ? "Hero" : unit->GetType() == FL_CREEP ? "Creep" : "invalid").c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Type: %d", unit->GetType()).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Name: %s", unit->GetObjectName()).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Position | X: %d Y: %d Z: %d", static_cast<int>(unit->GetPosition().x), static_cast<int>(unit->GetPosition().y), static_cast<int>(unit->GetPosition().z)).c_str());
-				i += step;
-				GRender->DrawCircle(unit->GetPosition(), unit->BoundingRadius(), Vec4(153, 0, 0, 255));
-			}
-			
-			if (Menu->DrawProperties->Enabled())
-			{
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(255, 128, 0, 255), "Properties:");
-				i += step;
-
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("BaseSkinName: %s", unit->GetBaseSkinName()).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("SkinName: %s", unit->SkinName()).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Health: %d", static_cast<int>(unit->GetHealth())).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Mana: %d", static_cast<int>(unit->GetMana())).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("BoundingRadius: %d", static_cast<int>(unit->BoundingRadius())).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("IsValid: %s", (unit->IsValidObject() ? "true" : "false")).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("IsVisible: %s", (unit->IsVisible() ? "true" : "false")).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("IsTargetable: %s", (unit->IsTargetable() ? "true" : "false")).c_str());
-				i += step;
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("IsDead: %s", (unit->IsDead() ? "true" : "false")).c_str());
-				i += step;
-			}
-
-			if (Menu->DrawBuffs->Enabled())
-			{
-				GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(255, 128, 0, 255), "Buffs:");
-				i += step;
-
-				std::vector<void*> buffs;
-				unit->GetAllBuffsData(buffs);
-
-				for (auto buff : buffs)
-				{
-					if (GBuffData->IsValid(buff))
-					{
-						auto endTime = max(0, GBuffData->GetEndTime(buff) - GGame->Time());
-
-						if (Menu->DrawExtendedBuffs->Enabled())
-						{
-							GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Name: %s | Caster: %s | SourceName: %s | Count: %d | RemainingTime: %s", GBuffData->GetBuffName(buff), GBuffData->GetCaster(buff)->GetBaseSkinName(), GBuffData->GetCaster(buff)->GetObjectName(), GBuffData->GetStacks(buff), endTime > 1000 ? "Infinite" : std::to_string(endTime).c_str()).c_str());
-						} 
-						else
-						{
-							GRender->DrawTextW(Vec2(worldToScreenUnit.x, worldToScreenUnit.y + i), Vec4(160, 160, 160, 255), sExtensions::format("Name: %s | Caster: %s | Count: %d", GBuffData->GetBuffName(buff), GBuffData->GetCaster(buff)->GetBaseSkinName(), GBuffData->GetStacks(buff)).c_str());
-						}
-
-						i += step;
-					}
-				}
+				GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 420 + height), Vec4(160, 160, 160, 255), sExtensions::format("Name: %s | Caster: %s | Count: %d | RemainingTime: %s", GBuffData->GetBuffName(buff), GBuffData->GetCaster(buff)->GetBaseSkinName(), GBuffData->GetStacks(buff), max(0, GBuffData->GetEndTime(buff) - GGame->Time()) > 1000 ? "Infinite" : std::to_string(max(0, GBuffData->GetEndTime(buff) - GGame->Time())).c_str()).c_str());
+				height += 20;
 			}
 		}
+
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + Background->GetSize().x - 185, Menu->GuiY->GetInteger() + 675), Vec4(255, 128, 0, 255), "SoNiice's dev helper for L++");
 	}
+
+	GRender->DrawCircle(FocusedUnit->GetPosition(), FocusedUnit->BoundingRadius(), Vec4(153, 0, 0, 255));
 }
 
 PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 {
 	PluginSDKSetup(PluginSDK);
 
+	Background = GRender->CreateTextureFromFile("niice_development_background.png");
 	Menu = new sMenu(GPluginSDK->AddMenu("NiiceDevelopment"));
 	
+	GEventManager->AddEventHandler(kEventOnGameUpdate, OnGameUpdate);
 	GEventManager->AddEventHandler(kEventOnRender, OnRender);
 
 	GGame->PrintChat("<font color=\"#0095DA\"><b>NiiceDevelopment</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
@@ -133,6 +144,7 @@ PLUGIN_API void OnUnload()
 {
 	Menu->Main->Remove();
 
+	GEventManager->RemoveEventHandler(kEventOnGameUpdate, OnGameUpdate);
 	GEventManager->RemoveEventHandler(kEventOnRender, OnRender);
 
 	GGame->PrintChat("<font color=\"#0095DA\"><b>NiiceDevelopment</b></font> - <font color=\"#FFFFFF\">Unloaded</font>");
