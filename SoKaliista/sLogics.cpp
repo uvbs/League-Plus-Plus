@@ -77,6 +77,9 @@ void sLogics::E()
 	{
 		for (auto creep : Kalista::SDK->GetEntityList()->GetAllMinions(false, false, true))
 		{
+			if (creep->IsDead())
+				continue;
+
 			if (!creep->HasBuff("kalistaexpungemarker"))
 				continue;
 			
@@ -154,6 +157,9 @@ void sLogics::E()
 
 			for (auto creep : Kalista::SDK->GetEntityList()->GetAllMinions(false, true, false))
 			{
+				if (creep->IsDead())
+					continue;
+
 				if (!creep->HasBuff("kalistaexpungemarker"))
 					continue;
 
@@ -178,6 +184,9 @@ void sLogics::E()
 
 			for (auto creep : Kalista::SDK->GetEntityList()->GetAllMinions(false, true, false))
 			{
+				if (creep->IsDead())
+					continue;
+
 				if (!creep->HasBuff("kalistaexpungemarker"))
 					continue;
 

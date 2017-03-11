@@ -21,6 +21,39 @@ PLUGIN_EVENT(void) OnGameUpdate()
 	if (GGame->IsChatOpen())
 		return;
 
+	if (Kalista::Extensions->IsComboing())
+	{
+		IUnit* target = nullptr;
+		auto enemyInRange = false;
+		auto enemyInLongRange = false;
+
+		for (auto enemy : Kalista::SDK->GetEntityList()->GetAllHeros(false, true))
+		{
+			if (Kalista::Extensions->GetDistance(Kalista::Player, enemy) < Kalista::Player->AttackRange())
+			{
+				enemyInRange = true;
+			}
+
+			if (Kalista::Extensions->GetDistance(Kalista::Player, enemy) < Kalista::Player->AttackRange() + 500)
+			{
+				target = enemy;
+				enemyInLongRange = true;
+			}
+		}
+
+		if (!enemyInRange && enemyInLongRange)
+		{
+			for (auto minion : Kalista::SDK->GetEntityList()->GetAllMinions(false, true, true))
+			{
+				if (Kalista::Extensions->GetDistance(Kalista::Player, minion) < Kalista::Player->AttackRange())
+				{
+					Kalista::SDK->GetOrbwalking()->SetOverrideTarget(minion);
+					return;
+				}
+			}
+		}
+	}
+
 	Kalista::Logics->Q();
 	Kalista::Logics->W();
 	Kalista::Logics->E();
