@@ -66,11 +66,11 @@ PLUGIN_EVENT(void) OnRender()
 
 	if (Menu->DrawMouseInformations->Enabled())
 	{
-		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y), Vec4(255, 128, 0, 255), sExtensions::format("Screen Position | X: %d Y: %d", static_cast<int>(worldToScreenMouse.x), static_cast<int>(worldToScreenMouse.y)).c_str());
-		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 20), Vec4(255, 128, 0, 255), sExtensions::format("Game Position | X: %d Y: %d Z: %d", static_cast<int>(GGame->CursorPosition().x), static_cast<int>(GGame->CursorPosition().y), static_cast<int>(GGame->CursorPosition().z)).c_str());
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y), Vec4(255, 128, 0, 255), "Screen Position | X: %d Y: %d", static_cast<int>(worldToScreenMouse.x), static_cast<int>(worldToScreenMouse.y));
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 20), Vec4(255, 128, 0, 255), "Game Position | X: %d Y: %d Z: %d", static_cast<int>(GGame->CursorPosition().x), static_cast<int>(GGame->CursorPosition().y), static_cast<int>(GGame->CursorPosition().z));
 	
-		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 40), Vec4(255, 128, 0, 255), sExtensions::format("Left Mouse Button: %s", GetAsyncKeyState(VK_LBUTTON) ? "true" : "false").c_str());
-		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 60), Vec4(255, 128, 0, 255), sExtensions::format("Right Mouse Button: %s", GetAsyncKeyState(VK_RBUTTON) ? "true" : "false").c_str());
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 40), Vec4(255, 128, 0, 255), "Left Mouse Button: %s", GetAsyncKeyState(VK_LBUTTON) ? "true" : "false");
+		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 60), Vec4(255, 128, 0, 255), "Right Mouse Button: %s", GetAsyncKeyState(VK_RBUTTON) ? "true" : "false");
 	}
 
 	if (FocusedUnit == nullptr)
@@ -85,17 +85,17 @@ PLUGIN_EVENT(void) OnRender()
 		
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 100), Vec4(255, 128, 0, 255), "Informations:");
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 120), Vec4(160, 160, 160, 255), "Type:");
-		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 120), Vec4(255, 255, 255, 255), sExtensions::format("%s (%d)", FocusedUnit->GetType() == FL_MISSILE ? "Missile" : FocusedUnit->GetType() == FL_TURRET ? "Turret" : FocusedUnit->GetType() == FL_HERO ? "Hero" : FocusedUnit->GetType() == FL_CREEP ? "Creep" : "invalid", FocusedUnit->GetType()).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 120), Vec4(255, 255, 255, 255), "%s (%d)", FocusedUnit->GetType() == FL_MISSILE ? "Missile" : FocusedUnit->GetType() == FL_TURRET ? "Turret" : FocusedUnit->GetType() == FL_HERO ? "Hero" : FocusedUnit->GetType() == FL_CREEP ? "Creep" : "invalid", FocusedUnit->GetType());
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 140), Vec4(160, 160, 160, 255), "Position (X | Y | Z):");
-		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 140), Vec4(255, 255, 255, 255), sExtensions::format("%d | %d | %d", static_cast<int>(FocusedUnit->GetPosition().x), static_cast<int>(FocusedUnit->GetPosition().y), static_cast<int>(FocusedUnit->GetPosition().z)).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 140), Vec4(255, 255, 255, 255), "%d | %d | %d", static_cast<int>(FocusedUnit->GetPosition().x), static_cast<int>(FocusedUnit->GetPosition().y), static_cast<int>(FocusedUnit->GetPosition().z));
 	
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 200), Vec4(255, 128, 0, 255), "Properties:");
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 220), Vec4(160, 160, 160, 255), "SkinName:");
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 220), Vec4(255, 255, 255, 255), FocusedUnit->SkinName());
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 240), Vec4(160, 160, 160, 255), "Health:");
-		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 240), Vec4(255, 255, 255, 255), sExtensions::format("%d / %d (%d Percent)", static_cast<int>(FocusedUnit->GetHealth()), static_cast<int>(FocusedUnit->GetMaxHealth()), static_cast<int>(FocusedUnit->HealthPercent())).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 240), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetHealth()), static_cast<int>(FocusedUnit->GetMaxHealth()), static_cast<int>(FocusedUnit->HealthPercent()));
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 260), Vec4(160, 160, 160, 255), "Mana:");
-		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 260), Vec4(255, 255, 255, 255), sExtensions::format("%d / %d (%d Percent)", static_cast<int>(FocusedUnit->GetMana()), static_cast<int>(FocusedUnit->GetMaxMana()), static_cast<int>(FocusedUnit->ManaPercent())).c_str());
+		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 260), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetMana()), static_cast<int>(FocusedUnit->GetMaxMana()), static_cast<int>(FocusedUnit->ManaPercent()));
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 280), Vec4(160, 160, 160, 255), "BoundingRadius:");
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 150, Menu->GuiY->GetInteger() + 280), Vec4(255, 255, 255, 255), std::to_string(static_cast<int>(FocusedUnit->BoundingRadius())).c_str());
 		GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 300), Vec4(160, 160, 160, 255), "IsValidObject:");
@@ -116,7 +116,7 @@ PLUGIN_EVENT(void) OnRender()
 		{
 			if (GBuffData->IsValid(buff))
 			{
-				GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 420 + height), Vec4(160, 160, 160, 255), sExtensions::format("Name: %s | Caster: %s | Count: %d | RemainingTime: %s", GBuffData->GetBuffName(buff), GBuffData->GetCaster(buff)->GetBaseSkinName(), GBuffData->GetStacks(buff), max(0, GBuffData->GetEndTime(buff) - GGame->Time()) > 1000 ? "Infinite" : std::to_string(max(0, GBuffData->GetEndTime(buff) - GGame->Time())).c_str()).c_str());
+				GRender->DrawTextW(Vec2(Menu->GuiX->GetInteger() + 20, Menu->GuiY->GetInteger() + 420 + height), Vec4(160, 160, 160, 255), "Name: %s | Caster: %s | Count: %d | RemainingTime: %s", GBuffData->GetBuffName(buff), GBuffData->GetCaster(buff)->GetBaseSkinName(), GBuffData->GetStacks(buff), max(0, GBuffData->GetEndTime(buff) - GGame->Time()) > 1000 ? "Infinite" : std::to_string(max(0, GBuffData->GetEndTime(buff) - GGame->Time())).c_str());
 				height += 20;
 			}
 		}
