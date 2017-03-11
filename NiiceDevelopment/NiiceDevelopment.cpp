@@ -48,6 +48,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 			if (sExtensions::GetDistance(GGame->CursorPosition(), unit->GetPosition()) < 80)
 			{
 				FocusedUnit = unit;
+				break;
 			}
 		}
 	}
