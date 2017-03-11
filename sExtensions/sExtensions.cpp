@@ -18,7 +18,7 @@ void sExtensions::CheckVersion(char* name, int version)
 
 	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
 	{
-		if (version < int(newestVersion.c_str()))
+		if (version < atoi(newestVersion.c_str()))
 		{
 			GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">There's a newer version!</font>", name).c_str());
 			return;
