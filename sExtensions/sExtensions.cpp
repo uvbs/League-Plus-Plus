@@ -14,6 +14,8 @@ std::string sExtensions::format(const char* format, ...)
 
 void sExtensions::CheckVersion(char* name, int version)
 {
+	GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Checking for updates..</font>", name).c_str());
+	
 	std::string newestVersion;
 
 	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
