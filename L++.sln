@@ -15,6 +15,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NiiceDevelopment", "NiiceDe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "L++ Plugin-Manager", "L++ Plugin-Manager\L++ Plugin-Manager.csproj", "{F0F0E32F-7C7B-488B-8105-FF84CE4EE9DC}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoTwiistedFate", "SoTwiistedFate\SoTwiistedFate.vcxproj", "{C76BE6B1-C337-4E89-9D31-5B643EF41217}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,16 @@ Global
 		{F0F0E32F-7C7B-488B-8105-FF84CE4EE9DC}.Release|x64.Build.0 = Release|Any CPU
 		{F0F0E32F-7C7B-488B-8105-FF84CE4EE9DC}.Release|x86.ActiveCfg = Release|Any CPU
 		{F0F0E32F-7C7B-488B-8105-FF84CE4EE9DC}.Release|x86.Build.0 = Release|Any CPU
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Debug|x64.ActiveCfg = Debug|x64
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Debug|x64.Build.0 = Debug|x64
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Debug|x86.ActiveCfg = Debug|Win32
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Debug|x86.Build.0 = Debug|Win32
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Release|Any CPU.ActiveCfg = Release|Win32
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Release|x64.ActiveCfg = Release|x64
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Release|x64.Build.0 = Release|x64
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Release|x86.ActiveCfg = Release|Win32
+		{C76BE6B1-C337-4E89-9D31-5B643EF41217}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

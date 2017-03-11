@@ -23,8 +23,8 @@ sMenu::sMenu(IMenu* menu)
 
 		W = Main->AddMenu("W Settings");
 		{
-			WDragonKey = W->AddKey("Sentinel Dragon", 89);
-			WBaronKey = W->AddKey("Sentinel Baron", 84);
+			WDragonKey = W->AddKey("Sentinel Dragon", 'T');
+			WBaronKey = W->AddKey("Sentinel Baron", 'Y');
 		}
 
 		E = Main->AddMenu("E Settings");

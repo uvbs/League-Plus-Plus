@@ -28,7 +28,7 @@ sMenu::sMenu(IMenu* menu)
 			WHarass = W->CheckBox("Harass W", true);
 			WEpics = W->CheckBox("Steal epics w/ W", true);
 			WKillSteal = W->CheckBox("Steal w/ W", true);
-			WSemiManual = W->AddKey("Semi manual cast", 88);
+			WSemiManual = W->AddKey("Semi manual cast", 'X');
 			WHitchance = W->AddInteger("Hitchance (1 = lowest, 4 = highest)", 1, 4, 2);
 		}
 
@@ -49,7 +49,7 @@ sMenu::sMenu(IMenu* menu)
 			RKillSteal = R->CheckBox("Steal w/ R", true);
 			RKillStealW = R->CheckBox("^-> Dont steal if W is enough", true);
 			RKillStealAllies = R->AddInteger("^-> Dont steal if allies near target in {x} range", 0, 1000, 500);
-			RSemiManual = R->AddKey("Semi manual cast", 84);
+			RSemiManual = R->AddKey("Semi manual cast", 'T');
 			RSemiManualMode = R->AddSelection("^-> Mode", 0, { "low HP", "AoE" });
 			RMaxRange = R->AddInteger("Max Range", 0, 10000, 3000);
 		}
