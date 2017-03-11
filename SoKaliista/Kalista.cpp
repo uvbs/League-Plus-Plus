@@ -3,7 +3,7 @@
 #include <string>
 #include <array>
 
-auto version = 2;
+auto version = 3;
 
 PluginSetup("SoKaliista");
 
