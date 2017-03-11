@@ -3,6 +3,8 @@
 #include "sMenu.h"
 #include <string>
 
+auto version = 3;
+
 PluginSetup("NiiceDevelopment");
 
 sMenu* Menu;
@@ -139,6 +141,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	GEventManager->AddEventHandler(kEventOnRender, OnRender);
 
 	GGame->PrintChat("<font color=\"#0095DA\"><b>NiiceDevelopment</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
+	sExtensions::CheckVersion("NiiceDevelopment", version);
 }
 
 PLUGIN_API void OnUnload()

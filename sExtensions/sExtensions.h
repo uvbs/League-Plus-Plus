@@ -4,6 +4,7 @@ class sExtensions
 {
 public:
 	static std::string format(const char* format, ...);
+	static void sExtensions::CheckVersion(char* name, int version);
 	static bool IsComboing();
 	static bool IsHarassing();
 	static bool IsClearing();

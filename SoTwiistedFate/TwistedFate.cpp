@@ -2,6 +2,8 @@
 #include "TwistedFate.h"
 #include <string>
 
+auto version = 1;
+
 PluginSetup("SoTwiistedFate");
 
 IPluginSDK* TwistedFate::SDK;
@@ -143,6 +145,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	TwistedFate::SDK->GetEventManager()->AddEventHandler(kEventOnLevelUp, OnLevelUp);
 
 	TwistedFate::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoTwiistedFate</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
+	sExtensions::CheckVersion("SoTwiistedFate", version);
 }
 
 PLUGIN_API void OnUnload()

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <string>
 
+auto version = 7;
+
 PluginSetup("SoJiinx");
 
 IPluginSDK* Jinx::SDK;
@@ -172,6 +174,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	Jinx::SDK->GetEventManager()->AddEventHandler(kEventOnLevelUp, OnLevelUp);
 
 	Jinx::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoJiinx</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
+	sExtensions::CheckVersion("SoJiinx", version);
 }
 
 PLUGIN_API void OnUnload()

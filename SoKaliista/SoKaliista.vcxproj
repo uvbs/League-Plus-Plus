@@ -38,6 +38,9 @@
       <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="version.txt" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{d2ce8930-ca0e-44b7-8bdc-c17ff94430f6}</ProjectGuid>

@@ -3,6 +3,8 @@
 #include <string>
 #include <array>
 
+auto version = 2;
+
 PluginSetup("SoKaliista");
 
 IPluginSDK* Kalista::SDK;
@@ -195,6 +197,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 	Kalista::SDK->GetEventManager()->AddEventHandler(kEventOnLevelUp, OnLevelUp);
 
 	Kalista::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoKaliista</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Loaded</font>");
+	sExtensions::CheckVersion("SoKaliista", version);
 }
 
 PLUGIN_API void OnUnload()

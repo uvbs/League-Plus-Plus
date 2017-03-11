@@ -36,4 +36,7 @@
       <UniqueIdentifier>{daf0392b-a6b7-424e-ae3b-0e0bc5b90498}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="version.txt" />
+  </ItemGroup>
 </Project>

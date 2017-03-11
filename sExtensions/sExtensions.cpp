@@ -12,6 +12,22 @@ std::string sExtensions::format(const char* format, ...)
 	return result;
 }
 
+void sExtensions::CheckVersion(char* name, int version)
+{
+	std::string newestVersion;
+
+	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
+	{
+		if (version < int(newestVersion.c_str()))
+		{
+			GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">There's a newer version!</font>", name).c_str());
+			return;
+		}
+	}
+
+	GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You got the newest version!</font>", name).c_str());
+}
+
 bool sExtensions::IsComboing()
 {
 	return GOrbwalking->GetOrbwalkingMode() == kModeCombo;
