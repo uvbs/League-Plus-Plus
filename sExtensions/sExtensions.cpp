@@ -8,7 +8,42 @@ std::string sExtensions::format(const char* format, ...)
 	std::string result(++size, 0);
 	vsnprintf_s(const_cast<char*>(result.data()), size, _TRUNCATE, format, args);
 	va_end(args);
+
 	return result;
+}
+
+bool sExtensions::TextureExists(std::string file)
+{
+	std::string szFinalPath;
+	GPluginSDK->GetBaseDirectory(szFinalPath);
+
+	szFinalPath += "\\Textures\\" + file;
+
+	auto hFile = CreateFileA(szFinalPath.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(hFile);
+
+		return true;
+	}
+
+	return false;
+}
+
+ITexture* sExtensions::GetTexture(std::string file)
+{
+	if (TextureExists(file))
+		return GRender->CreateTextureFromFile(file.c_str());
+
+	auto downloadUrl = "https://raw.githubusercontent.com/Harmenszoon/LeaguePlusPlusRembrandt/master/Resources/" + file;
+
+	std::string szImage;
+
+	if (GPluginSDK->ReadFileFromURL(downloadUrl, szImage))
+		return GRender->CreateTextureFromMemory((uint8_t*)szImage.data(), szImage.length(), file.c_str());
+
+	return nullptr;
 }
 
 bool sExtensions::IsComboing()

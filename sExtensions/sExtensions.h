@@ -4,6 +4,8 @@ class sExtensions
 {
 public:
 	static std::string format(const char* format, ...);
+	static bool TextureExists(std::string file);
+	static ITexture* GetTexture(std::string file);
 	static bool IsComboing();
 	static bool IsHarassing();
 	static bool IsClearing();
