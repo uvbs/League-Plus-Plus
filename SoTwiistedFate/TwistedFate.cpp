@@ -124,7 +124,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 
 	if (strstr(TwistedFate::Player->ChampionName(), "TwistedFate") == nullptr)
 	{
-		TwistedFate::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoTwiistedFate</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You are not playing <b>TwistedFate</b>!</font>");
+		TwistedFate::SDK->GetGame()->PrintChat("<font color=\"#0095DA\"><b>SoTwiistedFate</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You are not playing <b>Twisted Fate</b>!</font>");
 		return;
 	}
 	
