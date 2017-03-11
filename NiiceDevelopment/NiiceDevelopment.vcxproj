@@ -94,13 +94,16 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Marcel\Documents\Visual Studio 2017\Projects\League-Plus-Plus\sExtensions;C:\Users\Marcel\Documents\Visual Studio 2017\Projects\League-Plus-Plus\L++ SDK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\sExtensions;..\L++ SDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <OutputFile>C:\Users\Marcel\Documents\Visual Studio 2017\Projects\League-Plus-Plus\DLLs\$(TargetName)$(TargetExt)</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
     </Link>
+    <PostBuildEvent>
+      <Command>copy /Y "$(TargetDir)$(ProjectName).dll" "../DLLs/$(ProjectName).dll"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

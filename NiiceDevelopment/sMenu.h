@@ -18,4 +18,6 @@ public:
 	IMenuOption* DrawMouseLines;
 	IMenuOption* DrawMouseInformations;
 	IMenuOption* AnalyzeRange;
+	IMenuOption* GuiX;
+	IMenuOption* GuiY;
 };

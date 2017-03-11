@@ -15,5 +15,7 @@ sMenu::sMenu(IMenu* menu)
 		DrawMouseLines = Main->CheckBox("Draw Mouse Lines", true);
 		DrawMouseInformations = Main->CheckBox("Draw Mouse Informations", true);
 		AnalyzeRange = Main->AddInteger("Analyze Range", 10, 500, 500);
+		GuiX = Main->AddInteger("GUI X Position", 0, GRender->ScreenSize().x, 10);
+		GuiY = Main->AddInteger("GUI Y Position", 0, GRender->ScreenSize().y, 10);
 	}
 }
