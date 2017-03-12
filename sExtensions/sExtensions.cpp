@@ -70,6 +70,21 @@ float sExtensions::GetRealDistance(IUnit* sender, IUnit* target)
 	return (sender->ServerPosition() - target->ServerPosition()).Length() + sender->BoundingRadius() + target->BoundingRadius();
 }
 
+int sExtensions::CountAlliesInPositionRange(Vec3 position, float range)
+{
+	auto allies = 0;
+
+	for (auto ally : GEntityList->GetAllHeros(true, false))
+	{
+		if (ally != nullptr && GetDistance(position, ally->GetPosition()) <= range)
+		{
+			allies++;
+		}
+	}
+
+	return allies;
+}
+
 int sExtensions::CountAlliesInTargetRange(IUnit* target, float range)
 {
 	auto allies = 0;
@@ -83,6 +98,24 @@ int sExtensions::CountAlliesInTargetRange(IUnit* target, float range)
 	}
 
 	return allies;
+}
+
+int sExtensions::CountEnemiesInPositionRange(Vec3 position, float range)
+{
+	auto enemies = 0;
+
+	for (auto enemy : GEntityList->GetAllHeros(false, true))
+	{
+		if (enemy != nullptr && GetDistance(position, enemy->GetPosition()) <= range)
+		{
+			if (enemy->GetPosition() != position)
+			{
+				enemies++;
+			}
+		}
+	}
+
+	return enemies;
 }
 
 int sExtensions::CountEnemiesInTargetRange(IUnit* target, float range)
@@ -101,6 +134,24 @@ int sExtensions::CountEnemiesInTargetRange(IUnit* target, float range)
 	}
 
 	return enemies;
+}
+
+int sExtensions::CountMinionsInPositionRange(Vec3 position, float range)
+{
+	auto minions = 0;
+
+	for (auto minion : GEntityList->GetAllMinions(false, true, false))
+	{
+		if (minion != nullptr && GetDistance(position, minion->GetPosition()) <= range)
+		{
+			if (minion->GetPosition() != position && !minion->IsDead())
+			{
+				minions++;
+			}
+		}
+	}
+
+	return minions;
 }
 
 int sExtensions::CountMinionsInTargetRange(IUnit* target, float range)

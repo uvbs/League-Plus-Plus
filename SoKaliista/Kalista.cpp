@@ -3,7 +3,7 @@
 #include <string>
 #include <array>
 
-auto version = 3;
+auto version = 4;
 
 PluginSetup("SoKaliista");
 
@@ -25,7 +25,6 @@ PLUGIN_EVENT(void) OnGameUpdate()
 
 	if (Kalista::Extensions->IsComboing())
 	{
-		IUnit* target = nullptr;
 		auto enemyInRange = false;
 		auto enemyInLongRange = false;
 
@@ -34,11 +33,11 @@ PLUGIN_EVENT(void) OnGameUpdate()
 			if (Kalista::Extensions->GetDistance(Kalista::Player, enemy) < Kalista::Player->AttackRange())
 			{
 				enemyInRange = true;
+				break;
 			}
 
 			if (Kalista::Extensions->GetDistance(Kalista::Player, enemy) < Kalista::Player->AttackRange() + 500)
 			{
-				target = enemy;
 				enemyInLongRange = true;
 			}
 		}
@@ -50,7 +49,7 @@ PLUGIN_EVENT(void) OnGameUpdate()
 				if (Kalista::Extensions->GetDistance(Kalista::Player, minion) < Kalista::Player->AttackRange())
 				{
 					Kalista::SDK->GetOrbwalking()->SetOverrideTarget(minion);
-					return;
+					break;
 				}
 			}
 		}
