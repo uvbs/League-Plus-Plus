@@ -11,34 +11,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sSpells.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sMenu.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sLogics.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="Kalista.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="sSpells.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sMenu.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sLogics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Kalista.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
     <Text Include="version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Load.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Spells.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Modes.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Spells.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Modes.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

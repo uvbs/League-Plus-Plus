@@ -19,34 +19,43 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="sCardSelector.h" />
-    <ClInclude Include="TwistedFate.h" />
-    <ClInclude Include="sLogics.h" />
-    <ClInclude Include="sMenu.h" />
-    <ClInclude Include="sSpells.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="sCardSelector.cpp" />
-    <ClCompile Include="TwistedFate.cpp" />
-    <ClCompile Include="sLogics.cpp" />
-    <ClCompile Include="sMenu.cpp" />
-    <ClCompile Include="sSpells.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\IExtension\IExtension.vcxproj">
+      <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IHero\IHero.vcxproj">
+      <Project>{ff146429-a152-49c9-b095-fd931e502775}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IPlugin\IPlugin.vcxproj">
+      <Project>{f914128e-f027-44a8-bf4f-52ec31b69549}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\L++ SDK\L++ SDK.vcxproj">
       <Project>{6d7cabc4-7d3a-4203-87d3-2a76c2c50dc6}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\sExtensions\sExtensions.vcxproj">
-      <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Text Include="version.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CardSelector.cpp" />
+    <ClCompile Include="Events.cpp" />
+    <ClCompile Include="Load.cpp" />
+    <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Modes.cpp" />
+    <ClCompile Include="Spells.cpp" />
+    <ClCompile Include="TwistedFate.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CardSelector.h" />
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="Menu.h" />
+    <ClInclude Include="Modes.h" />
+    <ClInclude Include="Spells.h" />
+    <ClInclude Include="TwistedFate.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{c76be6b1-c337-4e89-9d31-5b643ef41217}</ProjectGuid>
-    <RootNamespace>SoTwiistedFate</RootNamespace>
+    <ProjectGuid>{CD2DB035-F951-4B25-A597-24A8A996D54F}</ProjectGuid>
+    <RootNamespace>NiiceAatrox</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -104,7 +113,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\sExtensions;..\L++ SDK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\IHero;..\IExtension;..\IPlugin;..\L++ SDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>

@@ -1,42 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="Jinx.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sMenu.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sSpells.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="sLogics.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Jinx.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sMenu.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sSpells.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="sLogics.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
     <Filter Include="Header">
-      <UniqueIdentifier>{30a3c9ce-5ed6-4dd8-a3cd-87b2f51fde7d}</UniqueIdentifier>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Source">
-      <UniqueIdentifier>{daf0392b-a6b7-424e-ae3b-0e0bc5b90498}</UniqueIdentifier>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="version.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Load.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Spells.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Menu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Modes.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Jinx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Spells.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Menu.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Modes.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Jinx.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

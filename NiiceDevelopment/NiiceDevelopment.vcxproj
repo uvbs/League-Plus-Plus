@@ -19,27 +19,32 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NiiceDevelopment.cpp" />
-    <ClCompile Include="sMenu.cpp" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\IExtension\IExtension.vcxproj">
+      <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IPlugin\IPlugin.vcxproj">
+      <Project>{f914128e-f027-44a8-bf4f-52ec31b69549}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\L++ SDK\L++ SDK.vcxproj">
       <Project>{6d7cabc4-7d3a-4203-87d3-2a76c2c50dc6}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\sExtensions\sExtensions.vcxproj">
-      <Project>{06bb8408-75bf-4be0-ac1a-07ce2dedcb67}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="sMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="version.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Events.cpp" />
+    <ClCompile Include="Load.cpp" />
+    <ClCompile Include="Menu.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Events.h" />
+    <ClInclude Include="Menu.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{69ad7a55-1667-46f3-8915-e2b3346565a1}</ProjectGuid>
-    <RootNamespace>NiiceDevelopment</RootNamespace>
+    <ProjectGuid>{1E6D8198-05E6-4991-B8C2-664CBFF5893E}</ProjectGuid>
+    <RootNamespace>NiiceAatrox</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -97,7 +102,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>..\sExtensions;..\L++ SDK</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\IExtension;..\IPlugin;..\L++ SDK</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
