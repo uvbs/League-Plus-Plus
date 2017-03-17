@@ -176,6 +176,7 @@ public:
 	virtual bool IsPointWall(Vec3 const& Position) = 0;
 	virtual bool IsPointGrass(Vec3 const& Position) = 0;
 	virtual void RunPrediction(AdvPredictionInput* Input, AdvPredictionOutput* Output, uint32_t PredictionVersion = 1) = 0;
+	virtual void FindBestCastPositionEx(Vec3 const& StartPosition, float Delay, float Range, float Radius, bool IsMissile, bool CheckMinions, bool CheckHeroes, Vec3& CastPosition, std::vector<IUnit*>& EnemiesHit) = 0;
 };
 
 class IMenuOption
@@ -280,6 +281,8 @@ public:
 	virtual int GetCollisionFlags() = 0;
 	virtual void SetTriggerEvents(bool TriggerEvents) = 0;
 	virtual bool IsTriggeringEvents() = 0;
+	virtual void SetSpellName(std::string const& SpellName) = 0;
+	virtual std::string GetSpellName() = 0;
 };
 
 class IOrbwalking
@@ -435,6 +438,7 @@ public:
 	virtual void ClearLogFile(const char* Filename) = 0;
 	virtual Vec3 To3D(Vec2 const& Other) = 0;
 	virtual float GetExperienceRequiredForLevel(int Level) = 0;
+	virtual int GetRecallDuration(const char* RecallSpellName) = 0;
 };
 
 class IPluginSDK

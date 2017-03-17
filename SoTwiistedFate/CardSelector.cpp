@@ -51,7 +51,7 @@ void CardSelector::OnGameUpdate()
 
 void CardSelector::OnSpellCast(CastedSpell const& spell)
 {
-	if (spell.Name_ == "PickACard")
+	if (std::string(spell.Name_) == "PickACard")
 	{
 		Status = kSelecting;
 
@@ -61,7 +61,7 @@ void CardSelector::OnSpellCast(CastedSpell const& spell)
 		}
 	}
 
-	if (spell.Name_ == "GoldCardLock" || spell.Name_ == "BlueCardLock" || spell.Name_ == "RedCardLock")
+	if (std::string(spell.Name_) == "GoldCardLock" || std::string(spell.Name_) == "BlueCardLock" || std::string(spell.Name_) == "RedCardLock")
 	{
 		Status = kSelected;
 

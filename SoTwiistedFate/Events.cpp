@@ -21,6 +21,8 @@ void Events::OnGameUpdate()
 	if (GGame->IsChatOpen())
 		return;
 
+	TwistedFate::CardSelector->OnGameUpdate();
+
 	if (GExtension->IsComboing())
 	{
 		Modes::Combo();

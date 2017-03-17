@@ -71,6 +71,6 @@ void Modes::Always()
 
 	if (GetAsyncKeyState(GPlugin->GetMenuOption("Q", "Key")->GetInteger()) && GHero->GetSpell2("Q")->IsReady())
 	{
-		GHero->GetSpell2("W")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range()), kHitChanceMedium);
+		GHero->GetSpell2("Q")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range()), kHitChanceMedium);
 	}
 }
