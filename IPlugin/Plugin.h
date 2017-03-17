@@ -57,6 +57,7 @@ public:
 	static void RegisterPauseAnimationEvent(std::function<void(IUnit*)> function);
 	static void RegisterJungleNotificationEvent(std::function<void(JungleNotifyData*)> function);
 	static void RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> const&)> function);
+	static void RegisterTeleport(std::function<void(IUnit*, int, int, int)> function);
 
 private:
 	static char* Author;
@@ -99,6 +100,7 @@ private:
 	static std::function<void(IUnit*)> PauseAnimationEvent;
 	static std::function<void(JungleNotifyData*)> JungleNotificationEvent;
 	static std::function<void(IUnit*, std::vector<Vec3> const&)> NewPathEvent;
+	static std::function<void(IUnit*, int, int, int)> TeleportEvent;
 
 	PLUGIN_EVENT(void) OnOrbwalkBeforeAttack(IUnit* target);
 	PLUGIN_EVENT(void) OnOrbwalkOnAttack(IUnit* source, IUnit* target);
@@ -134,6 +136,7 @@ private:
 	PLUGIN_EVENT(void) OnPauseAnimation(IUnit* source);
 	PLUGIN_EVENT(void) OnJungleNotification(JungleNotifyData* data);
 	PLUGIN_EVENT(void) OnNewPath(IUnit* source, std::vector<Vec3> const& path);
+	PLUGIN_EVENT(void) OnTeleport(IUnit* source, int type, int status, int duration);
 };
 
 extern IPlugin* GPlugin;

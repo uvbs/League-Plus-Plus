@@ -42,6 +42,7 @@ std::function<void(IUnit*, std::string const)> IPlugin::PlayAnimationEvent;
 std::function<void(IUnit*)> IPlugin::PauseAnimationEvent;
 std::function<void(JungleNotifyData*)> IPlugin::JungleNotificationEvent;
 std::function<void(IUnit*, std::vector<Vec3> const&)> IPlugin::NewPathEvent;
+std::function<void(IUnit*, int, int, int)> IPlugin::TeleportEvent;
 
 IPlugin::IPlugin(char* author, char* name, int version)
 {
@@ -336,6 +337,12 @@ void IPlugin::RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> 
 	NewPathEvent = function;
 }
 
+void IPlugin::RegisterTeleport(std::function<void(IUnit*, int, int, int)> function)
+{
+	GEventManager->AddEventHandler(kEventOnTeleport, OnTeleport);
+	TeleportEvent = function;
+}
+
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkBeforeAttack(IUnit* target)
 {
 	if (OrbwalkBeforeAttackEvent != nullptr)
@@ -545,4 +552,10 @@ PLUGIN_EVENTD(void) IPlugin::OnNewPath(IUnit* source, std::vector<Vec3> const& p
 {
 	if (NewPathEvent != nullptr)
 		NewPathEvent(source, path);
+}
+
+PLUGIN_EVENTD(void) IPlugin::OnTeleport(IUnit* source, int type, int status, int duration)
+{
+	if (TeleportEvent != nullptr)
+		TeleportEvent(source, type, status, duration);
 }
