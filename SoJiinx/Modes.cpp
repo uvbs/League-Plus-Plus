@@ -35,9 +35,14 @@ void Modes::Combo()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("W", "Combo")->Enabled() && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuOption("Mana", "W.Combo")->GetInteger() && GHero->GetSpell2("W")->IsReady() && (GExtension->CountEnemiesInRange(GEntityList->Player()->AttackRange()) == 0 || !GPlugin->GetMenuOption("W", "Combo.Range")->Enabled()))
+	if (GPlugin->GetMenuOption("W", "Combo")->Enabled() && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuOption("Mana", "W.Combo")->GetInteger() && GHero->GetSpell2("W")->IsReady())
 	{
-		GHero->GetSpell2("W")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("W")->Range()), GPlugin->GetMenuOption("W", "Hitchance")->GetInteger() + 2);
+		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("W")->Range());
+		
+		if (GExtension->GetDistance(GEntityList->Player(), target) >= GPlugin->GetMenuOption("W", "Combo.Range")->GetInteger())
+		{
+			GHero->GetSpell2("W")->CastOnTarget(target, GPlugin->GetMenuOption("W", "Hitchance")->GetInteger() + 2);
+		}
 	}
 
 	if (GPlugin->GetMenuOption("E", "Combo")->Enabled() && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuOption("Mana", "E.Combo")->GetInteger() && GHero->GetSpell2("E")->IsReady() && GEntityList->Player()->IsMoving())

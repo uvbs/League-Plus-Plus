@@ -24,7 +24,7 @@ void Menu::Initialize()
 	GPlugin->AddMenu("W", "W Settings");
 	{
 		GPlugin->AddCheckBox("W", "Combo", "Combo W", true);
-		GPlugin->AddCheckBox("W", "Combo.Range", "^-> Dont use in attack range", true);
+		GPlugin->AddInteger("W", "Combo.Range", "^-> Minimum range to use", 0, 1400, 1000);
 		GPlugin->AddCheckBox("W", "Harass", "Harass W", true);
 		GPlugin->AddCheckBox("W", "Epics", "Steal epic jungle creeps w/ W", true);
 		GPlugin->AddCheckBox("W", "KillSteal", "KillSteal W", true);
