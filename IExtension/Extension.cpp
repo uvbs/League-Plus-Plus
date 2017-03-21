@@ -17,7 +17,7 @@ std::string IExtension::format(const char* format, ...)
 void IExtension::CheckVersion(char* name, int version)
 {
 	GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">Checking for updates..</font>", name).c_str());
-	
+
 	std::string newestVersion;
 
 	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
@@ -30,6 +30,36 @@ void IExtension::CheckVersion(char* name, int version)
 	}
 
 	GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You got the newest version!</font>", name).c_str());
+}
+
+ITexture* IExtension::GetTexture(char* name)
+{
+	if (TextureExists(name))
+		return GRender->CreateTextureFromFile(name);
+
+	std::string texture;
+
+	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/Textures/%s", name), texture))
+		return GRender->CreateTextureFromMemory((uint8_t*)texture.data(), texture.length(), name);
+
+	return nullptr;
+}
+
+bool IExtension::TextureExists(char* name)
+{
+	std::string baseDirectory;
+	GPluginSDK->GetBaseDirectory(baseDirectory);
+
+	auto file = baseDirectory + "/Textures/" + std::string(name);
+	auto fileHandle = CreateFileA(file.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+	if (fileHandle != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(fileHandle);
+		return true;
+	}
+
+	return false;
 }
 
 bool IExtension::IsComboing()

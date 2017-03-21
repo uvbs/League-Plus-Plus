@@ -12,7 +12,7 @@ Vec3 LastClickPosition = Vec3(0, 0, 0);
 
 void Events::Initialize()
 {
-	Background = GRender->CreateTextureFromFile("niice_development_background.png");
+	Background = GExtension->GetTexture("niice_development_background.png");
 
 	GPlugin->RegisterGameUpdateEvent(OnGameUpdate);
 	GPlugin->RegisterRenderEvent(OnRender);

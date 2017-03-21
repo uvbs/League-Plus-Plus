@@ -5,6 +5,8 @@ class IExtension
 public:
 	static std::string format(const char* format, ...);
 	static void CheckVersion(char* name, int version);
+	static ITexture* GetTexture(char* name);
+	static bool TextureExists(char* name);
 	static bool IsComboing();
 	static bool IsHarassing();
 	static bool IsClearing();

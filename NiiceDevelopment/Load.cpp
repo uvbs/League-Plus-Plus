@@ -5,7 +5,7 @@
 
 char* Author = "SoNiice";
 char* Plugin = "NiiceDevelopment";
-int Version = 5;
+int Version = 6;
 
 PluginSetup(Plugin);
 
