@@ -203,3 +203,22 @@ int IExtension::CountMinionsInTargetRange(IUnit* target, float range)
 
 	return minions;
 }
+
+Vec3 IExtension::GetSpawnPosition(IUnit* hero)
+{
+	switch (GGame->GetMapId())
+	{
+	case kMapSummonersRift:
+		switch (hero->GetTeam())
+		{
+		case kTeam1:
+			return Vec3(414.f, 183.f, 420.f);
+		case kTeam2:
+			return Vec3(14306.f, 171.f, 14375.f);
+		default:
+			return Vec3(0, 0, 0);
+		}
+	default:
+		return Vec3(0, 0, 0);
+	}
+}

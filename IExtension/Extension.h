@@ -21,6 +21,7 @@ public:
 	static int CountAlliesInTargetRange(IUnit* target, float range);
 	static int CountEnemiesInTargetRange(IUnit* target, float range);
 	static int CountMinionsInTargetRange(IUnit* target, float range);
+	static Vec3 GetSpawnPosition(IUnit* hero);
 };
 
 extern IExtension* GExtension;

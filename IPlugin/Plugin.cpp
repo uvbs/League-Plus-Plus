@@ -27,7 +27,7 @@ std::function<void(IUnit*, void*)> IPlugin::BuffAddEvent;
 std::function<void(IUnit*, void*)> IPlugin::BuffRemoveEvent;
 std::function<void()> IPlugin::GameEndEvent;
 std::function<void(IUnit*, int)> IPlugin::LevelUpEvent;
-std::function<void(eSpellSlot, IUnit*, Vec3*, Vec3*)> IPlugin::PreCastEvent;
+std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> IPlugin::PreCastEvent;
 std::function<IUnit*()> IPlugin::OrbwalkFindTargetEvent;
 std::function<void(UnitDash*)> IPlugin::DashEvent;
 std::function<void(IDirect3DDevice9*)> IPlugin::D3DPresentEvent;
@@ -42,7 +42,7 @@ std::function<void(IUnit*, std::string const)> IPlugin::PlayAnimationEvent;
 std::function<void(IUnit*)> IPlugin::PauseAnimationEvent;
 std::function<void(JungleNotifyData*)> IPlugin::JungleNotificationEvent;
 std::function<void(IUnit*, std::vector<Vec3> const&)> IPlugin::NewPathEvent;
-std::function<void(IUnit*, int, int, int)> IPlugin::TeleportEvent;
+std::function<void(OnTeleportArgs* args)> IPlugin::TeleportEvent;
 
 IPlugin::IPlugin(char* author, char* name, int version)
 {
@@ -94,6 +94,7 @@ IPlugin::~IPlugin()
 	GEventManager->RemoveEventHandler(kEventOnPauseAnimation, OnPauseAnimation);
 	GEventManager->RemoveEventHandler(kEventOnJungleNotification, OnJungleNotification);
 	GEventManager->RemoveEventHandler(kEventOnNewPath, OnNewPath);
+	GEventManager->RemoveEventHandler(kEventOnTeleport, OnTeleport);
 }
 
 char* IPlugin::GetAuthor()
@@ -261,7 +262,7 @@ void IPlugin::RegisterLevelUpEvent(std::function<void(IUnit*, int)> function)
 	GEventManager->AddEventHandler(kEventOnLevelUp, OnLevelUp);
 	LevelUpEvent = function;
 }
-void IPlugin::RegisterPreCastEvent(std::function<void(eSpellSlot, IUnit*, Vec3*, Vec3*)> function)
+void IPlugin::RegisterPreCastEvent(std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> function)
 {
 	GEventManager->AddEventHandler(kEventOnPreCast, OnPreCast);
 	PreCastEvent = function;
@@ -337,7 +338,7 @@ void IPlugin::RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> 
 	NewPathEvent = function;
 }
 
-void IPlugin::RegisterTeleport(std::function<void(IUnit*, int, int, int)> function)
+void IPlugin::RegisterTeleportEvent(std::function<void(OnTeleportArgs* args)> function)
 {
 	GEventManager->AddEventHandler(kEventOnTeleport, OnTeleport);
 	TeleportEvent = function;
@@ -459,10 +460,12 @@ PLUGIN_EVENTD(void) IPlugin::OnLevelUp(IUnit* source, int newLevel)
 		LevelUpEvent(source, newLevel);
 }
 
-PLUGIN_EVENTD(void) IPlugin::OnPreCast(eSpellSlot slot, IUnit* target, Vec3* startPosition, Vec3* endPosition)
+PLUGIN_EVENTD(bool) IPlugin::OnPreCast(eSpellSlot slot, IUnit* target, Vec3* startPosition, Vec3* endPosition)
 {
 	if (PreCastEvent != nullptr)
 		PreCastEvent(slot, target, startPosition, endPosition);
+
+	return true;
 }
 
 PLUGIN_EVENTD(IUnit*) IPlugin::OnOrbwalkFindTarget()
@@ -554,8 +557,8 @@ PLUGIN_EVENTD(void) IPlugin::OnNewPath(IUnit* source, std::vector<Vec3> const& p
 		NewPathEvent(source, path);
 }
 
-PLUGIN_EVENTD(void) IPlugin::OnTeleport(IUnit* source, int type, int status, int duration)
+PLUGIN_EVENTD(void) IPlugin::OnTeleport(OnTeleportArgs* args)
 {
 	if (TeleportEvent != nullptr)
-		TeleportEvent(source, type, status, duration);
+		TeleportEvent(args);
 }

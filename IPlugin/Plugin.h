@@ -42,7 +42,7 @@ public:
 	static void RegisterBuffRemoveEvent(std::function<void(IUnit*, void*)> function);
 	static void RegisterGameEndEvent(std::function<void()> function);
 	static void RegisterLevelUpEvent(std::function<void(IUnit*, int)> function);
-	static void RegisterPreCastEvent(std::function<void(eSpellSlot, IUnit*, Vec3*, Vec3*)> function);
+	static void RegisterPreCastEvent(std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> function);
 	static void RegisterOrbwalkFindTargetEvent(std::function<IUnit*()> function);
 	static void RegisterDashEvent(std::function<void(UnitDash*)> function);
 	static void RegisterD3DPresentEvent(std::function<void(IDirect3DDevice9*)> function);
@@ -57,7 +57,7 @@ public:
 	static void RegisterPauseAnimationEvent(std::function<void(IUnit*)> function);
 	static void RegisterJungleNotificationEvent(std::function<void(JungleNotifyData*)> function);
 	static void RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> const&)> function);
-	static void RegisterTeleport(std::function<void(IUnit*, int, int, int)> function);
+	static void RegisterTeleportEvent(std::function<void(OnTeleportArgs* args)> function);
 
 private:
 	static char* Author;
@@ -85,7 +85,7 @@ private:
 	static std::function<void(IUnit*, void*)> BuffRemoveEvent;
 	static std::function<void()> GameEndEvent;
 	static std::function<void(IUnit*, int)> LevelUpEvent;
-	static std::function<void(eSpellSlot, IUnit*, Vec3*, Vec3*)> PreCastEvent;
+	static std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> PreCastEvent;
 	static std::function<IUnit*()> OrbwalkFindTargetEvent;
 	static std::function<void(UnitDash*)> DashEvent;
 	static std::function<void(IDirect3DDevice9*)> D3DPresentEvent;
@@ -100,7 +100,7 @@ private:
 	static std::function<void(IUnit*)> PauseAnimationEvent;
 	static std::function<void(JungleNotifyData*)> JungleNotificationEvent;
 	static std::function<void(IUnit*, std::vector<Vec3> const&)> NewPathEvent;
-	static std::function<void(IUnit*, int, int, int)> TeleportEvent;
+	static std::function<void(OnTeleportArgs* args)> TeleportEvent;
 
 	PLUGIN_EVENT(void) OnOrbwalkBeforeAttack(IUnit* target);
 	PLUGIN_EVENT(void) OnOrbwalkOnAttack(IUnit* source, IUnit* target);
@@ -121,7 +121,7 @@ private:
 	PLUGIN_EVENT(void) OnBuffRemove(IUnit* source, void* buffData);
 	PLUGIN_EVENT(void) OnGameEnd();
 	PLUGIN_EVENT(void) OnLevelUp(IUnit* source, int newLevel);
-	PLUGIN_EVENT(void) OnPreCast(eSpellSlot slot, IUnit* target, Vec3* startPosition, Vec3* endPosition);
+	PLUGIN_EVENT(bool) OnPreCast(eSpellSlot slot, IUnit* target, Vec3* startPosition, Vec3* endPosition);
 	PLUGIN_EVENT(IUnit*) OnOrbwalkFindTarget();
 	PLUGIN_EVENT(void) OnDash(UnitDash* dash);
 	PLUGIN_EVENT(void) OnD3DPresent(IDirect3DDevice9* device);
@@ -136,7 +136,7 @@ private:
 	PLUGIN_EVENT(void) OnPauseAnimation(IUnit* source);
 	PLUGIN_EVENT(void) OnJungleNotification(JungleNotifyData* data);
 	PLUGIN_EVENT(void) OnNewPath(IUnit* source, std::vector<Vec3> const& path);
-	PLUGIN_EVENT(void) OnTeleport(IUnit* source, int type, int status, int duration);
+	PLUGIN_EVENT(void) OnTeleport(OnTeleportArgs* args);
 };
 
 extern IPlugin* GPlugin;
