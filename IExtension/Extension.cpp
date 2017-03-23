@@ -97,8 +97,6 @@ int IExtension::GetDangerLevel(IUnit* hero)
 				}
 			}
 		}
-
-		return true;
 	}
 
 	return 1;
