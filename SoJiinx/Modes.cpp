@@ -10,28 +10,25 @@ void Modes::Combo()
 	{
 		auto target = GOrbwalking->GetLastTarget();
 
-		if (target && target->IsHero())
+		if (target != nullptr && target->IsValidTarget())
 		{
-			Jinx::FishboneToMinigun(target);
+			if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() || (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth()))
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
 		}
 	}
 	else
 	{
-		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, 525 + 40);
+		auto target = GOrbwalking->GetLastTarget();
 
-		if (target && target->IsValidTarget())
+		if (target != nullptr && GExtension->GetRealDistance(GEntityList->Player(), target) > 525 && GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange())
 		{
-			if (GExtension->GetDistance(GEntityList->Player(), target) < Jinx::GetFishboneRange() + 525 && GExtension->GetDistance(GEntityList->Player(), target) > GEntityList->Player()->AttackRange())
-			{
-				GHero->GetSpell("Q")->CastOnPlayer();
-			}
+			GHero->GetSpell("Q")->CastOnPlayer();
 		} 
-		else
+		else if (target != nullptr && GExtension->CountEnemiesInTargetRange(target, 250) >= GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() && (GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() > target->GetHealth()))
 		{
-			if (GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger())
-			{
-				GHero->GetSpell("Q")->CastOnPlayer();
-			}
+			GHero->GetSpell("Q")->CastOnPlayer();
 		}
 	}
 
@@ -49,7 +46,7 @@ void Modes::Combo()
 	{
 		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("E")->Range());
 
-		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("E")->Range()))
+		if (GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("E")->Range()))
 		{
 			auto& out = Vec3();
 			GPrediction->GetFutureUnitPosition(target, GHero->GetSpell2("E")->GetDelay() + 0.15f, false, out);
@@ -64,13 +61,16 @@ void Modes::Clear()
 	{
 		auto target = GOrbwalking->GetLastTarget();
 
-		if (GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Clear")->GetInteger() && target && target->IsCreep())
+		if (target != nullptr && target->IsCreep() && GExtension->CountMinionsInTargetRange(target, 250) + 1 >= GPlugin->GetMenuOption("Q", "Clear.Minions")->GetInteger() && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Clear")->GetInteger())
 		{
 
 		}
-		else if (target && target->IsHero())
+		else if (target != nullptr && target->IsHero())
 		{
-			Jinx::FishboneToMinigun(target);
+			if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() || (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth()))
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
 		}
 		else
 		{
@@ -83,7 +83,7 @@ void Modes::Clear()
 		{
 			for (auto minion : GEntityList->GetAllMinions(false, true, false))
 			{
-				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && Jinx::GetRealPowPowRange(minion) < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
+				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && 525 < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
 				{
 					GOrbwalking->SetOverrideTarget(minion);
 					GHero->GetSpell("Q")->CastOnPlayer();
@@ -97,7 +97,7 @@ void Modes::Clear()
 		{
 			auto orbTarget = GOrbwalking->GetLastTarget();
 
-			if (orbTarget && orbTarget->IsCreep() && GExtension->CountMinionsInTargetRange(orbTarget, 250) + 1 >= GPlugin->GetMenuOption("Q", "Clear.Minions")->GetInteger())
+			if (orbTarget != nullptr && orbTarget->IsCreep() && GExtension->CountMinionsInTargetRange(orbTarget, 250) + 1 >= GPlugin->GetMenuOption("Q", "Clear.Minions")->GetInteger())
 			{
 				GHero->GetSpell("Q")->CastOnPlayer();
 			}
@@ -117,7 +117,7 @@ void Modes::Lasthit()
 		{
 			for (auto minion : GEntityList->GetAllMinions(false, true, false))
 			{
-				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && Jinx::GetRealPowPowRange(minion) < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
+				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && 525 < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
 				{
 					GOrbwalking->SetOverrideTarget(minion);
 					GHero->GetSpell("Q")->CastOnPlayer();
@@ -137,7 +137,10 @@ void Modes::Harass()
 
 		if (target && target->IsHero())
 		{
-			Jinx::FishboneToMinigun(target);
+			if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() || (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth()))
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
 		}
 		else
 		{
@@ -150,7 +153,7 @@ void Modes::Harass()
 		{
 			for (auto minion : GEntityList->GetAllMinions(false, true, false))
 			{
-				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && Jinx::GetRealPowPowRange(minion) < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
+				if (GExtension->GetDistance(GEntityList->Player(), minion) < 525 + Jinx::GetFishboneRange() && minion->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), minion, false) * 1.2 && 525 < GExtension->GetRealDistance(GEntityList->Player(), minion) && 525 + Jinx::GetFishboneRange() < GExtension->GetRealDistance(GEntityList->Player(), minion))
 				{
 					GOrbwalking->SetOverrideTarget(minion);
 					GHero->GetSpell("Q")->CastOnPlayer();
@@ -224,7 +227,7 @@ void Modes::KillSteal()
 
 						if (predictedHealth < GDamage->GetSpellDamage(GEntityList->Player(), creep, kSlotW))
 						{
-							GHero->GetSpell2("W")->CastOnUnit(creep);
+							GHero->GetSpell2("W")->CastOnTarget(creep);
 						}
 					}
 				}
@@ -236,9 +239,12 @@ void Modes::KillSteal()
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
+			if (GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("W")->Range()) && GPlugin->GetMenuOption("R", "KillSteal.W")->Enabled() && GHero->GetSpell2("W")->IsReady() && GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotW) > enemy->GetHealth())
+				continue;
+
 			if (enemy != nullptr && !enemy->IsDead() && GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("R")->Range()) && !enemy->IsInvulnerable())
 			{
-				auto predictedHealth = enemy->GetHealth() + enemy->HPRegenRate() * 2;
+				auto predictedHealth = enemy->GetHealth() + enemy->HPRegenRate() * 6;
 				auto damage = GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotR);
 
 				if (GExtension->GetDistance(GEntityList->Player(), enemy) < 1500)

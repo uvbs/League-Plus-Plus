@@ -15,7 +15,7 @@ class SoUltiimate
 {
 public:
 	static void Initialize();
-	static void HandleUltimate(IUnit* hero, float recallDuration);
+	static void HandleUltimate(IUnit* hero);
 
 	static std::vector<char*> Champions;
 	static std::map<int, float> VisibleTimers;

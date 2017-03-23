@@ -1,4 +1,9 @@
 #include "Extension.h"
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <regex>
+#include <iostream>
 
 IExtension* GExtension = new IExtension();
 
@@ -51,15 +56,52 @@ bool IExtension::TextureExists(char* name)
 	GPluginSDK->GetBaseDirectory(baseDirectory);
 
 	auto file = baseDirectory + "/Textures/" + std::string(name);
-	auto fileHandle = CreateFileA(file.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	auto hFile = CreateFileA(file.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-	if (fileHandle != INVALID_HANDLE_VALUE)
+	if (hFile != INVALID_HANDLE_VALUE)
 	{
-		CloseHandle(fileHandle);
+		CloseHandle(hFile);
 		return true;
 	}
 
 	return false;
+}
+
+int IExtension::GetDangerLevel(IUnit* hero)
+{
+
+	std::string baseDirectory;
+	GPluginSDK->GetBaseDirectory(baseDirectory);
+
+	auto file = baseDirectory + "/Configs/Target Selector.ini";
+	auto hFile = CreateFileA(file.c_str(), GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+
+	if (hFile != INVALID_HANDLE_VALUE)
+	{
+		CloseHandle(hFile);
+
+		std::ifstream fileStream(file.c_str());
+		std::string line;
+
+		while (fileStream && getline(fileStream, line)) {
+			if (line.length() == 0)
+				continue;
+
+			std::smatch matches;
+
+			if (regex_match(line, matches, std::regex("Danger Level - ([a-zA-Z]+)=([1-5])")))
+			{
+				if (std::string(matches[1]) == hero->ChampionName())
+				{
+					return stoi(std::string(matches[2]));
+				}
+			}
+		}
+
+		return true;
+	}
+
+	return 1;
 }
 
 bool IExtension::IsComboing()

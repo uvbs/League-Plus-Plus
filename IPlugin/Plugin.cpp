@@ -127,6 +127,11 @@ void IPlugin::AddCheckBox(char* menu, char* name, char* title, bool value)
 	MenuOptions[menu][name] = Menus[menu]->CheckBox(title, value);
 }
 
+void IPlugin::AddCheckBox(char* name, char* title, bool value)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->CheckBox(title, value);
+}
+
 void IPlugin::AddColor(char* menu, char* name, char* title, DWORD value)
 {
 	MenuOptions[menu][name] = Menus[menu]->AddColor(title, value);
@@ -137,9 +142,24 @@ void IPlugin::AddColor(char* menu, char* name, char* title, float R, float G, fl
 	MenuOptions[menu][name] = Menus[menu]->AddColor(title, R, G, B, A);
 }
 
+void IPlugin::AddColor(char* name, char* title, DWORD value)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title, value);
+}
+
+void IPlugin::AddColor(char* name, char* title, float R, float G, float B, float A)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title, R, G, B, A);
+}
+
 void IPlugin::AddFloat(char* menu, char* name, char* title, float minValue, float maxValue, float value)
 {
 	MenuOptions[menu][name] = Menus[menu]->AddFloat(title, minValue, maxValue, value);
+}
+
+void IPlugin::AddFloat(char* name, char* title, float minValue, float maxValue, float value)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddFloat(title, minValue, maxValue, value);
 }
 
 void IPlugin::AddInteger(char* menu, char* name, char* title, int minValue, int maxValue, int value)
@@ -147,9 +167,19 @@ void IPlugin::AddInteger(char* menu, char* name, char* title, int minValue, int 
 	MenuOptions[menu][name] = Menus[menu]->AddInteger(title, minValue, maxValue, value);
 }
 
+void IPlugin::AddInteger(char* name, char* title, int minValue, int maxValue, int value)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddInteger(title, minValue, maxValue, value);
+}
+
 void IPlugin::AddKey(char* menu, char* name, char* title, int defaultKey)
 {
 	MenuOptions[menu][name] = Menus[menu]->AddKey(title, defaultKey);
+}
+
+void IPlugin::AddKey(char* name, char* title, int defaultKey)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddKey(title, defaultKey);
 }
 
 void IPlugin::AddSelection(char* menu, char* name, char* title, int defaultIdx, std::vector<std::string> const& names)
@@ -157,14 +187,39 @@ void IPlugin::AddSelection(char* menu, char* name, char* title, int defaultIdx, 
 	MenuOptions[menu][name] = Menus[menu]->AddSelection(title, defaultIdx, names);
 }
 
+void IPlugin::AddSelection(char* name, char* title, int defaultIdx, std::vector<std::string> const& names)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddSelection(title, defaultIdx, names);
+}
+
+void IPlugin::UpdateInteger(char* menu, char* name, int value)
+{
+	MenuOptions[menu][name]->UpdateInteger(value);
+}
+
+void IPlugin::UpdateInteger(char* name, int value)
+{
+	MenuOptions["Main"][name]->UpdateInteger(value);
+}
+
 IMenu* IPlugin::GetMenu(char* name)
 {
 	return Menus[name];
 }
 
+IMenu* IPlugin::GetMenu()
+{
+	return Menus["Main"];
+}
+
 IMenuOption* IPlugin::GetMenuOption(char* menu, char* name)
 {
 	return MenuOptions[menu][name];
+}
+
+IMenuOption* IPlugin::GetMenuOption(char* name)
+{
+	return MenuOptions["Main"][name];
 }
 
 void IPlugin::RegisterOrbwalkBeforeAttackEvent(std::function<void(IUnit*)> function)

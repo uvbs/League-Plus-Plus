@@ -25,11 +25,11 @@ void SoUltiimate::Initialize()
 	}
 }
 
-void SoUltiimate::HandleUltimate(IUnit* hero, float recallDuration)
+void SoUltiimate::HandleUltimate(IUnit* hero)
 {
 	if (find(Champions.begin(), Champions.end(), std::string(GEntityList->Player()->ChampionName())) != Champions.end())
 	{
-		if (GDamage->GetSpellDamage(GEntityList->Player(), hero, kSlotR) >= hero->GetHealth() + hero->HPRegenRate() * recallDuration)
+		if (GDamage->GetSpellDamage(GEntityList->Player(), hero, kSlotR) >= hero->GetHealth() + hero->HPRegenRate() * (TeleportTimers[hero->GetNetworkId()][Teleport_Recall].Duration))
 		{
 			auto myPosition = GEntityList->Player()->GetPosition();
 			auto spawnPosition = GExtension->GetSpawnPosition(hero);
@@ -39,7 +39,7 @@ void SoUltiimate::HandleUltimate(IUnit* hero, float recallDuration)
 			int collisionFlags;
 			GPrediction->TestLineOfSight(myPosition, spawnPosition, collisionPosition, collisionFlags);
 			
-			if (!GHero->GetSpell2("R")->GetCollisionFlags() || !(GHero->GetSpell2("R")->GetCollisionFlags() && collisionFlags))
+			if (!GHero->GetSpell2("R")->GetCollisionFlags() || !(GHero->GetSpell2("R")->GetCollisionFlags() & collisionFlags))
 			{
 				auto speed = GHero->GetSpell2("R")->Speed();
 
@@ -55,7 +55,7 @@ void SoUltiimate::HandleUltimate(IUnit* hero, float recallDuration)
 					speed = (1350.f * speed + accelerationDifference * (speed + accelerationRate * accelerationDifference) + difference * 2200.f) / distance;
 				}
 
-				auto time = recallDuration - (distance / speed + GHero->GetSpell2("R")->GetDelay());
+				auto time = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].Duration - (distance / speed + GHero->GetSpell2("R")->GetDelay());
 
 				if (time >= 0)
 				{
@@ -64,16 +64,9 @@ void SoUltiimate::HandleUltimate(IUnit* hero, float recallDuration)
 					teleportStatus.Duration = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].Duration;
 					teleportStatus.StartTime = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].StartTime;
 					teleportStatus.EndTime = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].EndTime;
-					teleportStatus.UltimateTime = GGame->Time() + time;
+					teleportStatus.UltimateTime = teleportStatus.StartTime + time;
 
 					TeleportTimers[hero->GetNetworkId()][Teleport_Recall] = teleportStatus;
-
-					GPluginSDK->DelayFunctionCall(time * 1000, [&, spawnPosition] {
-						if (GHero->GetSpell2("R")->IsReady())
-						{
-							GHero->GetSpell2("R")->CastOnPosition(spawnPosition);
-						}
-					});
 				}
 			}
 		}

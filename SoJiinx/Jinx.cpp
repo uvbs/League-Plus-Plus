@@ -43,20 +43,3 @@ bool Jinx::HasFishbone()
 {
 	return GEntityList->Player()->HasBuff("JinxQ");
 }
-
-float Jinx::GetRealPowPowRange(IUnit* target)
-{
-	return 650.f + GEntityList->Player()->BoundingRadius() + target->BoundingRadius();
-}
-
-void Jinx::FishboneToMinigun(IUnit* target)
-{
-	if (GExtension->GetRealDistance(GEntityList->Player(), target) < GetRealPowPowRange(target) && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() && GExtension->IsComboing() || !target->IsHero() && GExtension->IsFarming())
-	{
-		if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() && GExtension->IsComboing() ||
-			GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth())
-		{
-			GHero->GetSpell("Q")->CastOnPlayer();
-		}
-	}
-}

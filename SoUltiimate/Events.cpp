@@ -1,6 +1,9 @@
 #include "Events.h"
 #include "Plugin.h"
 #include "SoUltiimate.h"
+#include <string>
+#include "Hero.h"
+#include "Extension.h"
 
 void Events::Initialize()
 {
@@ -8,8 +11,6 @@ void Events::Initialize()
 	GPlugin->RegisterTeleportEvent(OnTeleport);
 	GPlugin->RegisterRenderEvent(OnRender);
 }
-
-bool showRecall = false;
 
 void Events::OnGameUpdate()
 {
@@ -19,17 +20,38 @@ void Events::OnGameUpdate()
 	if (GGame->IsChatOpen())
 		return;
 
-	for (auto enemy : GEntityList->GetAllHeros(false, true))
+	if (find(SoUltiimate::Champions.begin(), SoUltiimate::Champions.end(), std::string(GEntityList->Player()->ChampionName())) != SoUltiimate::Champions.end())
 	{
-		if (!enemy->IsDead() && enemy->IsVisible())
+		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
-			SoUltiimate::VisibleTimers[enemy->GetNetworkId()] = GGame->Time();
+			if (!enemy->IsDead())
+			{
+				if (enemy->IsVisible())
+				{
+					SoUltiimate::VisibleTimers[enemy->GetNetworkId()] = GGame->Time();
+				}
+
+				auto teleportStatus = SoUltiimate::TeleportTimers[enemy->GetNetworkId()][Teleport_Recall];
+
+				if (teleportStatus.Status == Teleport_Start && GGame->Time() < teleportStatus.EndTime)
+				{
+					SoUltiimate::HandleUltimate(enemy);
+
+					if (GPlugin->GetMenuOption("BaseUlt")->Enabled() && !GetAsyncKeyState(GPlugin->GetMenuOption("PanicKey")->GetInteger()) && GGame->Time() >= teleportStatus.UltimateTime && teleportStatus.UltimateTime > 0 && GGame->Time() < teleportStatus.UltimateTime + 1)
+					{
+						GHero->GetSpell2("R")->CastOnPosition(GExtension->GetSpawnPosition(enemy));
+					}
+				}
+			}
 		}
 	}
 }
 
 void Events::OnRender()
 {
+	if (!GPlugin->GetMenuOption("RecallTracker")->Enabled())
+		return;
+
 	auto paddingY = 0;
 
 	for (auto enemy : GEntityList->GetAllHeros(false, true))
@@ -61,14 +83,19 @@ void Events::OnRender()
 			break;
 		}
 
+		if (teleportStatus.UltimateTime > 0 && GPlugin->GetMenuOption("BaseUlt")->Enabled())
+		{
+			color = Vec4(255, 0, 0, 255);
+		}
+
 		if (GGame->Time() < teleportStatus.EndTime + 1)
 		{
 			GRender->DrawOutinedBox(Vec2(barX, barY + paddingY), Vec2(barWidth, barHeight), 1.f, Vec4(255, 255, 255, 255));
 			GRender->DrawFilledBox(Vec2(barX + 2, barY + 2 + paddingY), Vec2(width, barHeight - 3), color);
 			GRender->DrawTextW(Vec2(barX + 2 + width, barY + barHeight + 5 + paddingY), color, enemy->ChampionName());
 
-			if (teleportStatus.Status == Teleport_Start && teleportStatus.UltimateTime >= 0.f)
-				GRender->DrawLine(Vec2(barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), barY + paddingY), Vec2(1 + barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), 1 + barY + paddingY + barHeight), Vec4(255, 0, 0, 255));
+			if (teleportStatus.Status == Teleport_Start && teleportStatus.UltimateTime >= 0.f && GPlugin->GetMenuOption("BaseUlt")->Enabled())
+				GRender->DrawLine(Vec2(barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), barY + paddingY), Vec2(barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), barY + paddingY + barHeight), Vec4(255, 255, 255, 255));
 			
 			if (teleportStatus.Status == Teleport_Start)
 				GRender->DrawTextW(Vec2(barX + barWidth + 4, barY + paddingY - 3), Vec4(255, 255, 255, 255), "%.1f", teleportStatus.EndTime - GGame->Time());
@@ -124,7 +151,7 @@ void Events::OnTeleport(OnTeleportArgs* args)
 				break;
 			}
 
-			GRender->NotificationEx(color, 2, false, true, "%s %s %s", args->Source->GetBaseSkinName(), type.c_str(), status.c_str());
+			GRender->NotificationEx(color, 2, GPlugin->GetMenuOption("RecallTracker.Chat")->Enabled(), GPlugin->GetMenuOption("RecallTracker.Notification")->Enabled(), "%s %s %s", args->Source->GetBaseSkinName(), type.c_str(), status.c_str());
 
 			if (args->Status == Teleport_Start)
 			{
@@ -136,9 +163,6 @@ void Events::OnTeleport(OnTeleportArgs* args)
 				teleportStatus.UltimateTime = 0.f;
 
 				SoUltiimate::TeleportTimers[args->Source->GetNetworkId()][static_cast<eTeleportType>(args->Type)] = teleportStatus;
-				
-				if (args->Type == Teleport_Recall)
-					SoUltiimate::HandleUltimate(args->Source, teleportStatus.Duration);
 			}
 			else if (args->Status == Teleport_Abort)
 			{

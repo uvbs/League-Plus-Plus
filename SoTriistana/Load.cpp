@@ -7,9 +7,9 @@
 #include <regex>
 
 char* Author = "SoNiice";
-char* Champion = "Jinx";
-char* Plugin = "SoJiinx";
-int Version = 10;
+char* Champion = "Tristana";
+char* Plugin = "SoTriistana";
+int Version = 1;
 
 PluginSetup(Plugin);
 

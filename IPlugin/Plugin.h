@@ -14,14 +14,25 @@ public:
 	static void AddMenu(char* name, char* title);
 	static void AddMenu(char* name, char* title, char* parentName);
 	static void AddCheckBox(char* menu, char* name, char* title, bool value);
+	static void AddCheckBox(char* name, char* title, bool value);
 	static void AddColor(char* menu, char* name, char* title, DWORD value);
 	static void AddColor(char* menu, char* name, char* title, float R, float G, float B, float A);
+	static void AddColor(char* name, char* title, DWORD value);
+	static void AddColor(char* name, char* title, float R, float G, float B, float A);
 	static void AddFloat(char* menu, char* name, char* title, float minValue, float maxValue, float value);
+	static void AddFloat(char* name, char* title, float minValue, float maxValue, float value);
 	static void AddInteger(char* menu, char* name, char* title, int minValue, int maxValue, int value);
+	static void AddInteger(char* name, char* title, int minValue, int maxValue, int value);
 	static void AddKey(char* menu, char* name, char* title, int defaultKey);
+	static void AddKey(char* name, char* title, int defaultKey);
 	static void AddSelection(char* menu, char* name, char* title, int defaultIdx, std::vector<std::string> const& names);
+	static void AddSelection(char* name, char* title, int defaultIdx, std::vector<std::string> const& names);
+	static void UpdateInteger(char* menu, char* name, int value);
+	static void UpdateInteger(char* name, int value);
 	static IMenu* GetMenu(char* name);
+	static IMenu* GetMenu();
 	static IMenuOption* GetMenuOption(char* menu, char* name);
+	static IMenuOption* GetMenuOption(char* name);
 
 	static void RegisterOrbwalkBeforeAttackEvent(std::function<void(IUnit*)> function);
 	static void RegisterOrbwalkOnAttackEvent(std::function<void(IUnit*, IUnit*)> function);

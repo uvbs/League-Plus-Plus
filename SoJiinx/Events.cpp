@@ -78,23 +78,25 @@ void Events::OnOrbwalkBeforeAttack(IUnit* target)
 
 	if (GHero->GetSpell("Q")->IsReady() && target->IsHero())
 	{
-		Jinx::FishboneToMinigun(target);
+		if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() && GExtension->IsComboing() || !target->IsHero() && GExtension->IsFarming())
+		{
+			if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() && GExtension->IsComboing() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth())
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
+		}
 	}
 
-	if (!GExtension->IsComboing() && target->IsCreep())
+	if (GHero->GetSpell("Q")->IsReady() && !GExtension->IsComboing() && target->IsCreep())
 	{
 		if (GExtension->IsClearing() && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Clear")->GetInteger() && GExtension->CountMinionsInTargetRange(target, 250) + 1 >= GPlugin->GetMenuOption("Q", "Clear.Minions")->GetInteger())
 		{
 
 		}
-		else if (GExtension->GetRealDistance(GEntityList->Player(), target) < Jinx::GetRealPowPowRange(target))
+		else if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525)
 		{
 			GOrbwalking->DisableNextAttack();
-
-			if (GHero->GetSpell("Q")->IsReady())
-			{
-				GHero->GetSpell("Q")->CastOnPlayer();
-			}
+			GHero->GetSpell("Q")->CastOnPlayer();
 		}
 	}
 }

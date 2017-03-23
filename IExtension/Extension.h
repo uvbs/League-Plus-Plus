@@ -7,6 +7,7 @@ public:
 	static void CheckVersion(char* name, int version);
 	static ITexture* GetTexture(char* name);
 	static bool TextureExists(char* name);
+	static int GetDangerLevel(IUnit* hero);
 	static bool IsComboing();
 	static bool IsHarassing();
 	static bool IsClearing();
