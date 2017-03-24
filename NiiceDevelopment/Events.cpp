@@ -23,7 +23,7 @@ void Events::OnGameUpdate()
 	if (!GUtility->IsLeagueWindowFocused())
 		return;
 
-	if (GetAsyncKeyState(VK_LBUTTON) && !GetAsyncKeyState(VK_CONTROL)) 
+	if (GetAsyncKeyState(VK_LBUTTON)) 
 	{
 		if (LastClick <= GGame->TickCount() && ClickCount != 0)
 		{
@@ -48,7 +48,7 @@ void Events::OnGameUpdate()
 
 		for (auto unit : GEntityList->GetAllUnits())
 		{
-			if (!unit->IsHero() && !unit->IsCreep() && !unit->IsJungleCreep() && !unit->IsTurret())
+			if (!unit->IsValidObject())
 				continue;
 
 			if (GExtension->GetDistance(GGame->CursorPosition(), unit->GetPosition()) < 80)
@@ -85,7 +85,7 @@ void Events::OnRender()
 		GRender->DrawTextW(Vec2(worldToScreenMouse.x + 40, worldToScreenMouse.y + 60), Vec4(255, 128, 0, 255), "Right Mouse Button: %s", GetAsyncKeyState(VK_RBUTTON) ? "true" : "false");
 	}
 
-	if (FocusedUnit == nullptr)
+	if (FocusedUnit == nullptr || !FocusedUnit->IsValidObject())
 		return;
 
 	if (GPlugin->GetMenuOption("GUI")->Enabled())
@@ -93,7 +93,7 @@ void Events::OnRender()
 		Background->Draw(GPlugin->GetMenuOption("Position.X")->GetInteger(), GPlugin->GetMenuOption("Position.Y")->GetInteger());
 
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + Background->GetSize().x / 2 - static_cast<std::string>(FocusedUnit->GetObjectName()).length() * 4 / 2, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 22), Vec4(255, 255, 255, 255), FocusedUnit->GetObjectName());
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + Background->GetSize().x / 2 - static_cast<std::string>(FocusedUnit->GetBaseSkinName()).length() * 4 / 2, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 68), Vec4(255, 255, 255, 255), FocusedUnit->GetBaseSkinName());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + Background->GetSize().x / 2 - static_cast<std::string>(FocusedUnit->GetBaseSkinName()).length() * 4 / 2, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 68), Vec4(255, 255, 255, 255), FocusedUnit->GetBaseSkinName());
 
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 100), Vec4(255, 128, 0, 255), "Informations:");
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 120), Vec4(160, 160, 160, 255), "Type:");
@@ -103,21 +103,21 @@ void Events::OnRender()
 
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 200), Vec4(255, 128, 0, 255), "Properties:");
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 220), Vec4(160, 160, 160, 255), "SkinName:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 220), Vec4(255, 255, 255, 255), FocusedUnit->SkinName());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 220), Vec4(255, 255, 255, 255), FocusedUnit->SkinName());
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 240), Vec4(160, 160, 160, 255), "Health:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 240), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetHealth()), static_cast<int>(FocusedUnit->GetMaxHealth()), static_cast<int>(FocusedUnit->HealthPercent()));
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 240), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetHealth()), static_cast<int>(FocusedUnit->GetMaxHealth()), static_cast<int>(FocusedUnit->HealthPercent()));
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 260), Vec4(160, 160, 160, 255), "Mana:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 260), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetMana()), static_cast<int>(FocusedUnit->GetMaxMana()), static_cast<int>(FocusedUnit->ManaPercent()));
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 260), Vec4(255, 255, 255, 255), "%d / %d (%d%%)", static_cast<int>(FocusedUnit->GetMana()), static_cast<int>(FocusedUnit->GetMaxMana()), static_cast<int>(FocusedUnit->ManaPercent()));
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 280), Vec4(160, 160, 160, 255), "BoundingRadius:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 280), Vec4(255, 255, 255, 255), std::to_string(static_cast<int>(FocusedUnit->BoundingRadius())).c_str());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 280), Vec4(255, 255, 255, 255), std::to_string(static_cast<int>(FocusedUnit->BoundingRadius())).c_str());
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 300), Vec4(160, 160, 160, 255), "IsValidObject:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 300), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsValidObject()).c_str());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 300), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsValidObject()).c_str());
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 320), Vec4(160, 160, 160, 255), "IsVisible:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 320), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsVisible()).c_str());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 320), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsVisible()).c_str());
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 340), Vec4(160, 160, 160, 255), "IsTargetable:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 340), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsTargetable()).c_str());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 340), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsTargetable()).c_str());
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 360), Vec4(160, 160, 160, 255), "IsDead:");
-		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 360), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsDead()).c_str());
+		//GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 150, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 360), Vec4(255, 255, 255, 255), std::to_string(FocusedUnit->IsDead()).c_str());
 
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + 20, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 420), Vec4(255, 128, 0, 255), "Buffs:");
 		std::vector<void*> buffs;
@@ -134,7 +134,8 @@ void Events::OnRender()
 		}
 
 		GRender->DrawTextW(Vec2(GPlugin->GetMenuOption("Position.X")->GetInteger() + Background->GetSize().x - 185, GPlugin->GetMenuOption("Position.Y")->GetInteger() + 675), Vec4(255, 128, 0, 255), "SoNiice's dev helper for L++");
-	}
 
-	GRender->DrawCircle(FocusedUnit->GetPosition(), FocusedUnit->BoundingRadius(), Vec4(153, 0, 0, 255));
+
+		//GRender->DrawCircle(FocusedUnit->GetPosition(), FocusedUnit->BoundingRadius(), Vec4(153, 0, 0, 255));
+	}
 }

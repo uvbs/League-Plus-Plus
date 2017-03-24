@@ -208,7 +208,8 @@ void Modes::KillSteal()
 		{
 			if (enemy != nullptr && !enemy->IsDead() && GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("W")->Range()) && !enemy->IsInvulnerable() && enemy->GetHealth() <= GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotW))
 			{
-				GHero->GetSpell2("W")->CastOnTarget(enemy, GPlugin->GetMenuOption("W", "Hitchance")->GetInteger() + 2);
+				if (GExtension->GetDistance(GEntityList->Player(), enemy) >= GPlugin->GetMenuOption("W", "Combo.Range")->GetInteger())
+					GHero->GetSpell2("W")->CastOnTarget(enemy, GPlugin->GetMenuOption("W", "Hitchance")->GetInteger() + 2);
 			}
 		}
 	}
