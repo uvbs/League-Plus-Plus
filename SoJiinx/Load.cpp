@@ -9,7 +9,7 @@
 char* Author = "SoNiice";
 char* Champion = "Jinx";
 char* Plugin = "SoJiinx";
-int Version = 11;
+int Version = 12;
 
 PluginSetup(Plugin);
 
