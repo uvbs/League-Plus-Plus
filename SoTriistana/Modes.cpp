@@ -85,7 +85,7 @@ void Modes::Always()
 {
 	if (GetAsyncKeyState(GPlugin->GetMenuInteger("R", "Key")) && GHero->GetSpell2("R")->IsReady())
 	{
-		auto target = GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("R")->Range());
+		auto target = GTargetSelector->FindTarget(static_cast<eTargetPriority>(GPlugin->GetMenuInteger("R", "Semi.Mode")), PhysicalDamage, GHero->GetSpell2("R")->Range());
 
 		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("R")->Range()))
 		{

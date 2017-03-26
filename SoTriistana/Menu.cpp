@@ -39,6 +39,7 @@ void Menu::Initialize()
 	GPlugin->AddMenu("R", "SoTriistana: R Settings");
 	{
 		GPlugin->AddKey("R", "Key", "Semi Manual Closest", 'T');
+		GPlugin->AddSelection("R", "Semi.Mode", "^-> Target Selection", 1, { "QuickestKill", "ClosestPriority", "ClosestToCursorPriority", "LowestHealthPriority", "MostStacks", "MostAD", "MostAP", "LeastAttacks", "LeastCasts" });
 		GPlugin->AddCheckBox("R", "Finisher", "Use R to finish", true);
 		GPlugin->AddCheckBox("R", "E.Overkill", "^-> Dont use R if E explosion is enough", true);
 	}
