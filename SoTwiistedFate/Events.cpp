@@ -33,12 +33,12 @@ void Events::OnGameUpdate()
 
 void Events::OnRender()
 {
-	if (GPlugin->GetMenuOption("Drawings", "Q")->Enabled() && GHero->GetSpell2("Q")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "Q") && (GHero->GetSpell2("Q")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("Q")->Range());
 	}
 
-	if (GPlugin->GetMenuOption("Drawings", "R")->Enabled() && GHero->GetSpell("R")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "R") && (GHero->GetSpell("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell("R")->GetSpellRange());
 	}
@@ -51,7 +51,7 @@ void Events::OnSpellCast(CastedSpell const& spell)
 
 	TwistedFate::CardSelector->OnSpellCast(spell);
 
-	if (std::string(spell.Name_) == "Gate" && GPlugin->GetMenuOption("W", "R.Yellow")->Enabled())
+	if (std::string(spell.Name_) == "Gate" && GPlugin->GetMenuBoolean("W", "R.Yellow"))
 	{
 		TwistedFate::CardSelector->StartSelecting(TwistedFate::CardSelector->kCardYellow);
 	}

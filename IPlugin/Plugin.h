@@ -33,6 +33,14 @@ public:
 	static IMenu* GetMenu();
 	static IMenuOption* GetMenuOption(char* menu, char* name);
 	static IMenuOption* GetMenuOption(char* name);
+	static bool GetMenuBoolean(char* menu, char* name);
+	static bool GetMenuBoolean(char* name);
+	static Vec4 GetMenuColor(char* menu, char* name);
+	static Vec4 GetMenuColor(char* name);
+	static float GetMenuFloat(char* menu, char* name);
+	static float GetMenuFloat(char* name);
+	static int GetMenuInteger(char* menu, char* name);
+	static int GetMenuInteger(char* name);
 
 	static void RegisterOrbwalkBeforeAttackEvent(std::function<void(IUnit*)> function);
 	static void RegisterOrbwalkOnAttackEvent(std::function<void(IUnit*, IUnit*)> function);
@@ -71,6 +79,8 @@ public:
 	static void RegisterTeleportEvent(std::function<void(OnTeleportArgs* args)> function);
 
 private:
+	static float LogoDuration;
+	static ITexture* Logo;
 	static char* Author;
 	static char* Name;
 	static int Version;

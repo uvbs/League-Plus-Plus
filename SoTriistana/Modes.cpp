@@ -2,11 +2,10 @@
 #include "Plugin.h"
 #include "Hero.h"
 #include "SoTriistana.h"
-#include "Extension.h"
 
 void Modes::Combo()
 {
-	if (GPlugin->GetMenuOption("E", "Focus")->Enabled())
+	if (GPlugin->GetMenuBoolean("E", "Focus"))
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -24,13 +23,13 @@ void Modes::Combo()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("Q", "Combo")->Enabled() && GHero->GetSpell("Q")->IsReady())
+	if (GPlugin->GetMenuBoolean("Q", "Combo") && GHero->GetSpell("Q")->IsReady())
 	{
 		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GEntityList->Player()->AttackRange());
 
 		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GEntityList->Player()->AttackRange()))
 		{
-			if (GPlugin->GetMenuOption("Q", "E.Check")->Enabled())
+			if (GPlugin->GetMenuBoolean("Q", "E.Check"))
 			{
 				for (auto enemy : GEntityList->GetAllHeros(false, true))
 				{
@@ -54,7 +53,7 @@ void Modes::Combo()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("E", "Combo")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "Combo") && GHero->GetSpell2("E")->IsReady())
 	{
 		auto ePriority = 0;
 		IUnit* target = nullptr;
@@ -67,13 +66,13 @@ void Modes::Combo()
 			if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("E")->Range()))
 				continue;
 
-			if (!GPlugin->GetMenuOption("E.Whitelist", const_cast<char*>(enemy->ChampionName()))->Enabled())
+			if (!GPlugin->GetMenuBoolean("E.Whitelist", const_cast<char*>(enemy->ChampionName())))
 				continue;
 
-			if (GPlugin->GetMenuOption("E.Priority", const_cast<char*>(enemy->ChampionName()))->GetInteger() < ePriority)
+			if (GPlugin->GetMenuInteger("E.Priority", const_cast<char*>(enemy->ChampionName())) < ePriority)
 				continue;
 
-			ePriority = GPlugin->GetMenuOption("E.Priority", const_cast<char*>(enemy->ChampionName()))->GetInteger();
+			ePriority = GPlugin->GetMenuInteger("E.Priority", const_cast<char*>(enemy->ChampionName()));
 			target = enemy;
 		}
 
@@ -82,9 +81,22 @@ void Modes::Combo()
 	}
 }
 
+void Modes::Always()
+{
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("R", "Key")) && GHero->GetSpell2("R")->IsReady())
+	{
+		auto target = GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("R")->Range());
+
+		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("R")->Range()))
+		{
+			GHero->GetSpell2("R")->CastOnUnit(target);
+		}
+	}
+}
+
 void Modes::KillSteal()
 {
-	if (GPlugin->GetMenuOption("R", "Finisher")->Enabled() && GHero->GetSpell2("R")->IsReady())
+	if (GPlugin->GetMenuBoolean("R", "Finisher") && GHero->GetSpell2("R")->IsReady())
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -94,7 +106,7 @@ void Modes::KillSteal()
 			if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("R")->Range()))
 				continue;
 
-			if (GPlugin->GetMenuOption("R", "E.Overkill")->Enabled() && SoTriistana::GetChargedDamage(enemy) > enemy->GetHealth())
+			if (GPlugin->GetMenuBoolean("R", "E.Overkill") && SoTriistana::GetChargedDamage(enemy) > enemy->GetHealth())
 				continue;
 
 			if (GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotR) + GDamage->GetAutoAttackDamage(GEntityList->Player(), enemy, false) > enemy->GetHealth())

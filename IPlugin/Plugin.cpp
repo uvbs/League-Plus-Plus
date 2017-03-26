@@ -1,7 +1,10 @@
 #include "Plugin.h"
+#include "Extension.h"
 
 IPlugin* GPlugin;
 
+float IPlugin::LogoDuration;
+ITexture* IPlugin::Logo;
 char* IPlugin::Author;
 char* IPlugin::Name;
 int IPlugin::Version;
@@ -46,6 +49,8 @@ std::function<void(OnTeleportArgs* args)> IPlugin::TeleportEvent;
 
 IPlugin::IPlugin(char* author, char* name, int version)
 {
+	LogoDuration = GGame->Time() + 3;
+	Logo = GExtension->GetTexture("soniice_sonic.png");
 	Author = author;
 	Name = name;
 	Version = version;
@@ -220,6 +225,52 @@ IMenuOption* IPlugin::GetMenuOption(char* menu, char* name)
 IMenuOption* IPlugin::GetMenuOption(char* name)
 {
 	return MenuOptions["Main"][name];
+}
+
+bool IPlugin::GetMenuBoolean(char* menu, char* name)
+{
+	return MenuOptions[menu][name]->Enabled();
+}
+
+bool IPlugin::GetMenuBoolean(char* name)
+{
+	return MenuOptions["Main"][name]->Enabled();
+}
+
+Vec4 IPlugin::GetMenuColor(char* menu, char* name)
+{
+	Vec4 color;
+	MenuOptions[menu][name]->GetColor(&color);
+
+	return color;
+}
+
+Vec4 IPlugin::GetMenuColor(char* name)
+{
+	Vec4 color;
+	MenuOptions["Main"][name]->GetColor(&color);
+
+	return color;
+}
+
+float IPlugin::GetMenuFloat(char* menu, char* name)
+{
+	return MenuOptions[menu][name]->GetFloat();
+}
+
+float IPlugin::GetMenuFloat(char* name)
+{
+	return MenuOptions["Main"][name]->GetFloat();
+}
+
+int IPlugin::GetMenuInteger(char* menu, char* name)
+{
+	return MenuOptions[menu][name]->GetInteger();
+}
+
+int IPlugin::GetMenuInteger(char* name)
+{
+	return MenuOptions["Main"][name]->GetInteger();
 }
 
 void IPlugin::RegisterOrbwalkBeforeAttackEvent(std::function<void(IUnit*)> function)
@@ -437,6 +488,11 @@ PLUGIN_EVENTD(void) IPlugin::OnGameUpdate()
 
 PLUGIN_EVENTD(void) IPlugin::OnRender()
 {
+	if (LogoDuration >= GGame->Time())
+	{
+		Logo->Draw(GRender->ScreenSize().x - Logo->GetSize().x, GRender->ScreenSize().y - Logo->GetSize().y);
+	}
+
 	if (RenderEvent != nullptr)
 		RenderEvent();
 }

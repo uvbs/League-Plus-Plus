@@ -25,7 +25,7 @@ void Events::OnGameUpdate()
 		return;
 
 	auto R = GHero->GetSpell2("R");
-	R->SetOverrideRange(GPlugin->GetMenuOption("R", "Range")->GetInteger());
+	R->SetOverrideRange(GPlugin->GetMenuInteger("R", "Range"));
 	GHero->AddSpell("R", R);
 
 	if (GExtension->IsComboing())
@@ -55,17 +55,17 @@ void Events::OnGameUpdate()
 
 void Events::OnRender()
 {
-	if (GPlugin->GetMenuOption("Drawings", "W")->Enabled() && GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "W") && (GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("W")->Range());
 	}
 
-	if (GPlugin->GetMenuOption("Drawings", "E")->Enabled() && GHero->GetSpell2("E")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "E") && (GHero->GetSpell2("E")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("E")->Range());
 	}
 
-	if (GPlugin->GetMenuOption("Drawings", "R")->Enabled() && GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "R") && (GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("R")->Range());
 	}
@@ -78,9 +78,9 @@ void Events::OnOrbwalkBeforeAttack(IUnit* target)
 
 	if (GHero->GetSpell("Q")->IsReady() && target->IsHero())
 	{
-		if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuOption("Q", "Combo.Enemies")->GetInteger() && GExtension->IsComboing() || !target->IsHero() && GExtension->IsFarming())
+		if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuInteger("Q", "Combo.Enemies") && GExtension->IsComboing() || !target->IsHero() && GExtension->IsFarming())
 		{
-			if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "Q.Combo")->GetInteger() && GExtension->IsComboing() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuOption("Q", "Mana.Ignore")->GetInteger() < target->GetHealth())
+			if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "Q.Combo") && GExtension->IsComboing() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") < target->GetHealth())
 			{
 				GHero->GetSpell("Q")->CastOnPlayer();
 			}
@@ -89,7 +89,7 @@ void Events::OnOrbwalkBeforeAttack(IUnit* target)
 
 	if (GHero->GetSpell("Q")->IsReady() && !GExtension->IsComboing() && target->IsCreep())
 	{
-		if (GExtension->IsClearing() && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuOption("Mana", "Q.Clear")->GetInteger() && GExtension->CountMinionsInTargetRange(target, 250) + 1 >= GPlugin->GetMenuOption("Q", "Clear.Minions")->GetInteger())
+		if (GExtension->IsClearing() && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Mana", "Q.Clear") && GExtension->CountMinionsInTargetRange(target, 250) + 1 >= GPlugin->GetMenuInteger("Q", "Clear.Minions"))
 		{
 
 		}
@@ -106,10 +106,10 @@ void Events::OnGapCloser(GapCloserSpell const& spell)
 	if (!GHero->GetSpell2("E")->IsReady())
 		return;
 
-	if (!GPlugin->GetMenuOption("E", "OnGapCloser")->Enabled())
+	if (!GPlugin->GetMenuBoolean("E", "OnGapCloser"))
 		return;
 
-	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "E.Auto")->GetInteger())
+	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "E.Auto"))
 		return;
 
 	if (!GEntityList->Player()->IsValidTarget(spell.Sender, GHero->GetSpell2("E")->Range()))
@@ -129,10 +129,10 @@ void Events::OnSpellCast(CastedSpell const& spell)
 	if (!GHero->GetSpell2("E")->IsReady())
 		return;
 
-	if (!GPlugin->GetMenuOption("E", "OnSpecialSpell")->Enabled())
+	if (!GPlugin->GetMenuBoolean("E", "OnSpecialSpell"))
 		return;
 
-	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuOption("Mana", "E.Auto")->GetInteger())
+	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "E.Auto"))
 		return;
 
 	if (!GEntityList->Player()->IsValidTarget(spell.Caster_, GHero->GetSpell2("E")->Range()))

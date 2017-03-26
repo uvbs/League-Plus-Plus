@@ -1,7 +1,6 @@
 #include "Events.h"
 #include "Plugin.h"
 #include "SoUltiimate.h"
-#include <string>
 #include "Hero.h"
 #include "Extension.h"
 
@@ -37,7 +36,7 @@ void Events::OnGameUpdate()
 				{
 					SoUltiimate::HandleUltimate(enemy);
 
-					if (GPlugin->GetMenuOption("BaseUlt")->Enabled() && !GetAsyncKeyState(GPlugin->GetMenuOption("PanicKey")->GetInteger()) && GGame->Time() >= teleportStatus.UltimateTime && teleportStatus.UltimateTime > 0 && GGame->Time() < teleportStatus.UltimateTime + 1)
+					if (GPlugin->GetMenuBoolean("BaseUlt") && !GetAsyncKeyState(GPlugin->GetMenuInteger("PanicKey")) && GGame->Time() >= teleportStatus.UltimateTime && teleportStatus.UltimateTime > 0 && GGame->Time() < teleportStatus.UltimateTime + 1)
 					{
 						GHero->GetSpell2("R")->CastOnPosition(GExtension->GetSpawnPosition(enemy));
 					}
@@ -49,7 +48,7 @@ void Events::OnGameUpdate()
 
 void Events::OnRender()
 {
-	if (!GPlugin->GetMenuOption("RecallTracker")->Enabled())
+	if (!GPlugin->GetMenuBoolean("RecallTracker"))
 		return;
 
 	auto paddingY = 0;
@@ -83,7 +82,7 @@ void Events::OnRender()
 			break;
 		}
 
-		if (teleportStatus.UltimateTime > 0 && GPlugin->GetMenuOption("BaseUlt")->Enabled())
+		if (teleportStatus.UltimateTime > 0 && GPlugin->GetMenuBoolean("BaseUlt"))
 		{
 			color = Vec4(255, 0, 0, 255);
 		}
@@ -94,7 +93,7 @@ void Events::OnRender()
 			GRender->DrawFilledBox(Vec2(barX + 2, barY + 2 + paddingY), Vec2(width, barHeight - 3), color);
 			GRender->DrawTextW(Vec2(barX + 2 + width, barY + barHeight + 5 + paddingY), color, enemy->ChampionName());
 
-			if (teleportStatus.Status == Teleport_Start && teleportStatus.UltimateTime >= 0.f && GPlugin->GetMenuOption("BaseUlt")->Enabled())
+			if (teleportStatus.Status == Teleport_Start && teleportStatus.UltimateTime >= 0.f && GPlugin->GetMenuBoolean("BaseUlt"))
 				GRender->DrawLine(Vec2(barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), barY + paddingY), Vec2(barX + (barWidth) / teleportStatus.Duration * (teleportStatus.EndTime - teleportStatus.UltimateTime), barY + paddingY + barHeight), Vec4(255, 255, 255, 255));
 			
 			if (teleportStatus.Status == Teleport_Start)
@@ -151,7 +150,7 @@ void Events::OnTeleport(OnTeleportArgs* args)
 				break;
 			}
 
-			GRender->NotificationEx(color, 2, GPlugin->GetMenuOption("RecallTracker.Chat")->Enabled(), GPlugin->GetMenuOption("RecallTracker.Notification")->Enabled(), "%s %s %s", args->Source->GetBaseSkinName(), type.c_str(), status.c_str());
+			GRender->NotificationEx(color, 2, GPlugin->GetMenuBoolean("RecallTracker.Chat"), GPlugin->GetMenuBoolean("RecallTracker.Notification"), "%s %s %s", args->Source->GetBaseSkinName(), type.c_str(), status.c_str());
 
 			if (args->Status == Teleport_Start)
 			{

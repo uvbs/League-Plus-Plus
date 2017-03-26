@@ -55,7 +55,7 @@ void CardSelector::OnSpellCast(CastedSpell const& spell)
 	{
 		Status = kSelecting;
 
-		if (GPlugin->GetMenuOption("W", "AutoAttack")->Enabled())
+		if (GPlugin->GetMenuBoolean("W", "AutoAttack"))
 		{
 			GOrbwalking->SetAttacksAllowed(false);
 		}
@@ -65,7 +65,7 @@ void CardSelector::OnSpellCast(CastedSpell const& spell)
 	{
 		Status = kSelected;
 
-		if (GPlugin->GetMenuOption("W", "AutoAttack")->Enabled())
+		if (GPlugin->GetMenuBoolean("W", "AutoAttack"))
 		{
 			GOrbwalking->SetAttacksAllowed(true);
 		}

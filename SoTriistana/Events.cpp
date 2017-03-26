@@ -32,22 +32,23 @@ void Events::OnGameUpdate()
 		Modes::Combo();
 	}
 
+	Modes::Always();
 	Modes::KillSteal();
 }
 
 void Events::OnRender()
 {
-	if (GPlugin->GetMenuOption("Drawings", "W")->Enabled() && GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "W") && (GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("W")->Range());
 	}
 
-	if (GPlugin->GetMenuOption("Drawings", "E")->Enabled() && GHero->GetSpell2("E")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "E") && (GHero->GetSpell2("E")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("E")->Range());
 	}
 
-	if (GPlugin->GetMenuOption("Drawings", "R")->Enabled() && GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuOption("Drawings", "Ready")->Enabled())
+	if (GPlugin->GetMenuBoolean("Drawings", "R") && (GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("R")->Range());
 	}

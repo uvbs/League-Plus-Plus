@@ -3,7 +3,7 @@
 
 void Menu::Initialize()
 {
-	GPlugin->AddMenu("Drawings", "Drawings");
+	GPlugin->AddMenu("Drawings", "NiiceAatrox:: Drawings");
 	{
 		GPlugin->AddCheckBox("Drawings", "Q", "Draw Q", true);
 		GPlugin->AddCheckBox("Drawings", "E", "Draw E", true);
@@ -11,7 +11,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Drawings", "Ready", "Draw only if spell is ready", true);
 	}
 
-	GPlugin->AddMenu("Q", "Q Settings");
+	GPlugin->AddMenu("Q", "NiiceAatrox:: Q Settings");
 	{
 		GPlugin->AddCheckBox("Q", "Combo", "Combo Q", true);
 		GPlugin->AddCheckBox("Q", "Clear", "Clear Q", false);
@@ -20,7 +20,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Q", "Flee", "Flee Q", true);
 	}
 
-	GPlugin->AddMenu("W", "W Settings");
+	GPlugin->AddMenu("W", "NiiceAatrox:: W Settings");
 	{
 		GPlugin->AddCheckBox("W", "Combo", "Combo W", true);
 		GPlugin->AddInteger("W", "Combo.Heal", "^-> Switch to heal if health is under {x}%", 0, 100, 50);
@@ -30,7 +30,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("W", "Jungle.Heal", "^-> Switch to heal if health is under {x}%", 0, 100, 75);
 	}
 
-	GPlugin->AddMenu("E", "E Settings");
+	GPlugin->AddMenu("E", "NiiceAatrox:: E Settings");
 	{
 		GPlugin->AddCheckBox("E", "Combo", "Combo E", true);
 		GPlugin->AddCheckBox("E", "Harass", "Harass E", true);
@@ -40,14 +40,14 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("E", "Flee", "Flee E", true);
 	}
 
-	GPlugin->AddMenu("R", "R Settings");
+	GPlugin->AddMenu("R", "NiiceAatrox:: R Settings");
 	{
 		GPlugin->AddCheckBox("R", "Combo", "Combo R", true);
 		GPlugin->AddInteger("R", "Combo.Health", "^-> If enemy health is under {x}%", 0, 100, 70);
 		GPlugin->AddInteger("R", "Combo.Enemies", "^-> Or more than {x} enemies in range", 1, 5, 2);
 	}
 
-	GPlugin->AddMenu("Keys", "Key Settings");
+	GPlugin->AddMenu("Keys", "NiiceAatrox:: Key Settings");
 	{
 		GPlugin->AddKey("Keys", "Flee", "Flee Key", 'G');
 	}

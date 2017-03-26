@@ -9,7 +9,7 @@ void Modes::Combo()
 	{
 		auto target = GTargetSelector->FindTarget(QuickestKill, SpellDamage, GEntityList->Player()->AttackRange() + 100);
 
-		if (GEntityList->Player()->IsValidTarget(target, GEntityList->Player()->AttackRange() + 100))
+		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GEntityList->Player()->AttackRange() + 100))
 		{
 			TwistedFate::CardSelector->StartSelecting(TwistedFate::CardSelector->kCardYellow);
 		}
@@ -18,22 +18,22 @@ void Modes::Combo()
 
 void Modes::Always()
 {
-	if (GetAsyncKeyState(GPlugin->GetMenuOption("W", "Key.Yellow")->GetInteger()))
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Yellow")))
 	{
 		TwistedFate::SelectCard(TwistedFate::CardSelector->kCardYellow);
 	}
 
-	if (GetAsyncKeyState(GPlugin->GetMenuOption("W", "Key.Blue")->GetInteger()))
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Blue")))
 	{
 		TwistedFate::SelectCard(TwistedFate::CardSelector->kCardBlue);
 	}
 
-	if (GetAsyncKeyState(GPlugin->GetMenuOption("W", "Key.Red")->GetInteger()))
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Red")))
 	{
 		TwistedFate::SelectCard(TwistedFate::CardSelector->kCardRed);
 	}
 
-	if (GPlugin->GetMenuOption("Q", "Immobile")->Enabled())
+	if (GPlugin->GetMenuBoolean("Q", "Immobile"))
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -42,7 +42,7 @@ void Modes::Always()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("Q", "Dashing")->Enabled())
+	if (GPlugin->GetMenuBoolean("Q", "Dashing"))
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -51,7 +51,7 @@ void Modes::Always()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("R", "Ping")->Enabled() && GHero->GetSpell("R")->IsReady())
+	if (GPlugin->GetMenuBoolean("R", "Ping") && GHero->GetSpell("R")->IsReady())
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -69,8 +69,13 @@ void Modes::Always()
 		}
 	}
 
-	if (GetAsyncKeyState(GPlugin->GetMenuOption("Q", "Key")->GetInteger()) && GHero->GetSpell2("Q")->IsReady())
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("Q", "Key")) && GHero->GetSpell2("Q")->IsReady())
 	{
-		GHero->GetSpell2("Q")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range()), kHitChanceMedium);
+		auto target = GTargetSelector->FindTarget(QuickestKill, SpellDamage, GHero->GetSpell2("Q")->Range());
+
+		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("Q")->Range()))
+		{
+			GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceHigh);
+		}
 	}
 }

@@ -69,6 +69,17 @@ void SoUltiimate::HandleUltimate(IUnit* hero)
 					TeleportTimers[hero->GetNetworkId()][Teleport_Recall] = teleportStatus;
 				}
 			}
+			else
+			{
+				auto teleportStatus = TeleportStatus();
+				teleportStatus.Status = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].Status;
+				teleportStatus.Duration = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].Duration;
+				teleportStatus.StartTime = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].StartTime;
+				teleportStatus.EndTime = TeleportTimers[hero->GetNetworkId()][Teleport_Recall].EndTime;
+				teleportStatus.UltimateTime = 0.f;
+
+				TeleportTimers[hero->GetNetworkId()][Teleport_Recall] = teleportStatus;
+			}
 		}
 	}
 }

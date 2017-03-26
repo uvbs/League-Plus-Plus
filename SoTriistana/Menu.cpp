@@ -4,7 +4,7 @@
 
 void Menu::Initialize()
 {
-	GPlugin->AddMenu("Drawings", "Drawings");
+	GPlugin->AddMenu("Drawings", "SoTriistana: Drawings");
 	{
 		GPlugin->AddCheckBox("Drawings", "W", "Draw W", false);
 		GPlugin->AddCheckBox("Drawings", "E", "Draw E", true);
@@ -12,19 +12,19 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Drawings", "Ready", "Draw only if spell is ready", true);
 	}
 
-	GPlugin->AddMenu("Q", "Q Settings");
+	GPlugin->AddMenu("Q", "SoTriistana: Q Settings");
 	{
 		GPlugin->AddCheckBox("Q", "Combo", "Combo Q", true);
 		GPlugin->AddCheckBox("Q", "E.Check", "^- Only use when E target is in range", true);
 	}
 
-	GPlugin->AddMenu("E", "E Settings");
+	GPlugin->AddMenu("E", "SoTriistana: E Settings");
 	{
 		GPlugin->AddCheckBox("E", "Focus", "Focus E target", false);
 		GPlugin->AddCheckBox("E", "Combo", "Combo E", true);
 
-		GPlugin->AddMenu("E.Whitelist", "Whitelist", "E");
-		GPlugin->AddMenu("E.Priority", "Priority", "E");
+		GPlugin->AddMenu("E.Whitelist", "SoTriistana: E Whitelist", "E");
+		GPlugin->AddMenu("E.Priority", "SoTriistana: E Priority", "E");
 		{
 			for (auto enemy : GEntityList->GetAllHeros(false, true))
 			{
@@ -36,8 +36,9 @@ void Menu::Initialize()
 		}
 	}
 
-	GPlugin->AddMenu("R", "R Settings");
+	GPlugin->AddMenu("R", "SoTriistana: R Settings");
 	{
+		GPlugin->AddKey("R", "Key", "Semi Manual Closest", 'T');
 		GPlugin->AddCheckBox("R", "Finisher", "Use R to finish", true);
 		GPlugin->AddCheckBox("R", "E.Overkill", "^-> Dont use R if E explosion is enough", true);
 	}

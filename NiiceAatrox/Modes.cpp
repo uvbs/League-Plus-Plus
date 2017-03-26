@@ -4,29 +4,29 @@
 
 void Modes::Combo()
 {
-	if (GPlugin->GetMenuOption("Q", "Combo")->Enabled() && GHero->GetSpell2("Q")->IsReady())
+	if (GPlugin->GetMenuBoolean("Q", "Combo") && GHero->GetSpell2("Q")->IsReady())
 	{
 		GHero->GetSpell2("Q")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range()), kHitChanceHigh);
 	}
 
-	if (GPlugin->GetMenuOption("W", "Combo")->Enabled() && GHero->GetSpell("W")->IsReady())
+	if (GPlugin->GetMenuBoolean("W", "Combo") && GHero->GetSpell("W")->IsReady())
 	{
-		if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuOption("W", "Combo.Heal")->GetInteger())
+		if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuInteger("W", "Combo.Heal"))
 		{
 			GHero->GetSpell("W")->CastOnPlayer();
 		}
-		else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuOption("W", "Combo.Heal")->GetInteger())
+		else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuInteger("W", "Combo.Heal"))
 		{
 			GHero->GetSpell("W")->CastOnPlayer();
 		}
 	}
 
-	if (GPlugin->GetMenuOption("E", "Combo")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "Combo") && GHero->GetSpell2("E")->IsReady())
 	{
 		GHero->GetSpell2("E")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("E")->Range()), kHitChanceHigh);
 	}
 
-	if (GPlugin->GetMenuOption("R", "Combo")->Enabled() && GHero->GetSpell("R")->IsReady())
+	if (GPlugin->GetMenuBoolean("R", "Combo") && GHero->GetSpell("R")->IsReady())
 	{
 		auto enemies = 0;
 
@@ -38,7 +38,7 @@ void Modes::Combo()
 			if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell("R")->GetSpellRange()))
 				continue;
 
-			if (enemy->HealthPercent() <= GPlugin->GetMenuOption("R", "Combo.Health")->GetInteger())
+			if (enemy->HealthPercent() <= GPlugin->GetMenuInteger("R", "Combo.Health"))
 			{
 				GHero->GetSpell("R")->CastOnPlayer();
 				break;
@@ -47,7 +47,7 @@ void Modes::Combo()
 			enemies++;
 		}
 
-		if (enemies >= GPlugin->GetMenuOption("R", "Combo.Enemies")->GetInteger())
+		if (enemies >= GPlugin->GetMenuInteger("R", "Combo.Enemies"))
 		{
 			GHero->GetSpell("R")->CastOnPlayer();
 		}
@@ -56,7 +56,7 @@ void Modes::Combo()
 
 void Modes::Clear()
 {
-	if (GPlugin->GetMenuOption("Q", "Clear")->Enabled() && GHero->GetSpell2("Q")->IsReady())
+	if (GPlugin->GetMenuBoolean("Q", "Clear") && GHero->GetSpell2("Q")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, true, false))
 		{
@@ -71,7 +71,7 @@ void Modes::Clear()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("W", "Clear")->Enabled() && GHero->GetSpell("W")->IsReady())
+	if (GPlugin->GetMenuBoolean("W", "Clear") && GHero->GetSpell("W")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, true, false))
 		{
@@ -81,11 +81,11 @@ void Modes::Clear()
 			if (!GEntityList->Player()->IsValidTarget(minion, GEntityList->Player()->AttackRange()))
 				continue;
 
-			if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuOption("W", "Clear.Heal")->GetInteger())
+			if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuInteger("W", "Clear.Heal"))
 			{
 				GHero->GetSpell("W")->CastOnPlayer();
 			}
-			else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuOption("W", "Clear.Heal")->GetInteger())
+			else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuInteger("W", "Clear.Heal"))
 			{
 				GHero->GetSpell("W")->CastOnPlayer();
 			}
@@ -93,7 +93,7 @@ void Modes::Clear()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("E", "Clear")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "Clear") && GHero->GetSpell2("E")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, true, false))
 		{
@@ -111,7 +111,7 @@ void Modes::Clear()
 
 void Modes::Jungle()
 {
-	if (GPlugin->GetMenuOption("Q", "Jungle")->Enabled() && GHero->GetSpell2("Q")->IsReady())
+	if (GPlugin->GetMenuBoolean("Q", "Jungle") && GHero->GetSpell2("Q")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, false, true))
 		{
@@ -126,7 +126,7 @@ void Modes::Jungle()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("W", "Jungle")->Enabled() && GHero->GetSpell("W")->IsReady())
+	if (GPlugin->GetMenuBoolean("W", "Jungle") && GHero->GetSpell("W")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, false, true))
 		{
@@ -136,11 +136,11 @@ void Modes::Jungle()
 			if (!GEntityList->Player()->IsValidTarget(minion, GEntityList->Player()->AttackRange()))
 				continue;
 
-			if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuOption("W", "Jungle.Heal")->GetInteger())
+			if (GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() <= GPlugin->GetMenuInteger("W", "Jungle.Heal"))
 			{
 				GHero->GetSpell("W")->CastOnPlayer();
 			}
-			else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuOption("W", "Jungle.Heal")->GetInteger())
+			else if (!GEntityList->Player()->HasBuff("AatroxWPower") && GEntityList->Player()->HealthPercent() >  GPlugin->GetMenuInteger("W", "Jungle.Heal"))
 			{
 				GHero->GetSpell("W")->CastOnPlayer();
 			}
@@ -148,7 +148,7 @@ void Modes::Jungle()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("E", "Jungle")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "Jungle") && GHero->GetSpell2("E")->IsReady())
 	{
 		for (auto minion : GEntityList->GetAllMinions(false, false, true))
 		{
@@ -166,7 +166,7 @@ void Modes::Jungle()
 
 void Modes::Harass()
 {
-	if (GPlugin->GetMenuOption("E", "Harass")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "Harass") && GHero->GetSpell2("E")->IsReady())
 	{
 		GHero->GetSpell2("E")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("E")->Range()), kHitChanceMedium);
 	}
@@ -174,16 +174,16 @@ void Modes::Harass()
 
 void Modes::Flee()
 {
-	if (GetAsyncKeyState(GPlugin->GetMenuOption("Keys", "Flee")->GetInteger()))
+	if (GetAsyncKeyState(GPlugin->GetMenuInteger("Keys", "Flee")))
 	{
 		GGame->IssueOrder(GEntityList->Player(), kMoveTo, GGame->CursorPosition());
 
-		if (GPlugin->GetMenuOption("Q", "Flee")->Enabled() && GHero->GetSpell2("Q")->IsReady())
+		if (GPlugin->GetMenuBoolean("Q", "Flee") && GHero->GetSpell2("Q")->IsReady())
 		{
 			GHero->GetSpell2("Q")->CastOnPosition(GGame->CursorPosition());
 		}
 
-		if (GPlugin->GetMenuOption("E", "Flee")->Enabled() && GHero->GetSpell2("E")->IsReady())
+		if (GPlugin->GetMenuBoolean("E", "Flee") && GHero->GetSpell2("E")->IsReady())
 		{
 			GHero->GetSpell2("E")->CastOnTarget(GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("E")->Range()), kHitChanceMedium);
 		}
@@ -192,7 +192,7 @@ void Modes::Flee()
 
 void Modes::KillSteal()
 {
-	if (GPlugin->GetMenuOption("Q", "KillSteal")->Enabled() && GHero->GetSpell2("Q")->IsReady())
+	if (GPlugin->GetMenuBoolean("Q", "KillSteal") && GHero->GetSpell2("Q")->IsReady())
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -213,7 +213,7 @@ void Modes::KillSteal()
 		}
 	}
 
-	if (GPlugin->GetMenuOption("E", "KillSteal")->Enabled() && GHero->GetSpell2("E")->IsReady())
+	if (GPlugin->GetMenuBoolean("E", "KillSteal") && GHero->GetSpell2("E")->IsReady())
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{

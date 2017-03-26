@@ -3,7 +3,7 @@
 
 void Menu::Initialize()
 {
-	GPlugin->AddMenu("Drawings", "Drawings");
+	GPlugin->AddMenu("Drawings", "SoJiinx: Drawings");
 	{
 		GPlugin->AddCheckBox("Drawings", "W", "Draw W", true);
 		GPlugin->AddCheckBox("Drawings", "E", "Draw E", false);
@@ -11,7 +11,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Drawings", "Ready", "Draw only if spell is ready", true);
 	}
 
-	GPlugin->AddMenu("Q", "Q Settings");
+	GPlugin->AddMenu("Q", "SoJiinx: Q Settings");
 	{
 		GPlugin->AddCheckBox("Q", "Combo", "Combo Q", true);
 		GPlugin->AddInteger("Q", "Combo.Enemies", "^-> Force Fishbone if can hit {x} champions", 2, 5, 2);
@@ -21,7 +21,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("Q", "Mana.Ignore", "Ignore mana if can kill in {x} autoattacks", 3, 10, 4);
 	}
 
-	GPlugin->AddMenu("W", "W Settings");
+	GPlugin->AddMenu("W", "SoJiinx: W Settings");
 	{
 		GPlugin->AddCheckBox("W", "Combo", "Combo W", true);
 		GPlugin->AddInteger("W", "Combo.Range", "^-> Minimum range to use", 0, 1400, 1000);
@@ -32,7 +32,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("W", "Hitchance", "Hitchance (1 = lowest, 4 = highest)", 1, 4, 2);
 	}
 
-	GPlugin->AddMenu("E", "E Settings");
+	GPlugin->AddMenu("E", "SoJiinx: E Settings");
 	{
 		GPlugin->AddCheckBox("E", "Combo", "Combo E", true);
 		GPlugin->AddCheckBox("E", "OnTeleport", "Use on enemy teleport", true);
@@ -44,7 +44,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("E", "Enemies", "Use if can catch {x} enemies", 2, 5, 3);
 	}
 
-	GPlugin->AddMenu("R", "R Settings");
+	GPlugin->AddMenu("R", "SoJiinx: R Settings");
 	{
 		GPlugin->AddCheckBox("R", "KillSteal", "KillSteal R", true);
 		GPlugin->AddCheckBox("R", "KillSteal.W", "^-> Dont steal if W is enough", true);
@@ -54,7 +54,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("R", "Range", "Max range", 0, 10000, 3000);
 	}
 
-	GPlugin->AddMenu("Mana", "Mana Manager");
+	GPlugin->AddMenu("Mana", "SoJiinx: Mana Manager");
 	{
 		GPlugin->AddInteger("Mana", "Q.Combo", "Q Combo", 0, 100, 20);
 		GPlugin->AddInteger("Mana", "Q.Harass", "Q Harass", 0, 100, 40);

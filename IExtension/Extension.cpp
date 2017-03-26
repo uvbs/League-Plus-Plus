@@ -1,7 +1,6 @@
 #include "Extension.h"
 #include <string>
 #include <fstream>
-#include <sstream>
 #include <regex>
 #include <iostream>
 
@@ -129,17 +128,17 @@ bool IExtension::IsFarming()
 
 float IExtension::GetDistance(IUnit* sender, IUnit* target)
 {
-	return (sender->GetPosition() - target->GetPosition()).Length();
+	return (sender->GetPosition() - target->GetPosition()).Length2D();
 }
 
 float IExtension::GetDistance(Vec3 senderPosition, Vec3 targetPosition)
 {
-	return (senderPosition - targetPosition).Length();
+	return (senderPosition - targetPosition).Length2D();
 }
 
 float IExtension::GetRealDistance(IUnit* sender, IUnit* target)
 {
-	return (sender->ServerPosition() - target->ServerPosition()).Length() + sender->BoundingRadius() + target->BoundingRadius();
+	return (sender->ServerPosition() - target->ServerPosition()).Length2D() + sender->BoundingRadius() + target->BoundingRadius();
 }
 
 int IExtension::CountAliesInRange(float range)
@@ -291,4 +290,69 @@ Vec3 IExtension::GetSpawnPosition(IUnit* hero)
 	default:
 		return Vec3(0, 0, 0);
 	}
+}
+
+eMinionType IExtension::GetMinionType(IUnit* minion)
+{
+	static std::vector<std::string> normalMinions = { 
+		"sru_chaosminionmelee", "sru_chaosminionranged",
+		"sru_orderminionmelee", "sru_orderminionranged",
+		"ha_chaosminionmelee", "ha_chaosminionranged",
+		"ha_orderminionmelee", "ha_orderminionranged"
+	};
+
+	static std::vector<std::string> siegeMinions = { 
+		"sru_chaosminionsiege", "sru_orderminionsiege",
+		"ha_chaosminionsiege", "ha_orderminionsiege"
+	};
+
+	static std::vector<std::string> superMinions = {
+		"sru_chaosminionsuper", "sru_orderminionsuper",
+		"ha_chaosminionsuper", "ha_orderminionsuper"
+	};
+
+	static std::vector<std::string> smallJungleCreeps = {
+		"sru_razorbeakmini", "sru_murkwolfmini",
+		"sru_krugmini", "sru_krugminimini"
+	};
+
+	static std::vector<std::string> bigJungleCreeps = {
+		"sru_razorbeak", "sru_murkwolf", "sru_gromp",
+		"sru_krug", "sru_red", "sru_blue", "sru_crab"
+	};
+
+	static std::vector<std::string> epicJungleCreeps = {
+		"sru_dragon_air", "sru_dragon_earth", "sru_dragon_fire",
+		"sru_dragon_water", "sru_dragon_elder", "sru_riftherald",
+		"sru_baron"
+	};
+
+	if (minion == nullptr)
+		return kMinionUnknown;
+
+	auto baseSkinName = std::string(minion->GetBaseSkinName());
+	transform(baseSkinName.begin(), baseSkinName.end(), baseSkinName.begin(), ::tolower);
+
+	if (std::string(baseSkinName).find("ward") != std::string::npos || std::string(baseSkinName).find("trinket") != std::string::npos)
+		return kMinionWard;
+
+	if (find(normalMinions.begin(), normalMinions.end(), baseSkinName) != normalMinions.end())
+		return kMinionNormal;
+
+	if (find(siegeMinions.begin(), siegeMinions.end(), baseSkinName) != siegeMinions.end())
+		return kMinionSiege;
+
+	if (find(superMinions.begin(), superMinions.end(), baseSkinName) != superMinions.end())
+		return kMinionSuper;
+
+	if (find(smallJungleCreeps.begin(), smallJungleCreeps.end(), baseSkinName) != smallJungleCreeps.end())
+		return kMinionJungleSmall;
+
+	if (find(bigJungleCreeps.begin(), bigJungleCreeps.end(), baseSkinName) != bigJungleCreeps.end())
+		return kMinionJungleBig;
+
+	if (find(epicJungleCreeps.begin(), epicJungleCreeps.end(), baseSkinName) != epicJungleCreeps.end())
+		return kMinionJungleEpic;
+
+	return kMinionUnknown;
 }

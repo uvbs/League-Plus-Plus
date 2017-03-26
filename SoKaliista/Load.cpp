@@ -5,11 +5,12 @@
 #include "Events.h"
 #include "Hero.h"
 #include <regex>
+#include "Item.h"
 
 char* Author = "SoNiice";
 char* Champion = "Kalista";
 char* Plugin = "SoKaliista";
-int Version = 5;
+int Version = 6;
 
 PluginSetup(Plugin);
 
@@ -41,4 +42,5 @@ PLUGIN_API void OnUnload()
 	delete GHero;
 	delete GExtension;
 	delete GPlugin;
+	delete GItem;
 }
