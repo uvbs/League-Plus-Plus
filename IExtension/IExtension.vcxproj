@@ -33,7 +33,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{06BB8408-75BF-4BE0-AC1A-07CE2DEDCB67}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>sExtensions</RootNamespace>
+    <RootNamespace>IExtension</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>IExtension</ProjectName>
   </PropertyGroup>

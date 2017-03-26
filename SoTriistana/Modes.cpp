@@ -100,24 +100,21 @@ void Modes::KillSteal()
 	{
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
+			auto chargedDamage = SoTriistana::GetChargedDamage(enemy);
+
 			if (enemy->IsDead())
 				continue;
 
 			if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("R")->Range()))
 				continue;
 
-			if (GPlugin->GetMenuBoolean("R", "E.Overkill") && SoTriistana::GetChargedDamage(enemy) > enemy->GetHealth())
+			if (GPlugin->GetMenuBoolean("R", "E.Overkill") && chargedDamage > enemy->GetHealth())
 				continue;
 
-			if (GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotR) + GDamage->GetAutoAttackDamage(GEntityList->Player(), enemy, false) > enemy->GetHealth())
+			if (chargedDamage + GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotR) + GDamage->GetAutoAttackDamage(GEntityList->Player(), enemy, false) > enemy->GetHealth())
 			{
 				GHero->GetSpell2("R")->CastOnTarget(enemy);
 				GGame->IssueOrder(GEntityList->Player(), kAttackUnit, enemy);
-			}
-
-			if (GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotR) > enemy->GetHealth())
-			{
-				GHero->GetSpell2("R")->CastOnTarget(enemy);
 			}
 		}
 	}

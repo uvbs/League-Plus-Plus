@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{FF146429-A152-49C9-B095-FD931E502775}</ProjectGuid>
-    <RootNamespace>IChampion</RootNamespace>
+    <RootNamespace>IHero</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectName>IHero</ProjectName>
   </PropertyGroup>
