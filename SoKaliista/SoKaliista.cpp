@@ -3,6 +3,13 @@
 #include "Extension.h"
 #include "Plugin.h"
 
+//- sPrediction
+//- Shield logics(need to hardcode them)
+//- E Humanizer(Delay)
+//- Anti Melee
+//- Soulbound CC Saver(Only have huge dmg and death saver)
+//- Flee
+
 Vec3 SoKaliista::WallJumpTarget = Vec3(0, 0, 0);
 int SoKaliista::WallJumpTime = 0;
 bool SoKaliista::WallJumpPossible = false;

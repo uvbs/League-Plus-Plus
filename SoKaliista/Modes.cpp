@@ -72,7 +72,6 @@ void Modes::Combo()
 	{
 		auto enemyInRange = false;
 		auto enemyInLongRange = false;
-		IUnit* target = nullptr;
 
 		for (auto enemy : GEntityList->GetAllHeros(false, true))
 		{
@@ -84,7 +83,6 @@ void Modes::Combo()
 
 			if (GEntityList->Player()->IsValidTarget(enemy, GPlugin->GetMenuInteger("Combo", "Minions.Range")))
 			{
-				target = enemy;
 				enemyInLongRange = true;
 			}
 		}
@@ -95,7 +93,7 @@ void Modes::Combo()
 			{
 				if (GEntityList->Player()->IsValidTarget(minion, GEntityList->Player()->AttackRange()))
 				{
-					GOrbwalking->Orbwalk(minion, target->GetPosition());
+					GOrbwalking->Orbwalk(minion, GGame->CursorPosition());
 					break;
 				}
 			}
@@ -104,11 +102,24 @@ void Modes::Combo()
 
 	if (GPlugin->GetMenuBoolean("Combo", "Q") && GHero->GetSpell2("Q")->IsReady())
 	{
-		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range());
-
-		if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
+		if (GPlugin->GetMenuBoolean("Combo", "Q.Reset"))
 		{
-			GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceHigh);
+			auto target = GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("Q")->Range());
+
+			if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana"))
+			{
+				if (GEntityList->Player()->IsWindingUp() || GEntityList->Player()->IsDashing())
+					GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceLow);
+			}
+		} 
+		else
+		{
+			auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range());
+
+			if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
+			{
+				GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceHigh);
+			}
 		}
 	}
 
@@ -138,7 +149,7 @@ void Modes::Combo()
 		{
 			for (auto enemy : GEntityList->GetAllHeros(false, true))
 			{
-				if (!enemy->HasBuff("kalistaexpungemarker") || enemy->GetBuffCount("kalistaexpungemarker") < GPlugin->GetMenuInteger("Combo", "E.Stacks"))
+				if (!enemy->HasBuff("kalistaexpungemarker"))
 					continue;
 
 				if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell("E")->GetSpellRange()))
@@ -259,6 +270,29 @@ void Modes::Clear()
 		if (minionsHit >= GPlugin->GetMenuInteger("Clear", "Q.Minions"))
 		{
 			GHero->GetSpell2("Q")->CastOnPosition(position);
+		}
+	}
+
+	if (GPlugin->GetMenuBoolean("Clear", "E.Siege") && GHero->GetSpell("E")->IsReady())
+	{
+		for (auto minion : GEntityList->GetAllMinions(false, true, false))
+		{
+			if (minion->IsDead())
+				continue;
+
+			if (!minion->HasBuff("kalistaexpungemarker"))
+				continue;
+
+			if (!GEntityList->Player()->IsValidTarget(minion, GHero->GetSpell("E")->GetSpellRange()))
+				continue;
+
+			if (SoKaliista::GetRendDamage(minion) < minion->GetHealth())
+				continue;
+
+			if (!(GExtension->GetMinionType(minion) & kMinionSiege))
+				continue;
+
+			GHero->GetSpell("E")->CastOnPlayer();
 		}
 	}
 

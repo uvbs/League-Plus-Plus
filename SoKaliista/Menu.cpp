@@ -24,10 +24,10 @@ void Menu::Initialize()
 	GPlugin->AddMenu("Combo", "SoKaliista: Combo Settings");
 	{
 		GPlugin->AddCheckBox("Combo", "Q", "Use Q", true);
+		GPlugin->AddCheckBox("Combo", "Q.Reset", "^-> Use Q to reset AA", true);
 		GPlugin->AddInteger("Combo", "Q.Mana", "^-> Minimum Mana", 0, 100, 10);
 		GPlugin->AddCheckBox("Combo", "Q.Mana.Ignore", "    ^-> Ignore if killable", true);
 		GPlugin->AddCheckBox("Combo", "E", "Use E", true);
-		GPlugin->AddInteger("Combo", "E.Stacks", "^-> Minimum Stacks", 1, 20, 5);
 		GPlugin->AddCheckBox("Combo", "Minions", "Attacks Minions while chasing", true);
 		GPlugin->AddInteger("Combo", "Minions.Range", "^-> while Champions in Range of {x}", 600, 1500, 1000);
 	}
@@ -44,6 +44,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Clear", "Q", "Use Q", true);
 		GPlugin->AddInteger("Clear", "Q.Minions", "^-> Minimum kill {x} minions", 1, 10, 3); 
 		GPlugin->AddInteger("Clear", "Q.Mana", "^-> Minimum Mana", 0, 100, 30);
+		GPlugin->AddCheckBox("Clear", "E.Siege", "Always E Siege minions", true);
 		GPlugin->AddCheckBox("Clear", "E", "Use E", true);
 		GPlugin->AddInteger("Clear", "E.Minions", "^-> Minimum kill {x} minions", 1, 10, 2);
 	}
