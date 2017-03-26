@@ -57,7 +57,7 @@ void Modes::Combo()
 				if (enemy->IsDead())
 					continue;
 
-				if (!GItem->GetItem(GItem->YoumuusGhostblade)->IsTargetInRange(enemy))
+				if (!GEntityList->Player()->IsValidTarget(enemy, GEntityList->Player()->AttackRange() + 250))
 					continue;
 
 				if (enemy->HealthPercent() >= GPlugin->GetMenuInteger("Ghostblade", "Enemy.Health"))
@@ -222,7 +222,7 @@ void Modes::Harass()
 				if (enemy->IsDead())
 					continue;
 
-				if (!GItem->GetItem(GItem->YoumuusGhostblade)->IsTargetInRange(enemy))
+				if (!GEntityList->Player()->IsValidTarget(enemy, GEntityList->Player()->AttackRange() + 250))
 					continue;
 
 				if (enemy->HealthPercent() >= GPlugin->GetMenuInteger("Ghostblade", "Enemy.Health"))
@@ -418,7 +418,7 @@ void Modes::Flee()
 				if (enemy->IsDead())
 					continue;
 
-				if (!GItem->GetItem(GItem->YoumuusGhostblade)->IsTargetInRange(enemy))
+				if (!GEntityList->Player()->IsValidTarget(enemy, GEntityList->Player()->AttackRange() + 250))
 					continue;
 
 				if (enemy->HealthPercent() >= GPlugin->GetMenuInteger("Ghostblade", "Enemy.Health"))

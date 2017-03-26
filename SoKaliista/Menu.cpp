@@ -25,7 +25,7 @@ void Menu::Initialize()
 	{
 		GPlugin->AddCheckBox("Combo", "Q", "Use Q", true);
 		GPlugin->AddCheckBox("Combo", "Q.Reset", "^-> Use Q to reset AA", true);
-		GPlugin->AddInteger("Combo", "Q.Mana", "^-> Minimum Mana", 0, 100, 10);
+		GPlugin->AddInteger("Combo", "Q.Mana", "^-> Minimum Mana", 0, 100, 45);
 		GPlugin->AddCheckBox("Combo", "Q.Mana.Ignore", "    ^-> Ignore if killable", true);
 		GPlugin->AddCheckBox("Combo", "E", "Use E", true);
 		GPlugin->AddCheckBox("Combo", "Minions", "Attacks Minions while chasing", true);
@@ -35,18 +35,18 @@ void Menu::Initialize()
 	GPlugin->AddMenu("Harass", "SoKaliista: Harass Settings");
 	{
 		GPlugin->AddCheckBox("Harass", "Q", "Use Q", true);
-		GPlugin->AddInteger("Harass", "Q.Mana", "^-> Minimum Mana", 0, 100, 30);
+		GPlugin->AddInteger("Harass", "Q.Mana", "^-> Minimum Mana", 0, 100, 45);
 		GPlugin->AddCheckBox("Harass", "E", "Use E to kill a Minion and Harass", true);
 	}
 
 	GPlugin->AddMenu("Clear", "SoKaliista: Clear Settings");
 	{
-		GPlugin->AddCheckBox("Clear", "Q", "Use Q", true);
-		GPlugin->AddInteger("Clear", "Q.Minions", "^-> Minimum kill {x} minions", 1, 10, 3); 
-		GPlugin->AddInteger("Clear", "Q.Mana", "^-> Minimum Mana", 0, 100, 30);
+		GPlugin->AddCheckBox("Clear", "Q", "Use Q", false);
+		GPlugin->AddInteger("Clear", "Q.Minions", "^-> Minimum kill {x} minions w/ Q", 1, 10, 3); 
+		GPlugin->AddInteger("Clear", "Q.Mana", "^-> Minimum Mana", 0, 100, 60);
 		GPlugin->AddCheckBox("Clear", "E.Siege", "Always E Siege minions", true);
 		GPlugin->AddCheckBox("Clear", "E", "Use E", true);
-		GPlugin->AddInteger("Clear", "E.Minions", "^-> Minimum kill {x} minions", 1, 10, 2);
+		GPlugin->AddInteger("Clear", "E.Minions", "^-> Minimum kill {x} minions w/ E", 1, 10, 3);
 	}
 
 	GPlugin->AddMenu("Jungle", "SoKaliista: Jungle Settings");
@@ -54,7 +54,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Jungle", "E", "Use E to steal", true);
 		GPlugin->AddCheckBox("Jungle", "E.Epics", "^-> Steal Epic", true);
 		GPlugin->AddCheckBox("Jungle", "E.Big", "^-> Steal Big", true);
-		GPlugin->AddCheckBox("Jungle", "E.Small", "^-> Steal Small", true);
+		GPlugin->AddCheckBox("Jungle", "E.Small", "^-> Steal Small", false);
 	}
 
 	GPlugin->AddMenu("Flee", "SoKaliista: Flee Settings"); // WIP
@@ -77,8 +77,8 @@ void Menu::Initialize()
 			GPlugin->AddCheckBox("Cutlass", "Use.Combo", "Use Bilgewater Cutlassin Combo", true);
 			GPlugin->AddCheckBox("Cutlass", "Use.Harass", "Use Bilgewater Cutlass in Harass", true);
 			GPlugin->AddCheckBox("Cutlass", "Use.Flee", "Use Bilgewater Cutlass in Flee", true);
-			GPlugin->AddInteger("Cutlass", "Health", "^-> Health is below {x}%", 1, 100, 75);
-			GPlugin->AddInteger("Cutlass", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 50);
+			GPlugin->AddInteger("Cutlass", "Health", "^-> Health is below {x}%", 1, 100, 80);
+			GPlugin->AddInteger("Cutlass", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 85);
 		}
 
 		GPlugin->AddMenu("BotRK", "SoKaliista: Blade of the Ruined King", "Item");
@@ -86,8 +86,8 @@ void Menu::Initialize()
 			GPlugin->AddCheckBox("BotRK", "Use.Combo", "Use Blade of the Ruined King in Combo", true);
 			GPlugin->AddCheckBox("BotRK", "Use.Harass", "Use Blade of the Ruined King in Harass", true);
 			GPlugin->AddCheckBox("BotRK", "Use.Flee", "Use Blade of the Ruined King in Flee", true);
-			GPlugin->AddInteger("BotRK", "Health", "^-> Health is below {x}%", 1, 100, 75);
-			GPlugin->AddInteger("BotRK", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 50);
+			GPlugin->AddInteger("BotRK", "Health", "^-> Health is below {x}%", 1, 100, 80);
+			GPlugin->AddInteger("BotRK", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 75);
 		}
 
 		GPlugin->AddMenu("Ghostblade", "SoKaliista: Youmuus Ghostblade", "Item");
@@ -106,9 +106,9 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Misc", "E.Killsteal", "Always Killsteal w/ E", true);
 		GPlugin->AddInteger("Misc", "E.DamageReduction", "E Damage Reduction", 0, 100, 20);
 		GPlugin->AddCheckBox("Misc", "E.Death", "Use E before Death", true);
-		GPlugin->AddInteger("Misc", "E.Death.Health", "^-> Use on {x}% health", 1, 30, 10);
+		GPlugin->AddInteger("Misc", "E.Death.Health", "^-> Use on {x}% health", 1, 30, 12);
 		GPlugin->AddInteger("Misc", "E.Death.Heroes", "^-> Minimum Champions w/ Stacks", 1, 5, 1);
-		GPlugin->AddInteger("Misc", "E.Death.Stacks", "    ^-> Minimum Stacks on that Champions", 1, 10, 3);
+		GPlugin->AddInteger("Misc", "E.Death.Stacks", "    ^-> Minimum Stacks on that Champions", 1, 10, 1);
 		GPlugin->AddCheckBox("Misc", "R.Save", "Use R to save ally", true);
 	}
 }

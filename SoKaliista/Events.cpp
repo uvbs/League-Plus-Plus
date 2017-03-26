@@ -146,10 +146,13 @@ void Events::OnRender()
 
 void Events::OnSpellCast(CastedSpell const& spell)
 {
+	if (SoKaliista::Soulbound == nullptr)
+		return;
+
 	if (!spell.Caster_->IsEnemy(GEntityList->Player()))
 		return;
 
-	if (SoKaliista::Soulbound == nullptr)
+	if (spell.Target_ == nullptr)
 		return;
 
 	if (spell.Target_->GetNetworkId() != SoKaliista::Soulbound->GetNetworkId())

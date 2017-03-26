@@ -26,7 +26,7 @@ void IExtension::CheckVersion(char* name, int version)
 
 	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
 	{
-		if (version > atoi(newestVersion.c_str()) && atoi(newestVersion.c_str()) != 0)
+		if (version > atoi(newestVersion.c_str()))
 		{
 			GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You are using a <b>BETA</b> version, take care!</font>", name).c_str());
 			return;
