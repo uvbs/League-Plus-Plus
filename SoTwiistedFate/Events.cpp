@@ -53,7 +53,7 @@ void Events::OnSpellCast(CastedSpell const& spell)
 
 	if (std::string(spell.Name_) == "Gate" && GPlugin->GetMenuBoolean("W", "R.Yellow"))
 	{
-		TwistedFate::CardSelector->StartSelecting(TwistedFate::CardSelector->kCardYellow);
+		TwistedFate::SelectCard(TwistedFate::CardSelector->kCardYellow);
 	}
 }
 
