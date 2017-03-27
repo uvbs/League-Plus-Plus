@@ -8,7 +8,7 @@
 
 char* Author = "SoNiice";
 char* Plugin = "SoUltiimate";
-int Version = 3;
+int Version = 4;
 
 PluginSetup(Plugin);
 

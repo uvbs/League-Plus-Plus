@@ -26,13 +26,15 @@ void IExtension::CheckVersion(char* name, int version)
 
 	if (GPluginSDK->ReadFileFromURL(format("https://raw.githubusercontent.com/SoNiice/League-Plus-Plus/master/%s/version.txt", name), newestVersion))
 	{
-		if (version > atoi(newestVersion.c_str()))
+		newestVersion = regex_replace(newestVersion, std::regex("[^0-9]+"), "");
+
+		if (version > stoi(newestVersion))
 		{
 			GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">You are using a <b>BETA</b> version, take care!</font>", name).c_str());
 			return;
 		}
 
-		if (version < atoi(newestVersion.c_str()))
+		if (version < stoi(newestVersion))
 		{
 			GGame->PrintChat(format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>SoNiice</b></font> - <font color=\"#FFFFFF\">There's a newer version!</font>", name).c_str());
 			return;
@@ -336,7 +338,7 @@ eMinionType IExtension::GetMinionType(IUnit* minion)
 	if (minion == nullptr)
 		return kMinionUnknown;
 
-	auto baseSkinName = std::string(minion->GetBaseSkinName());
+	auto baseSkinName = regex_replace(std::string(minion->GetBaseSkinName()), std::regex("[^a-zA-Z_]+"), "");
 	transform(baseSkinName.begin(), baseSkinName.end(), baseSkinName.begin(), ::tolower);
 
 	if (std::string(baseSkinName).find("ward") != std::string::npos || std::string(baseSkinName).find("trinket") != std::string::npos)
