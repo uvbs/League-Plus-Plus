@@ -4,7 +4,7 @@
 class SoKaliista
 {
 public:
-	static float GetRendDamage(IUnit* target);
+	static double GetRendDamage(IUnit* target);
 	static Vec3 GetFirstWallPoint(Vec3 from, Vec3 to, int step = 25);
 	static Vec3 WallJumpTarget;
 	static int WallJumpTime;

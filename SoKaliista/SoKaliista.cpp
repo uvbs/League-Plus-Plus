@@ -16,7 +16,7 @@ bool SoKaliista::WallJumpPossible = false;
 IUnit* SoKaliista::Soulbound = nullptr;
 std::map<float, float> SoKaliista::SoulboundDamage;
 
-float SoKaliista::GetRendDamage(IUnit* target)
+double SoKaliista::GetRendDamage(IUnit* target)
 {
 	auto damage = GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotE);
 
@@ -31,6 +31,9 @@ float SoKaliista::GetRendDamage(IUnit* target)
 
 	if (GEntityList->Player()->HasBuff("summonerexhaust"))
 		damage *= 0.6f;
+
+	if (std::string(target->GetBaseSkinName()) == "SRU_Baron" && GEntityList->Player()->HasBuff("barontarget"))
+		damage *= 0.5f;
 
 	damage -= GPlugin->GetMenuInteger("Misc", "E.DamageReduction");
 

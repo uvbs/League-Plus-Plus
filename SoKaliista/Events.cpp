@@ -114,7 +114,7 @@ void Events::OnRender()
 			auto eDamage = SoKaliista::GetRendDamage(creep);
 			auto currentPercentage = ceil(eDamage / creep->GetHealth() * 100);
 
-			GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), currentPercentage >= 100 ? Vec4(139, 0, 0, 255) : Vec4(255, 255, 255, 255), currentPercentage >= 100 ? "Killable w/ E" : "%d (%.1f%%)", eDamage, currentPercentage);
+			GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), currentPercentage >= 100 ? Vec4(139, 0, 0, 255) : Vec4(255, 255, 255, 255), currentPercentage >= 100 ? "Killable w/ E" : "%f (%.1f%%)", eDamage, currentPercentage);
 		}
 	}
 
@@ -138,7 +138,7 @@ void Events::OnRender()
 			auto eDamage = SoKaliista::GetRendDamage(enemy);
 			auto currentPercentage = ceil(eDamage / enemy->GetHealth() * 100);
 
-			GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), currentPercentage >= 100 ? Vec4(139, 0, 0, 255) : Vec4(255, 255, 255, 255), currentPercentage >= 100 ? "Killable w/ E" : "%d (%.1f%%)", eDamage, currentPercentage);
+			GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), currentPercentage >= 100 ? Vec4(139, 0, 0, 255) : Vec4(255, 255, 255, 255), currentPercentage >= 100 ? "Killable w/ E" : "%f (%.1f%%)", eDamage, currentPercentage);
 		}
 
 		if (GPlugin->GetMenuBoolean("Drawings", "E.Damage.Healthbar"))
