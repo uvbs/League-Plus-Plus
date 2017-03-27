@@ -32,9 +32,6 @@
     <ClCompile Include="TwistedFate.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="CardSelector.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Spells.h">
@@ -50,9 +47,6 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="TwistedFate.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="CardSelector.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

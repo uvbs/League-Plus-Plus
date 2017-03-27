@@ -9,7 +9,7 @@
 char* Author = "SoNiice";
 char* Champion = "Twisted Fate";
 char* Plugin = "SoTwiistedFate";
-int Version = 8;
+int Version = 9;
 
 PluginSetup(Plugin);
 
@@ -28,7 +28,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 
 	Menu::Initialize();
 	Spells::Initialize();
-	Events::Initialize();
+	Events::Initialize();			
 
 	GGame->PrintChat(GExtension->format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>%s</b></font> - <font color=\"#FFFFFF\">Loaded</font>", GPlugin->GetName(), GPlugin->GetAuthor()).c_str());
 	GExtension->CheckVersion(GPlugin->GetName(), GPlugin->GetVersion());

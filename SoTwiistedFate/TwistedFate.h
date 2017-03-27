@@ -1,14 +1,16 @@
 #pragma once
-#include "CardSelector.h"
 
 class TwistedFate
 {
 public:
-	static CardSelector* CardSelector;
+	enum Card {
+		kCardYellow,
+		kCardBlue,
+		kCardRed,
+		kCardNone
+	};
 
 	static int LastPingTick;
-	static int CardPickTick;
-
-	static void SelectCard(int card);
+	static Card SelectedCard;
 };
 

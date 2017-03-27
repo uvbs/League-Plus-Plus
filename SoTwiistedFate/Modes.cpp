@@ -2,6 +2,7 @@
 #include "Plugin.h"
 #include "Hero.h"
 #include "TwistedFate.h"
+#include "Extension.h"
 
 void Modes::Combo()
 {
@@ -11,39 +12,63 @@ void Modes::Combo()
 
 		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GEntityList->Player()->AttackRange() + 100))
 		{
-			TwistedFate::SelectCard(TwistedFate::CardSelector->kCardYellow);
+			TwistedFate::SelectedCard = TwistedFate::kCardYellow;
+
+			if (strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "PickACard") != nullptr)
+				GHero->GetSpell("W")->CastOnPlayer();
 		}
 	}
 }
 
+bool first = false;
+
 void Modes::Always()
 {
-	if (GHero->GetSpell("W")->IsReady())
+	if (TwistedFate::SelectedCard == TwistedFate::kCardYellow && strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "GoldCardLock") != nullptr || 
+		TwistedFate::SelectedCard == TwistedFate::kCardBlue && strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "BlueCardLock") != nullptr || 
+		TwistedFate::SelectedCard == TwistedFate::kCardRed && strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "RedCardLock") != nullptr)
+	{
+		GHero->GetSpell("W")->CastOnPlayer();
+	}
+
+	if (GHero->GetSpell("W")->IsReady()) 
 	{
 		if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Yellow")))
 		{
-			TwistedFate::SelectCard(TwistedFate::CardSelector->kCardYellow);
+			TwistedFate::SelectedCard = TwistedFate::kCardYellow;
+
+			if (strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "PickACard") != nullptr)
+				GHero->GetSpell("W")->CastOnPlayer();
 		}
 
 		if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Blue")))
 		{
-			TwistedFate::SelectCard(TwistedFate::CardSelector->kCardBlue);
+			TwistedFate::SelectedCard = TwistedFate::kCardBlue;
+
+			if (strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "PickACard") != nullptr)
+				GHero->GetSpell("W")->CastOnPlayer();
 		}
 
 		if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key.Red")))
 		{
-			TwistedFate::SelectCard(TwistedFate::CardSelector->kCardRed);
+			TwistedFate::SelectedCard = TwistedFate::kCardRed;
+
+			if (strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "PickACard") != nullptr)
+				GHero->GetSpell("W")->CastOnPlayer();
 		}
 	}
-
+	
 	if (GHero->GetSpell2("Q")->IsReady())
 	{
 		if (GPlugin->GetMenuBoolean("Q", "Immobile"))
 		{
 			for (auto enemy : GEntityList->GetAllHeros(false, true))
 			{
-				GHero->GetSpell2("Q")->CastOnTarget(enemy, kHitChanceImmobile);
-				break;
+				if (GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("Q")->Range()))
+				{
+					GHero->GetSpell2("Q")->CastOnTarget(enemy, kHitChanceImmobile);
+					break;
+				}
 			}
 		}
 
@@ -51,8 +76,11 @@ void Modes::Always()
 		{
 			for (auto enemy : GEntityList->GetAllHeros(false, true))
 			{
-				GHero->GetSpell2("Q")->CastOnTarget(enemy, kHitChanceDashing);
-				break;
+				if (GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("Q")->Range()))
+				{
+					GHero->GetSpell2("Q")->CastOnTarget(enemy, kHitChanceDashing);
+					break;
+				}
 			}
 		}
 

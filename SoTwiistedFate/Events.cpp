@@ -4,6 +4,7 @@
 #include "Modes.h"
 #include "Extension.h"
 #include "TwistedFate.h"
+#include <string>
 
 void Events::Initialize()
 {
@@ -21,14 +22,12 @@ void Events::OnGameUpdate()
 	if (GGame->IsChatOpen())
 		return;
 
-	TwistedFate::CardSelector->OnGameUpdate();
+	Modes::Always();
 
 	if (GExtension->IsComboing())
 	{
 		Modes::Combo();
 	}
-
-	Modes::Always();
 }
 
 void Events::OnRender()
@@ -49,11 +48,13 @@ void Events::OnSpellCast(CastedSpell const& spell)
 	if (spell.Caster_ != GEntityList->Player())
 		return;
 
-	TwistedFate::CardSelector->OnSpellCast(spell);
-
 	if (std::string(spell.Name_) == "Gate" && GPlugin->GetMenuBoolean("W", "R.Yellow"))
 	{
-		TwistedFate::SelectCard(TwistedFate::CardSelector->kCardYellow);
+		if (GHero->GetSpell("W")->IsReady() && strstr(GEntityList->Player()->GetSpellBook()->GetName(kSlotW), "PickACard") != nullptr)
+		{
+			GHero->GetSpell("W")->CastOnPlayer();
+			TwistedFate::SelectedCard = TwistedFate::kCardYellow;
+		}
 	}
 }
 

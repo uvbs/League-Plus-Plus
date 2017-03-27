@@ -36,7 +36,6 @@
     <Text Include="version.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CardSelector.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Menu.cpp" />
@@ -45,7 +44,6 @@
     <ClCompile Include="TwistedFate.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CardSelector.h" />
     <ClInclude Include="Events.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Modes.h" />
