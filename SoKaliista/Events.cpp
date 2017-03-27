@@ -94,6 +94,29 @@ void Events::OnRender()
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "E.Leaving.Color"), GHero->GetSpell("E")->GetSpellRange() - 200);
 	}
 
+	for (auto creep : GEntityList->GetAllMinions(false, false, true))
+	{
+		auto stackCount = creep->GetBuffCount("kalistaexpungemarker");
+
+		if (creep->IsDead() || !creep->IsVisible() || stackCount == 0)
+			continue;
+
+		Vec3 worldToScreen;
+		GGame->Projection(creep->GetPosition(), &worldToScreen);
+
+		if (GPlugin->GetMenuBoolean("Drawings", "E.Stacks"))
+		{
+			GRender->DrawTextW(Vec2(worldToScreen.x - 80, worldToScreen.y), Vec4(255, 255, 255, 255), "Stacks: %d", stackCount);
+		}
+
+		if (GPlugin->GetMenuBoolean("Drawings", "E.Damage"))
+		{
+			auto currentPercentage = ceil(SoKaliista::GetRendDamage(creep) / creep->GetHealth() * 100);
+
+			GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), currentPercentage >= 100 ? Vec4(139, 0, 0, 255) : Vec4(255, 255, 255, 255), currentPercentage >= 100 ? "Killable w/ E" : "%.1f%%", currentPercentage);
+		}
+	}
+
 	for (auto enemy : GEntityList->GetAllHeros(false, true))
 	{
 		auto stackCount = enemy->GetBuffCount("kalistaexpungemarker");
