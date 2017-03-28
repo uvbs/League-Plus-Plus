@@ -14,6 +14,7 @@ void Menu::Initialize()
 	GPlugin->AddMenu("Q", "SoJiinx: Q Settings");
 	{
 		GPlugin->AddCheckBox("Q", "Combo", "Combo Q", true);
+		GPlugin->AddCheckBox("Q", "Combo.Stacks", "^-> Try to hold 3 Q stacks while Fishbone", true);
 		GPlugin->AddInteger("Q", "Combo.Enemies", "^-> Force Fishbone if can hit {x} champions", 2, 5, 2);
 		GPlugin->AddCheckBox("Q", "Harass", "Harass Q", true);
 		GPlugin->AddCheckBox("Q", "Lasthit.OutOfRange", "Force Fishbone to lasthit out of range minions", false);
@@ -29,18 +30,18 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("W", "Epics", "Steal epic jungle creeps w/ W", true);
 		GPlugin->AddCheckBox("W", "KillSteal", "KillSteal W", true);
 		GPlugin->AddKey("W", "Key", "Semi manual cast", 'X');
-		GPlugin->AddInteger("W", "Hitchance", "Hitchance (1 = lowest, 4 = highest)", 1, 4, 2);
+		GPlugin->AddInteger("W", "Hitchance", "Hitchance (1 = lowest, 4 = highest)", 1, 4, 4);
 	}
 
 	GPlugin->AddMenu("E", "SoJiinx: E Settings");
 	{
-		GPlugin->AddCheckBox("E", "Combo", "Combo E", true);
+		GPlugin->AddCheckBox("E", "Combo", "Combo E", false);
 		GPlugin->AddCheckBox("E", "OnTeleport", "Use on enemy teleport", true);
 		GPlugin->AddCheckBox("E", "OnCC", "Use on hard CC", true);
 		GPlugin->AddCheckBox("E", "OnSlow", "Use on slow", true);
 		GPlugin->AddCheckBox("E", "OnDash", "Use on dash", true);
 		GPlugin->AddCheckBox("E", "OnGapCloser", "Use on gapclosers", true);
-		GPlugin->AddCheckBox("E", "OnSpecialSpell", "Use on special spell detection", true);
+		GPlugin->AddCheckBox("E", "OnSpecialSpell", "Use on special spell detection", false);
 		GPlugin->AddInteger("E", "Enemies", "Use if can catch {x} enemies", 2, 5, 3);
 	}
 

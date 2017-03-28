@@ -31,6 +31,8 @@ public:
 	static void UpdateInteger(char* name, int value);
 	static IMenu* GetMenu(char* name);
 	static IMenu* GetMenu();
+	static bool MenuExists(char* name);
+	static bool MenuOptionExists(char* menu, char* name);
 	static IMenuOption* GetMenuOption(char* menu, char* name);
 	static IMenuOption* GetMenuOption(char* name);
 	static bool GetMenuBoolean(char* menu, char* name);

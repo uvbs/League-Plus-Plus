@@ -217,6 +217,19 @@ IMenu* IPlugin::GetMenu()
 	return Menus["Main"];
 }
 
+bool IPlugin::MenuExists(char* name)
+{
+	return Menus.count(name) == 1;
+}
+
+bool IPlugin::MenuOptionExists(char* menu, char* name)
+{
+	if (Menus.count(menu) == 0)
+		return false;
+
+	return MenuOptions[menu].count(name) == 1;
+}
+
 IMenuOption* IPlugin::GetMenuOption(char* menu, char* name)
 {
 	return MenuOptions[menu][name];

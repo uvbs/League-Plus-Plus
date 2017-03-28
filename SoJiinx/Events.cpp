@@ -73,7 +73,7 @@ void Events::OnRender()
 
 void Events::OnOrbwalkBeforeAttack(IUnit* target)
 {
-	if (!Jinx::HasFishbone())
+	/*if (!Jinx::HasFishbone())
 		return;
 
 	if (GHero->GetSpell("Q")->IsReady() && target->IsHero())
@@ -98,7 +98,7 @@ void Events::OnOrbwalkBeforeAttack(IUnit* target)
 			GOrbwalking->DisableNextAttack();
 			GHero->GetSpell("Q")->CastOnPlayer();
 		}
-	}
+	}*/
 }
 
 void Events::OnGapCloser(GapCloserSpell const& spell)

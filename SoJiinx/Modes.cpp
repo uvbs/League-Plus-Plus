@@ -12,7 +12,17 @@ void Modes::Combo()
 
 		if (target != nullptr && target->IsValidTarget())
 		{
-			if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuInteger("Q", "Combo.Enemies") || (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "Q.Combo") || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") < target->GetHealth()))
+			if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && !GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuInteger("Q", "Combo.Enemies"))
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
+
+			if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "Q.Combo") && GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") < target->GetHealth())
+			{
+				GHero->GetSpell("Q")->CastOnPlayer();
+			}
+
+			if (GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && GEntityList->Player()->GetBuffCount("jinxqramp") < 3 && GExtension->GetRealDistance(GEntityList->Player(), target) < 525)
 			{
 				GHero->GetSpell("Q")->CastOnPlayer();
 			}
@@ -22,11 +32,16 @@ void Modes::Combo()
 	{
 		auto target = GOrbwalking->GetLastTarget();
 
-		if (target != nullptr && GExtension->GetRealDistance(GEntityList->Player(), target) > 525 && GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange())
-		{
-			GHero->GetSpell("Q")->CastOnPlayer();
-		} 
-		else if (target != nullptr && GExtension->CountEnemiesInTargetRange(target, 250) >= GPlugin->GetMenuInteger("Q", "Combo.Enemies") && (GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Mana", "Q.Combo") || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") > target->GetHealth()))
+		if (target != nullptr && target->IsValidTarget() &&
+			(GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
+				GExtension->GetRealDistance(GEntityList->Player(), target) > 525 || 
+				GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
+				GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && 
+				GEntityList->Player()->GetBuffCount("jinxqramp") == 3 || 
+				GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
+				GExtension->CountEnemiesInTargetRange(target, 250) >= GPlugin->GetMenuInteger("Q", "Combo.Enemies") && 
+				(GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Mana", "Q.Combo") || 
+					GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") > target->GetHealth())))
 		{
 			GHero->GetSpell("Q")->CastOnPlayer();
 		}
