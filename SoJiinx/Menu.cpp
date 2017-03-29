@@ -30,6 +30,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("W", "Epics", "Steal epic jungle creeps w/ W", true);
 		GPlugin->AddCheckBox("W", "KillSteal", "KillSteal W", true);
 		GPlugin->AddKey("W", "Key", "Semi manual cast", 'X');
+		GPlugin->AddSelection("W", "Mode", "Target Selection", 1, { "QuickestKill", "ClosestPriority", "ClosestToCursorPriority", "LowestHealthPriority", "MostStacks", "MostAD", "MostAP", "LeastAttacks", "LeastCasts" });
 		GPlugin->AddInteger("W", "Hitchance", "Hitchance (1 = lowest, 4 = highest)", 1, 4, 4);
 	}
 
@@ -51,7 +52,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("R", "KillSteal.W", "^-> Dont steal if W is enough", true);
 		GPlugin->AddInteger("R", "KillSteal.Allies", "^-> Dont steal if allies near target in {x} range", 0, 1000, 500);
 		GPlugin->AddKey("R", "Key", "Semi manual cast", 'T');
-		GPlugin->AddSelection("R", "Key.Mode", "^-> Mode", 0, std::vector<std::string>({ "low HP", "AoE" }));
+		GPlugin->AddSelection("R", "Key.Mode", "^-> Mode", 0, { "low HP", "AoE" });
 		GPlugin->AddInteger("R", "Range", "Max range", 0, 10000, 3000);
 	}
 

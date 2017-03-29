@@ -22,7 +22,7 @@ void Modes::Combo()
 				GHero->GetSpell("Q")->CastOnPlayer();
 			}
 
-			if (GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && GEntityList->Player()->GetBuffCount("jinxqramp") < 3 && GExtension->GetRealDistance(GEntityList->Player(), target) < 525)
+			if (GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && GEntityList->Player()->GetBuffCount("jinxqramp") < 3 && GExtension->GetRealDistance(GEntityList->Player(), target) < 525 || GExtension->GetRealDistance(GEntityList->Player(), target) < 525)
 			{
 				GHero->GetSpell("Q")->CastOnPlayer();
 			}
@@ -35,8 +35,9 @@ void Modes::Combo()
 		if (target != nullptr && target->IsValidTarget() &&
 			(GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
 				GExtension->GetRealDistance(GEntityList->Player(), target) > 525 || 
-				GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
-				GPlugin->GetMenuBoolean("Q", "Combo.Stacks") && 
+				GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() &&
+				GExtension->GetRealDistance(GEntityList->Player(), target) > 525 &&
+				GPlugin->GetMenuBoolean("Q", "Combo.Stacks") &&
 				GEntityList->Player()->GetBuffCount("jinxqramp") == 3 || 
 				GExtension->GetRealDistance(GEntityList->Player(), target) <= 525 + Jinx::GetFishboneRange() && 
 				GExtension->CountEnemiesInTargetRange(target, 250) >= GPlugin->GetMenuInteger("Q", "Combo.Enemies") && 
@@ -49,7 +50,7 @@ void Modes::Combo()
 
 	if (GPlugin->GetMenuBoolean("W", "Combo") && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Mana", "W.Combo") && GHero->GetSpell2("W")->IsReady())
 	{
-		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("W")->Range());
+		auto target = GTargetSelector->FindTarget(static_cast<eTargetPriority>(GPlugin->GetMenuInteger("W", "Target")), PhysicalDamage, GHero->GetSpell2("W")->Range());
 		
 		if (target != nullptr && GExtension->GetDistance(GEntityList->Player(), target) >= GPlugin->GetMenuInteger("W", "Combo.Range"))
 		{
@@ -181,7 +182,7 @@ void Modes::Harass()
 
 	if (GPlugin->GetMenuBoolean("W", "Harass") && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Mana", "W.Harass") && GHero->GetSpell2("W")->IsReady())
 	{
-		GHero->GetSpell2("W")->CastOnTarget(GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("W")->Range()), GPlugin->GetMenuInteger("W", "Hitchance") + 2);
+		GHero->GetSpell2("W")->CastOnTarget(GTargetSelector->FindTarget(static_cast<eTargetPriority>(GPlugin->GetMenuInteger("W", "Target")), PhysicalDamage, GHero->GetSpell2("W")->Range()), GPlugin->GetMenuInteger("W", "Hitchance") + 2);
 	}
 }
 
@@ -297,7 +298,7 @@ void Modes::Semi()
 {
 	if (GetAsyncKeyState(GPlugin->GetMenuInteger("W", "Key")) && GHero->GetSpell2("W")->IsReady())
 	{
-		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("W")->Range());
+		auto target = GTargetSelector->FindTarget(static_cast<eTargetPriority>(GPlugin->GetMenuInteger("W", "Target")), PhysicalDamage, GHero->GetSpell2("W")->Range());
 
 		if (target != nullptr && GEntityList->Player()->IsValidTarget(target, GHero->GetSpell2("W")->Range()))
 			GHero->GetSpell2("W")->CastOnTarget(target, GPlugin->GetMenuInteger("W", "Hitchance") + 2);

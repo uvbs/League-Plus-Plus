@@ -261,7 +261,3 @@ __pycache__/
 *.pyc
 *.iobj
 *.ipdb
-
-/L++ Plugin-Manager
-/Waiifu++
-/DLLs/Waiifu++.dll
