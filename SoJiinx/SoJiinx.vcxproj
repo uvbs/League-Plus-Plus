@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Events.cpp" />
-    <ClCompile Include="Jinx.cpp" />
+    <ClCompile Include="SoJiinx.cpp" />
     <ClCompile Include="Load.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Modes.cpp" />
@@ -45,7 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Events.h" />
-    <ClInclude Include="Jinx.h" />
+    <ClInclude Include="SoJiinx.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Modes.h" />
     <ClInclude Include="Spells.h" />

@@ -4,7 +4,7 @@
 #include "Modes.h"
 #include "Extension.h"
 #include <algorithm>
-#include "Jinx.h"
+#include "SoJiinx.h"
 
 void Events::Initialize()
 {
@@ -25,7 +25,7 @@ void Events::OnGameUpdate()
 		return;
 
 	auto R = GHero->GetSpell2("R");
-	R->SetOverrideRange(GPlugin->GetMenuInteger("R", "Range"));
+	R->SetOverrideRange(GPlugin->GetMenuInteger("Misc", "R.Range.Maximum"));
 	GHero->AddSpell("R", R);
 
 	if (GExtension->IsComboing())
@@ -57,48 +57,47 @@ void Events::OnRender()
 {
 	if (GPlugin->GetMenuBoolean("Drawings", "W") && (GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
-		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("W")->Range());
+		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "W.Color"), GHero->GetSpell2("W")->Range());
 	}
 
 	if (GPlugin->GetMenuBoolean("Drawings", "E") && (GHero->GetSpell2("E")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
-		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("E")->Range());
+		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "E.Color"), GHero->GetSpell2("E")->Range());
 	}
 
-	if (GPlugin->GetMenuBoolean("Drawings", "R") && (GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
+	if (GPlugin->GetMenuBoolean("Drawings", "R.Minimum") && (GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
-		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), Vec4(255, 255, 0, 255), GHero->GetSpell2("R")->Range());
+		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "R.Minimum.Color"), GPlugin->GetMenuInteger("Misc", "R.Range.Minimum"));
+	}
+
+	if (GPlugin->GetMenuBoolean("Drawings", "R.Maximum") && (GHero->GetSpell2("R")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
+	{
+		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "R.Maximum.Color"), GHero->GetSpell2("R")->Range());
 	}
 }
 
 void Events::OnOrbwalkBeforeAttack(IUnit* target)
 {
-	/*if (!Jinx::HasFishbone())
+	if (!SoJiinx::HasFishbone())
 		return;
 
-	if (GHero->GetSpell("Q")->IsReady() && target->IsHero())
+	if (GExtension->IsComboing() && target->IsHero() && GHero->GetSpell("Q")->IsReady())
 	{
-		if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) < GPlugin->GetMenuInteger("Q", "Combo.Enemies") && GExtension->IsComboing() || !target->IsHero() && GExtension->IsFarming())
+		if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) + 1 < GPlugin->GetMenuInteger("Combo", "Q.Enemies") ||
+			GExtension->GetRealDistance(GEntityList->Player(), target) < 525 && GExtension->CountEnemiesInTargetRange(target, 250) + 1 >= GPlugin->GetMenuInteger("Combo", "Q.Enemies") && GPlugin->GetMenuBoolean("Combo", "Q.Enemies.Range") ||
+			GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Combo", "Q.Mana") && GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Combo", "Q.Mana.Ignore") < target->GetHealth())
 		{
-			if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "Q.Combo") && GExtension->IsComboing() || GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) * GPlugin->GetMenuInteger("Q", "Mana.Ignore") < target->GetHealth())
-			{
-				GHero->GetSpell("Q")->CastOnPlayer();
-			}
+			GHero->GetSpell("Q")->CastOnPlayer();
 		}
 	}
 
-	if (GHero->GetSpell("Q")->IsReady() && !GExtension->IsComboing() && target->IsCreep())
+	if (GExtension->IsClearing() && target->IsCreep() && GHero->GetSpell("Q")->IsReady())
 	{
-		if (GExtension->IsClearing() && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Mana", "Q.Clear") && GExtension->CountMinionsInTargetRange(target, 250) + 1 >= GPlugin->GetMenuInteger("Q", "Clear.Minions"))
+		if (!GPlugin->GetMenuBoolean("Clear", "Q") || GExtension->CountMinionsInTargetRange(target, 200) + 1 < GPlugin->GetMenuInteger("Clear", "Q.Enemies") || GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Clear", "Q.Mana"))
 		{
-
-		}
-		else if (GExtension->GetRealDistance(GEntityList->Player(), target) < 525)
-		{
-			GOrbwalking->DisableNextAttack();
 			GHero->GetSpell("Q")->CastOnPlayer();
 		}
-	}*/
+	}
 }
 
 void Events::OnGapCloser(GapCloserSpell const& spell)
@@ -106,10 +105,10 @@ void Events::OnGapCloser(GapCloserSpell const& spell)
 	if (!GHero->GetSpell2("E")->IsReady())
 		return;
 
-	if (!GPlugin->GetMenuBoolean("E", "OnGapCloser"))
+	if (!GPlugin->GetMenuBoolean("E.Auto", "OnGapCloser"))
 		return;
 
-	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "E.Auto"))
+	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("E.Auto", "Mana"))
 		return;
 
 	if (!GEntityList->Player()->IsValidTarget(spell.Sender, GHero->GetSpell2("E")->Range()))
@@ -126,24 +125,23 @@ void Events::OnSpellCast(CastedSpell const& spell)
 	if (!spell.Caster_->IsEnemy(GEntityList->Player()))
 		return;
 
-	if (!GHero->GetSpell2("E")->IsReady())
-		return;
-
-	if (!GPlugin->GetMenuBoolean("E", "OnSpecialSpell"))
-		return;
-
-	if (GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Mana", "E.Auto"))
-		return;
-
-	if (!GEntityList->Player()->IsValidTarget(spell.Caster_, GHero->GetSpell2("E")->Range()))
-		return;
-
 	auto spellName = std::string(spell.Name_);
 	transform(spellName.begin(), spellName.end(), spellName.begin(), ::tolower);
 
-	if (find(Jinx::SpecialSpells.begin(), Jinx::SpecialSpells.end(), spellName.c_str()) != Jinx::SpecialSpells.end())
+	if (GHero->GetSpell2("E")->IsReady() && GPlugin->GetMenuBoolean("E.Auto", "OnSpecialSpell") && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("E.Auto", "Mana") && GEntityList->Player()->IsValidTarget(spell.Caster_, GHero->GetSpell2("E")->Range()))
 	{
-		GHero->GetSpell2("E")->CastOnPosition(spell.Caster_->GetPosition());
+		if (find(SoJiinx::SpecialSpells.begin(), SoJiinx::SpecialSpells.end(), spellName.c_str()) != SoJiinx::SpecialSpells.end())
+		{
+			GHero->GetSpell2("E")->CastOnPosition(spell.Caster_->GetPosition());
+		}
+	}
+
+	if (GHero->GetSpell2("W")->IsReady() && GPlugin->GetMenuBoolean("W.Auto", "OnSpecialSpell") && GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("W.Auto", "Mana") && GEntityList->Player()->IsValidTarget(spell.Caster_, GHero->GetSpell2("W")->Range()))
+	{
+		if (find(SoJiinx::SpecialSpells.begin(), SoJiinx::SpecialSpells.end(), spellName.c_str()) != SoJiinx::SpecialSpells.end())
+		{
+			GHero->GetSpell2("W")->CastOnPosition(spell.Caster_->GetPosition());
+		}
 	}
 }
 

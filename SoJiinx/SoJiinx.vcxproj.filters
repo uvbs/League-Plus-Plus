@@ -29,7 +29,7 @@
     <ClCompile Include="Modes.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Jinx.cpp">
+    <ClCompile Include="SoJiinx.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
@@ -46,7 +46,7 @@
     <ClInclude Include="Modes.h">
       <Filter>Header</Filter>
     </ClInclude>
-    <ClInclude Include="Jinx.h">
+    <ClInclude Include="SoJiinx.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,9 +1,7 @@
-#include "Jinx.h"
+#include "SoJiinx.h"
 #include "Extension.h"
-#include "Plugin.h"
-#include "Hero.h"
 
-std::vector<std::string> Jinx::SpecialSpells = {
+std::vector<std::string> SoJiinx::SpecialSpells = {
 	"luxlightbinding",
 	"katarinar",
 	"drain",
@@ -32,14 +30,14 @@ std::vector<std::string> Jinx::SpecialSpells = {
 	"rocketgrabmissile"
 };
 
-int Jinx::GetFishboneRange()
+int SoJiinx::GetFishboneRange()
 {
 	int ranges[6] = { 0, 75, 100, 125, 150, 175 };
 
 	return ranges[GEntityList->Player()->GetSpellBook()->GetLevel(kSlotQ)];
 }
 
-bool Jinx::HasFishbone()
+bool SoJiinx::HasFishbone()
 {
 	return GEntityList->Player()->HasBuff("JinxQ");
 }

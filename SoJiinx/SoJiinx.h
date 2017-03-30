@@ -1,6 +1,6 @@
 #include "PluginSDK.h"
 
-class Jinx
+class SoJiinx
 {
 public:
 	static int GetFishboneRange();
