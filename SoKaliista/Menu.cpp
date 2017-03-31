@@ -1,5 +1,7 @@
 #include "Plugin.h"
 #include "Menu.h"
+#include "Extension.h"
+#include "SpellDatabase.h"
 
 void Menu::Initialize()
 {
@@ -100,8 +102,45 @@ void Menu::Initialize()
 		}
 	}
 
+	GPlugin->AddMenu("Soulbound", "SoKaliista: Soulbound");
+	{
+		GPlugin->AddCheckBox("Soulbound", "Save", "Use R to save ally", true);
+		GPlugin->AddInteger("Soulbound", "Save.Health", "^-> On {x}% health with enemies around", 0, 100, 5);
+		GPlugin->AddCheckBox("Soulbound", "Save.Death", "^-> On damage > health", true);
+		GPlugin->AddCheckBox("Soulbound", "Save.SpecialSpells", "^-> On Special Spell Detection", false);
+
+		GPlugin->AddMenu("SpecialSpells", "Special Spell Detection", "Soulbound");
+		{
+			for (auto enemy : GEntityList->GetAllHeros(false, true))
+			{
+				auto championName = std::string(const_cast<char*>(enemy->GetBaseSkinName()));
+
+				for (auto champion : SpellDatabase::Champions)
+				{
+					if (champion.first != championName)
+						continue;
+
+					GPlugin->AddMenu(const_cast<char*>(championName.c_str()), const_cast<char*>(GExtension->format(" %s Spells", champion.second.DisplayName).c_str()), "SpecialSpells");
+					{
+						auto spells = champion.second.Spells;
+
+						for (auto spell : spells)
+						{
+							GPlugin->AddMenu(spell.Name, const_cast<char*>(GExtension->format("%s (%s)", spell.DisplayName, SpellDatabase::Slots[spell.Slot]).c_str()), const_cast<char*>(championName.c_str()));
+							{
+								GPlugin->AddCheckBox(spell.Name, "Use", const_cast<char*>(GExtension->format("Use for %s", spell.DisplayName).c_str()), spell.Dangerous);
+								GPlugin->AddInteger(spell.Name, "Use.Health", const_cast<char*>(GExtension->format("Use for %s under {x}%% health", spell.DisplayName).c_str()), 0, 100, spell.Health);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	GPlugin->AddMenu("Misc", "SoKaliista: Misc");
 	{
+		GPlugin->AddInteger("Misc", "E.Delay", "E Delay (ms)", 0, 1000, 0);
 		GPlugin->AddCheckBox("Misc", "E.Unkillable", "Use E to lasthit unkillable minions", true);
 		GPlugin->AddCheckBox("Misc", "E.Killsteal", "Always Killsteal w/ E", true);
 		GPlugin->AddInteger("Misc", "E.DamageReduction", "E Damage Reduction", 0, 100, 20);
@@ -109,6 +148,5 @@ void Menu::Initialize()
 		GPlugin->AddInteger("Misc", "E.Death.Health", "^-> Use on {x}% health", 1, 30, 12);
 		GPlugin->AddInteger("Misc", "E.Death.Heroes", "^-> Minimum Champions w/ Stacks", 1, 5, 1);
 		GPlugin->AddInteger("Misc", "E.Death.Stacks", "    ^-> Minimum Stacks on that Champions", 1, 10, 1);
-		GPlugin->AddCheckBox("Misc", "R.Save", "Use R to save ally", true);
 	}
 }

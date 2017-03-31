@@ -32,6 +32,9 @@
     <ClCompile Include="Modes.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="SpellDatabase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Spells.h">
@@ -47,6 +50,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="SoKaliista.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="SpellDatabase.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>

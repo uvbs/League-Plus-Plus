@@ -44,6 +44,7 @@
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Modes.cpp" />
     <ClCompile Include="SoKaliista.cpp" />
+    <ClCompile Include="SpellDatabase.cpp" />
     <ClCompile Include="Spells.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +52,7 @@
     <ClInclude Include="Menu.h" />
     <ClInclude Include="Modes.h" />
     <ClInclude Include="SoKaliista.h" />
+    <ClInclude Include="SpellDatabase.h" />
     <ClInclude Include="Spells.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

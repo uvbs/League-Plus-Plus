@@ -102,14 +102,13 @@ void Modes::Combo()
 
 	if (GPlugin->GetMenuBoolean("Combo", "Q") && GHero->GetSpell2("Q")->IsReady())
 	{
-		if (GPlugin->GetMenuBoolean("Combo", "Q.Reset"))
+		if (GPlugin->GetMenuBoolean("Combo", "Q.Reset") && (GEntityList->Player()->IsWindingUp() || GEntityList->Player()->IsDashing()))
 		{
 			auto target = GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("Q")->Range());
 
 			if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana"))
 			{
-				if (GEntityList->Player()->IsWindingUp() || GEntityList->Player()->IsDashing())
-					GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceLow);
+				GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceLow);
 			}
 		} 
 		else
@@ -164,7 +163,9 @@ void Modes::Combo()
 				if (enemy->HasBuffOfType(BUFF_Invulnerability) || enemy->HasBuffOfType(BUFF_SpellShield) || enemy->HasBuff("Undying Rage") || enemy->HasBuff("kindrednodeathbuff") || enemy->HasBuff("JudicatorIntervention"))
 					continue;
 
-				GHero->GetSpell("E")->CastOnPlayer();
+				GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+					GHero->GetSpell("E")->CastOnPlayer();
+				});
 				break;
 			}
 		}
@@ -319,7 +320,9 @@ void Modes::Clear()
 
 		if (killableMinions >= GPlugin->GetMenuInteger("Clear", "E.Minions"))
 		{
-			GHero->GetSpell("E")->CastOnPlayer();
+			GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+				GHero->GetSpell("E")->CastOnPlayer();
+			});
 		}
 	}
 
@@ -361,7 +364,9 @@ void Modes::Clear()
 				if (SoKaliista::GetRendDamage(enemy) < killableCreep->GetHealth() + killableCreep->HPRegenRate())
 					continue;
 
-				GHero->GetSpell("E")->CastOnPlayer();
+				GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+					GHero->GetSpell("E")->CastOnPlayer();
+				});
 				break;
 			}
 		}
@@ -602,14 +607,19 @@ void Modes::Always()
 
 		if (GEntityList->Player()->HealthPercent() < GPlugin->GetMenuInteger("Misc", "E.Death.Health") && heroes >= GPlugin->GetMenuInteger("Misc", "E.Death.Heroes"))
 		{
-			GHero->GetSpell("E")->CastOnPlayer();
+			GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+				GHero->GetSpell("E")->CastOnPlayer();
+			});
 		}
 	}
 
-	if (GPlugin->GetMenuBoolean("Misc", "R.Save") && SoKaliista::Soulbound != nullptr && GHero->GetSpell("R")->IsReady())
+	if (GPlugin->GetMenuBoolean("Soulbound", "Save") && SoKaliista::Soulbound != nullptr && GHero->GetSpell("R")->IsReady())
 	{
-		if (SoKaliista::Soulbound->HealthPercent() < 5 && GExtension->CountEnemiesInTargetRange(SoKaliista::Soulbound, 500) > 0 || 
-			std::accumulate(SoKaliista::SoulboundDamage.begin(), SoKaliista::SoulboundDamage.end(), 0, [](const size_t previous, decltype(*SoKaliista::SoulboundDamage.begin()) p) { return previous + p.second; }) > SoKaliista::Soulbound->GetHealth())
+		if (GPlugin->GetMenuBoolean("Soulbound", "Save.Health") && 
+			SoKaliista::Soulbound->HealthPercent() < GPlugin->GetMenuInteger("Soulbound", "Save.Health") && 
+			GExtension->CountEnemiesInTargetRange(SoKaliista::Soulbound, 500) > 0 ||
+			(GPlugin->GetMenuBoolean("Soulbound", "Save.Death") &&
+			std::accumulate(SoKaliista::SoulboundDamage.begin(), SoKaliista::SoulboundDamage.end(), 0, [](const size_t previous, decltype(*SoKaliista::SoulboundDamage.begin()) p) { return previous + p.second; }) > SoKaliista::Soulbound->GetHealth()))
 		{
 			GHero->GetSpell("R")->CastOnPlayer();
 		}
@@ -643,7 +653,9 @@ void Modes::KillSteal()
 			if (!GPlugin->GetMenuBoolean("Jungle", "E.Epics") && GExtension->GetMinionType(creep) & kMinionJungleEpic)
 				continue;
 
-			GHero->GetSpell("E")->CastOnPlayer();
+			GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+				GHero->GetSpell("E")->CastOnPlayer();
+			});
 		}
 	}
 
@@ -663,7 +675,9 @@ void Modes::KillSteal()
 			if (enemy->HasBuffOfType(BUFF_Invulnerability) || enemy->HasBuffOfType(BUFF_SpellShield) || enemy->HasBuff("Undying Rage") || enemy->HasBuff("kindrednodeathbuff") || enemy->HasBuff("JudicatorIntervention"))
 				continue;
 
-			GHero->GetSpell("E")->CastOnPlayer();
+			GPluginSDK->DelayFunctionCall(GPlugin->GetMenuInteger("Misc", "E.Delay"), [] {
+				GHero->GetSpell("E")->CastOnPlayer();
+			});
 		}
 	}
 }

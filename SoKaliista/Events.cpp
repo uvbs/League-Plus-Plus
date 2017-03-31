@@ -4,6 +4,8 @@
 #include "Modes.h"
 #include "Extension.h"
 #include "SoKaliista.h"
+#include "SpellDatabase.h"
+#include <string>
 
 void Events::Initialize()
 {
@@ -177,28 +179,76 @@ void Events::OnSpellCast(CastedSpell const& spell)
 	if (!spell.Caster_->IsEnemy(GEntityList->Player()))
 		return;
 
-	if (spell.Target_ == nullptr)
+	if (!GPlugin->GetMenuBoolean("Soulbound", "Save"))
 		return;
 
-	if (spell.Target_->GetNetworkId() != SoKaliista::Soulbound->GetNetworkId())
-		return;
-
-	if (!GPlugin->GetMenuBoolean("Misc", "R.Save"))
-		return;
-
-	if (!spell.Caster_->IsHero() || spell.AutoAttack_)
+	if (GPlugin->GetMenuBoolean("Soulbound", "Save.SpecialSpells"))
 	{
-		SoKaliista::SoulboundDamage[GExtension->GetRealDistance(spell.Caster_, SoKaliista::Soulbound) / spell.Speed_ + GGame->Time()] = GDamage->GetAutoAttackDamage(spell.Caster_, SoKaliista::Soulbound, false);
+		if (spell.Caster_->IsHero())
+		{	
+			auto championName = const_cast<char*>(spell.Caster_->GetBaseSkinName());
+			auto spellName = const_cast<char*>(GSpellData->GetSpellName(spell.Data_));
+
+			for (auto champion : SpellDatabase::Champions)
+			{
+				if (strstr(champion.first, championName) != nullptr)
+				{
+					for (auto championSpell : champion.second.Spells)
+					{
+						if (strstr(championSpell.Name, spellName) != nullptr)
+						{
+							if (GPlugin->GetMenuBoolean(championSpell.Name, "Use"))
+							{
+								auto useUlt = false;
+
+								if (spell.Target_ != nullptr && spell.Target_->GetNetworkId() == SoKaliista::Soulbound->GetNetworkId())
+									useUlt = true;
+
+								if (spell.Target_ == nullptr)
+								{
+									auto currentSpell = GPluginSDK->CreateSpell2(championSpell.Slot, championSpell.SpellType, championSpell.Missile, championSpell.AoE, championSpell.Collisions);
+									currentSpell->SetSkillshot(championSpell.Delay, championSpell.Radius, championSpell.Speed, championSpell.Range);
+
+									AdvPredictionOutput pOutput;
+									currentSpell->RunPrediction(SoKaliista::Soulbound, championSpell.AoE, championSpell.Collisions, &pOutput);
+
+									if (pOutput.HitChance >= kHitChanceHigh)
+									{
+										useUlt = true;
+									}
+								}
+
+								if (useUlt)
+								{
+									GPluginSDK->DelayFunctionCall(championSpell.Delay - championSpell.Delay * 0.3, [] {
+										GHero->GetSpell("R")->CastOnPlayer();
+									});
+								}
+							}
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
-	else if (spell.Caster_->IsHero())
+
+	if (spell.Target_ != nullptr && spell.Target_->GetNetworkId() == SoKaliista::Soulbound->GetNetworkId())
 	{
-		if (std::string(spell.Name_) == "SummonerDot")
+		if (!spell.Caster_->IsHero() || spell.AutoAttack_)
 		{
-			SoKaliista::SoulboundDamage[GGame->Time() + 2] = GDamage->GetSummonerSpellDamage(spell.Caster_, SoKaliista::Soulbound, kSummonerSpellIgnite);
-		} 
-		else if (GExtension->GetDistance(spell.EndPosition_, SoKaliista::Soulbound->GetPosition()) < pow(GSpellData->GetRadius(spell.Data_), 2))
+			SoKaliista::SoulboundDamage[GExtension->GetRealDistance(spell.Caster_, SoKaliista::Soulbound) / spell.Speed_ + GGame->Time()] = GDamage->GetAutoAttackDamage(spell.Caster_, SoKaliista::Soulbound, false);
+		}
+		else if (spell.Caster_->IsHero())
 		{
-			SoKaliista::SoulboundDamage[GGame->Time() + 2] = GDamage->GetSpellDamage(spell.Caster_, SoKaliista::Soulbound, GSpellData->GetSlot(spell.Data_));
+			if (std::string(spell.Name_) == "SummonerDot")
+			{
+				SoKaliista::SoulboundDamage[GGame->Time() + 2] = GDamage->GetSummonerSpellDamage(spell.Caster_, SoKaliista::Soulbound, kSummonerSpellIgnite);
+			}
+			else if (GExtension->GetDistance(spell.EndPosition_, SoKaliista::Soulbound->GetPosition()) < pow(GSpellData->GetRadius(spell.Data_), 2))
+			{
+				SoKaliista::SoulboundDamage[GGame->Time() + 2] = GDamage->GetSpellDamage(spell.Caster_, SoKaliista::Soulbound, GSpellData->GetSlot(spell.Data_));
+			}
 		}
 	}
 }

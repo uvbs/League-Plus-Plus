@@ -3,9 +3,7 @@
 #include "Extension.h"
 #include "Plugin.h"
 
-//- sPrediction
 //- Shield logics(need to hardcode them)
-//- E Humanizer(Delay)
 //- Anti Melee
 //- Soulbound CC Saver(Only have huge dmg and death saver)
 //- Flee
@@ -34,6 +32,39 @@ double SoKaliista::GetRendDamage(IUnit* target)
 
 	if (std::string(target->GetBaseSkinName()) == "SRU_Baron" && GEntityList->Player()->HasBuff("barontarget"))
 		damage *= 0.5f;
+
+	if (target->HasBuff("MoltenShield"))
+		damage *= std::vector<float>{ 16.f, 22.f, 28.f, 34.f, 40.f }[target->GetSpellBook()->GetLevel(kSlotE) - 1];
+
+	if (target->HasBuff("braumeshieldbuff"))
+		damage *= 1.f - (0.275f + 0.025f * target->GetSpellLevel(kSlotE));
+
+	if (target->HasBuff("BraumShieldRaise"))
+		damage *= std::vector<float>{ .3f, .325f, .35f, .375f, .4f }[target->GetSpellBook()->GetLevel(kSlotE) - 1];
+
+	if (target->HasBuff("GarenW"))
+		damage *= 0.7f;
+
+	if (target->HasBuff("MaokaiUlt"))
+		damage *= 0.8f;
+
+	if (target->HasBuff("GragasWSelf"))
+		damage *= 1.f - (0.08f + 0.02f * target->GetSpellLevel(kSlotW));
+
+	if (target->HasBuff("urgotswapdef"))
+		damage *= 1.f - (0.2f + 0.1f * target->GetSpellLevel(kSlotR));
+
+	if (GEntityList->Player()->HasBuff("urgotentropypassive"))
+		damage *= 0.85;
+
+	if (GEntityList->Player()->HasBuff("itemphantomdancerdebuff") && target->HasItemId(3046))
+		damage *= 0.88f;
+
+	if (target->HasBuff("Mastery6263"))
+		damage *= 0.96f;
+
+	if (target->HasBuff("MasteryWardenOfTheDawn"))
+		damage *= 1.f - 0.06f * target->GetBuffCount("MasteryWardenOfTheDawn");
 
 	damage -= GPlugin->GetMenuInteger("Misc", "E.DamageReduction");
 
