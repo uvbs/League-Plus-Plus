@@ -5,7 +5,7 @@
 
 void Menu::Initialize()
 {
-	GPlugin->AddMenu("Drawings", "SoKaliista: Drawings");
+	GPlugin->AddMenu("Drawings", "ii | Drawings");
 	{
 		GPlugin->AddCheckBox("Drawings", "Q", "Draw Q Range", true);
 		GPlugin->AddColor("Drawings", "Q.Color", "^-> Q Color", 205, 92, 92, 255);
@@ -23,7 +23,7 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Drawings", "Ready", "Draw only if spell is ready", true);
 	}
 
-	GPlugin->AddMenu("Combo", "SoKaliista: Combo Settings");
+	GPlugin->AddMenu("Combo", "ii | Combo Settings");
 	{
 		GPlugin->AddCheckBox("Combo", "Q", "Use Q", true);
 		GPlugin->AddCheckBox("Combo", "Q.Reset", "^-> Use Q to reset AA", true);
@@ -34,14 +34,14 @@ void Menu::Initialize()
 		GPlugin->AddInteger("Combo", "Minions.Range", "^-> while Champions in Range of {x}", 600, 1500, 1000);
 	}
 
-	GPlugin->AddMenu("Harass", "SoKaliista: Harass Settings");
+	GPlugin->AddMenu("Harass", "ii | Harass Settings");
 	{
 		GPlugin->AddCheckBox("Harass", "Q", "Use Q", true);
 		GPlugin->AddInteger("Harass", "Q.Mana", "^-> Minimum Mana", 0, 100, 45);
 		GPlugin->AddCheckBox("Harass", "E", "Use E to kill a Minion and Harass", true);
 	}
 
-	GPlugin->AddMenu("Clear", "SoKaliista: Clear Settings");
+	GPlugin->AddMenu("Clear", "ii | Clear Settings");
 	{
 		GPlugin->AddCheckBox("Clear", "Q", "Use Q", false);
 		GPlugin->AddInteger("Clear", "Q.Minions", "^-> Minimum kill {x} minions w/ Q", 1, 10, 3); 
@@ -51,7 +51,7 @@ void Menu::Initialize()
 		GPlugin->AddInteger("Clear", "E.Minions", "^-> Minimum kill {x} minions w/ E", 1, 10, 3);
 	}
 
-	GPlugin->AddMenu("Jungle", "SoKaliista: Jungle Settings");
+	GPlugin->AddMenu("Jungle", "ii | Jungle Settings");
 	{
 		GPlugin->AddCheckBox("Jungle", "E", "Use E to steal", true);
 		GPlugin->AddCheckBox("Jungle", "E.Epics", "^-> Steal Epic", true);
@@ -59,22 +59,22 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("Jungle", "E.Small", "^-> Steal Small", false);
 	}
 
-	GPlugin->AddMenu("Flee", "SoKaliista: Flee Settings"); // WIP
+	GPlugin->AddMenu("Flee", "ii | Flee Settings (WIP, NOT WORKING)"); // WIP
 	{
 		GPlugin->AddCheckBox("Flee", "Walljump", "Try to jump over walls", true);
 		GPlugin->AddCheckBox("Flee", "Autoattack", "Smart usage of AA", true);
 		GPlugin->AddKey("Flee", "Key", "Flee Key", 'G');
 	}
 
-	GPlugin->AddMenu("Sentinel", "SoKaliista: Sentinel Exploit");
+	GPlugin->AddMenu("Sentinel", "ii | Sentinel Exploit");
 	{
 		GPlugin->AddKey("Sentinel", "Dragon", "Sentinel Dragon", 'Y');
 		GPlugin->AddKey("Sentinel", "Baron", "Sentinel Baron", 'T');
 	}
 
-	GPlugin->AddMenu("Item", "SoKaliista: Items");
+	GPlugin->AddMenu("Item", "ii | Items");
 	{
-		GPlugin->AddMenu("Cutlass", "SoKaliista: Bilgewater Cutlass", "Item");
+		GPlugin->AddMenu("Cutlass", "ii | Bilgewater Cutlass", "Item");
 		{
 			GPlugin->AddCheckBox("Cutlass", "Use.Combo", "Use Bilgewater Cutlassin Combo", true);
 			GPlugin->AddCheckBox("Cutlass", "Use.Harass", "Use Bilgewater Cutlass in Harass", true);
@@ -83,7 +83,7 @@ void Menu::Initialize()
 			GPlugin->AddInteger("Cutlass", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 85);
 		}
 
-		GPlugin->AddMenu("BotRK", "SoKaliista: Blade of the Ruined King", "Item");
+		GPlugin->AddMenu("BotRK", "ii | Blade of the Ruined King", "Item");
 		{
 			GPlugin->AddCheckBox("BotRK", "Use.Combo", "Use Blade of the Ruined King in Combo", true);
 			GPlugin->AddCheckBox("BotRK", "Use.Harass", "Use Blade of the Ruined King in Harass", true);
@@ -92,7 +92,7 @@ void Menu::Initialize()
 			GPlugin->AddInteger("BotRK", "Enemy.Health", "^-> Enemy Health is below {x}%", 1, 100, 75);
 		}
 
-		GPlugin->AddMenu("Ghostblade", "SoKaliista: Youmuus Ghostblade", "Item");
+		GPlugin->AddMenu("Ghostblade", "ii | Youmuus Ghostblade", "Item");
 		{
 			GPlugin->AddCheckBox("Ghostblade", "Use.Combo", "Use Youmuus Ghostblade in Combo", true);
 			GPlugin->AddCheckBox("Ghostblade", "Use.Harass", "Use Youmuus Ghostblade in Harass", true);
@@ -102,7 +102,7 @@ void Menu::Initialize()
 		}
 	}
 
-	GPlugin->AddMenu("Soulbound", "SoKaliista: Soulbound");
+	GPlugin->AddMenu("Soulbound", "ii | Soulbound");
 	{
 		GPlugin->AddCheckBox("Soulbound", "Save", "Use R to save ally", true);
 		GPlugin->AddInteger("Soulbound", "Save.Health", "^-> On {x}% health with enemies around", 0, 100, 5);
@@ -138,7 +138,7 @@ void Menu::Initialize()
 		}
 	}
 
-	GPlugin->AddMenu("Misc", "SoKaliista: Misc");
+	GPlugin->AddMenu("Misc", "ii | Misc");
 	{
 		GPlugin->AddInteger("Misc", "E.Delay", "E Delay (ms)", 0, 1000, 0);
 		GPlugin->AddCheckBox("Misc", "E.Unkillable", "Use E to lasthit unkillable minions", true);
