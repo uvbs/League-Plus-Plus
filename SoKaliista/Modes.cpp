@@ -106,7 +106,7 @@ void Modes::Combo()
 		{
 			auto target = GTargetSelector->FindTarget(ClosestPriority, PhysicalDamage, GHero->GetSpell2("Q")->Range());
 
-			if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana"))
+			if (target != nullptr && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana"))
 			{
 				GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceLow);
 			}
@@ -114,10 +114,16 @@ void Modes::Combo()
 		else
 		{
 			auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("Q")->Range());
-
-			if (GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
+			
+			if (target != nullptr)
 			{
-				GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceHigh);
+				AdvPredictionOutput predictionOutput;
+				GHero->GetSpell2("W")->RunPrediction(target, false, GHero->GetSpell2("W")->GetCollisionFlags(), &predictionOutput);
+
+				if (predictionOutput.HitChance >= kHitChanceHigh && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
+				{
+					GHero->GetSpell2("Q")->CastOnPosition(predictionOutput.CastPosition);
+				}
 			}
 		}
 	}
@@ -240,7 +246,13 @@ void Modes::Harass()
 
 		if (target != nullptr)
 		{
-			GHero->GetSpell2("Q")->CastOnTarget(target, kHitChanceHigh);
+			AdvPredictionOutput predictionOutput;
+			GHero->GetSpell2("W")->RunPrediction(target, false, GHero->GetSpell2("W")->GetCollisionFlags(), &predictionOutput);
+
+			if (predictionOutput.HitChance >= kHitChanceHigh && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
+			{
+				GHero->GetSpell2("Q")->CastOnPosition(predictionOutput.CastPosition);
+			}
 		}
 	}
 }
