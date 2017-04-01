@@ -5,6 +5,8 @@ void Menu::Initialize()
 {
 	GPlugin->AddMenu("Drawings", "ii | Drawings");
 	{
+		GPlugin->AddCheckBox("Drawings", "Q", "Draw Q Range", true);
+		GPlugin->AddColor("Drawings", "W.Color", "^-> Q Color", 122, 219, 140, 255);
 		GPlugin->AddCheckBox("Drawings", "W", "Draw W Range", true);
 		GPlugin->AddColor("Drawings", "W.Color", "^-> W Color", 147, 122, 219, 255);
 		GPlugin->AddCheckBox("Drawings", "E", "Draw E Range", false);
