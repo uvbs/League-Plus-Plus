@@ -13,6 +13,9 @@ void Menu::Initialize()
 		GPlugin->AddColor("Drawings", "R.Minimum.Color", "^-> Minimum R Color", 139, 0, 0, 255);
 		GPlugin->AddCheckBox("Drawings", "R.Maximum", "Draw maximum R Range", true);
 		GPlugin->AddColor("Drawings", "R.Maximum.Color", "^-> Maximum R Color", 139, 0, 0, 255);
+		GPlugin->AddSelection("Drawings", "Harass.Q", "Draws Q Harass Mode", 3, { "Disabled", "Texture", "Text", "Both" });
+		GPlugin->AddInteger("Drawings", "Harass.Q.Texture.X", "Harass Texture X", 0, GRender->ScreenSize().x, GRender->ScreenSize().x / 2 - 72);
+		GPlugin->AddInteger("Drawings", "Harass.Q.Texture.Y", "Harass Texture Y", 0, GRender->ScreenSize().y, 0);
 		GPlugin->AddCheckBox("Drawings", "Ready", "Draw only if spell is ready", true);
 	}
 
@@ -33,7 +36,8 @@ void Menu::Initialize()
 
 	GPlugin->AddMenu("Harass", "ii | Harass Settings");
 	{
-		GPlugin->AddCheckBox("Harass", "Q", "Use Q", true);
+		GPlugin->AddToggle("Harass", "Q", "Use Q", false, 'Y');
+		GPlugin->AddCheckBox("Harass", "Q.Minions", "^-> Use Q to harass enemies w/ area damage while lasthitting", true);
 		GPlugin->AddInteger("Harass", "Q.Mana", "^-> Minimum Mana for Q", 0, 100, 40);
 		GPlugin->AddCheckBox("Harass", "W", "Use W", true);
 		GPlugin->AddInteger("Harass", "W.Mana", "^-> Minimum Mana for W", 0, 100, 40);
@@ -50,6 +54,7 @@ void Menu::Initialize()
 	GPlugin->AddMenu("KillSteal", "ii | KillSteal Settings");
 	{
 		GPlugin->AddCheckBox("KillSteal", "W", "Use W", true);
+		GPlugin->AddInteger("KillSteal", "W.Range", "^-> Minimum Range for W", 0, 1400, 750);
 		GPlugin->AddCheckBox("KillSteal", "R", "Use R", true);
 		GPlugin->AddCheckBox("KillSteal", "R.Overkill", "^-> Dont use if W is enough", true);
 		GPlugin->AddInteger("KillSteal", "R.Allies", "^-> Dont steal if allies near target in {x} range", 0, 1000, 500);

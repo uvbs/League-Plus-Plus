@@ -15,7 +15,7 @@ void Modes::Combo()
 			GPlugin->GetMenuInteger("Combo", "Q.Mana.Ignore") * GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) < target->GetHealth() ||
 			(GExtension->GetDistance(GEntityList->Player(), target) < 525 &&
 				GExtension->CountEnemiesInTargetRange(target, 200) + 1 < GPlugin->GetMenuInteger("Combo", "Q.Enemies") ||
-				GExtension->GetDistance(GEntityList->Player(), target) < 525 && GPlugin->GetMenuBoolean("Combo", "Q.Enemies.Range"))) 
+				GExtension->GetDistance(GEntityList->Player(), target) < 525 && GPlugin->GetMenuBoolean("Combo", "Q.Enemies.Range")))
 		{
 			GHero->GetSpell2("Q")->CastOnPlayer();
 		}
@@ -24,11 +24,11 @@ void Modes::Combo()
 	{
 		auto target = GOrbwalking->GetLastTarget();
 
-		if (target != nullptr && !target->IsDead() && GPlugin->GetMenuBoolean("Combo", "Q") && 
-			(GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Combo", "Q.Mana") || 
+		if (target != nullptr && !target->IsDead() && GPlugin->GetMenuBoolean("Combo", "Q") &&
+			(GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Combo", "Q.Mana") ||
 				GPlugin->GetMenuInteger("Combo", "Q.Mana.Ignore") * GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) > target->GetHealth()) &&
-			(GExtension->GetDistance(GEntityList->Player(), target) > 525 && GExtension->GetDistance(GEntityList->Player(), target) < 525 + SoJiinx::GetFishboneRange() || 
-				GExtension->CountEnemiesInTargetRange(target, 200) + 1 >= GPlugin->GetMenuInteger("Combo", "Q.Enemies") && 
+			(GExtension->GetDistance(GEntityList->Player(), target) > 525 && GExtension->GetDistance(GEntityList->Player(), target) < 525 + SoJiinx::GetFishboneRange() ||
+				GExtension->CountEnemiesInTargetRange(target, 200) + 1 >= GPlugin->GetMenuInteger("Combo", "Q.Enemies") &&
 				(GExtension->GetDistance(GEntityList->Player(), target) > 525 || !GPlugin->GetMenuBoolean("Combo", "Q.Enemies.Range"))))
 		{
 			GHero->GetSpell2("Q")->CastOnPlayer();
@@ -51,7 +51,7 @@ void Modes::Combo()
 		}
 	}
 
-	if (GPlugin->GetMenuBoolean("Combo", "E") && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "E.Mana") && 
+	if (GPlugin->GetMenuBoolean("Combo", "E") && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "E.Mana") &&
 		GHero->GetSpell2("E")->IsReady() && GEntityList->Player()->IsMoving())
 	{
 		auto target = GTargetSelector->FindTarget(QuickestKill, PhysicalDamage, GHero->GetSpell2("E")->Range());
@@ -89,7 +89,7 @@ void Modes::Clear()
 		{
 			for (auto creep : GEntityList->GetAllMinions(false, true, true))
 			{
-				if (GExtension->GetRealDistance(GEntityList->Player(), creep) > 525 && GExtension->GetDistance(GEntityList->Player(), creep) < 525 + SoJiinx::GetFishboneRange() && 
+				if (GExtension->GetRealDistance(GEntityList->Player(), creep) > 525 && GExtension->GetDistance(GEntityList->Player(), creep) < 525 + SoJiinx::GetFishboneRange() &&
 					!creep->IsDead() && creep->GetHealth() < GDamage->GetAutoAttackDamage(GEntityList->Player(), creep, false) * 1.2)
 				{
 					GOrbwalking->SetOverrideTarget(creep);
@@ -281,8 +281,11 @@ void Modes::KillSteal()
 
 			if (enemy->IsInvulnerable())
 				continue;
-			
+
 			if (GDamage->GetSpellDamage(GEntityList->Player(), enemy, kSlotW) < enemy->GetHealth())
+				continue;
+
+			if (GExtension->GetDistance(GEntityList->Player(), enemy) < GPlugin->GetMenuInteger("KillSteal", "W.Range"))
 				continue;
 
 			AdvPredictionOutput predictionOutput;

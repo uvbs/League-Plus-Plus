@@ -5,11 +5,12 @@
 #include "Events.h"
 #include "Hero.h"
 #include <regex>
+#include "SoJiinx.h"
 
 char* Author = "SoNiice";
 char* Champion = "Jinx";
 char* Plugin = "SoJiinx";
-int Version = 17;
+int Version = 18;
 
 PluginSetup(Plugin);
 
@@ -28,6 +29,7 @@ PLUGIN_API void OnLoad(IPluginSDK* PluginSDK)
 
 	Menu::Initialize();
 	Spells::Initialize();
+	SoJiinx::Initialize();
 	Events::Initialize();
 
 	GGame->PrintChat(GExtension->format("<font color=\"#0095DA\"><b>%s</b></font> <font color=\"#FFFFFF\">by</font> <font color=\"#0095DA\"><b>%s</b></font> - <font color=\"#FFFFFF\">Loaded</font>", GPlugin->GetName(), GPlugin->GetAuthor()).c_str());

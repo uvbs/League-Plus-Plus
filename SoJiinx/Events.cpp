@@ -74,6 +74,18 @@ void Events::OnRender()
 	{
 		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "R.Maximum.Color"), GHero->GetSpell2("R")->Range());
 	}
+
+	if (GPlugin->GetMenuInteger("Drawings", "Harass.Q") == 1 || GPlugin->GetMenuInteger("Drawings", "Harass.Q") == 3)
+	{
+		(GPlugin->GetMenuBoolean("Harass", "Q") ? SoJiinx::HarassOn : SoJiinx::HarassOff)->Draw(GPlugin->GetMenuInteger("Drawings", "Harass.Q.Texture.X"), GPlugin->GetMenuInteger("Drawings", "Harass.Q.Texture.Y"));
+	}
+
+	if (GPlugin->GetMenuInteger("Drawings", "Harass.Q") == 2 || GPlugin->GetMenuInteger("Drawings", "Harass.Q") == 3)
+	{
+		Vec3 worldToScreen;
+		GGame->Projection(GEntityList->Player()->GetPosition(), &worldToScreen);
+		GRender->DrawTextW(Vec2(worldToScreen.x, worldToScreen.y), GPlugin->GetMenuBoolean("Harass", "Q") ? Vec4(0, 255, 0, 255) : Vec4(255, 0, 0, 255), "Q Harass: %s", GPlugin->GetMenuBoolean("Harass", "Q") ? "ON" : "OFF");
+	}
 }
 
 void Events::OnOrbwalkBeforeAttack(IUnit* target)
@@ -96,6 +108,17 @@ void Events::OnOrbwalkBeforeAttack(IUnit* target)
 		if (!GPlugin->GetMenuBoolean("Clear", "Q") || GExtension->CountMinionsInTargetRange(target, 200) + 1 < GPlugin->GetMenuInteger("Clear", "Q.Enemies") || GEntityList->Player()->ManaPercent() < GPlugin->GetMenuInteger("Clear", "Q.Mana"))
 		{
 			GHero->GetSpell("Q")->CastOnPlayer();
+		}
+	}
+
+	if (GExtension->IsFarming() && target->IsCreep() && GHero->GetSpell("Q")->IsReady())
+	{
+		if (!target->IsDead() && target->IsHero() && GPlugin->GetMenuBoolean("Harass", "Q") &&
+			GEntityList->Player()->ManaPercent() > GPlugin->GetMenuInteger("Harass", "Q.Mana") &&
+			GPlugin->GetMenuBoolean("Harass", "Q.Minions") &&  GExtension->CountEnemiesInTargetRange(target, 200) >= 1 &&
+			GDamage->GetAutoAttackDamage(GEntityList->Player(), target, false) > target->GetHealth())
+		{
+			GHero->GetSpell2("Q")->CastOnPlayer();
 		}
 	}
 }
