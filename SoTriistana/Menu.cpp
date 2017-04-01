@@ -24,14 +24,13 @@ void Menu::Initialize()
 		GPlugin->AddCheckBox("E", "Combo", "Combo E", true);
 
 		GPlugin->AddMenu("E.Whitelist", "SoTriistana: E Whitelist", "E");
-		GPlugin->AddMenu("E.Priority", "SoTriistana: E Priority", "E");
 		{
 			for (auto enemy : GEntityList->GetAllHeros(false, true))
 			{
 				auto dangerLevel = GExtension->GetDangerLevel(enemy);
 
-				GPlugin->AddCheckBox("E.Whitelist", const_cast<char*>(enemy->ChampionName()), const_cast<char*>(GExtension->format("Use E on: %s", enemy->ChampionName()).c_str()), dangerLevel >= 4 ? true : false);
-				GPlugin->AddInteger("E.Priority", const_cast<char*>(enemy->ChampionName()), const_cast<char*>(GExtension->format("Priority for: %s", enemy->ChampionName()).c_str()), 1, 5, dangerLevel);
+				GPlugin->AddCheckBox("E.Whitelist", enemy->ChampionName(), GExtension->format("Use E on: %s", enemy->ChampionName()), dangerLevel >= 4 ? true : false);
+				GPlugin->AddInteger("E.Whitelist", GExtension->format("%s.Priority", enemy->ChampionName()), GExtension->format("Priority for: %s", enemy->ChampionName()), 1, 5, dangerLevel);
 			}
 		}
 	}

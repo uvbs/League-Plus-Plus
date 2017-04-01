@@ -2,6 +2,7 @@
 #include "Plugin.h"
 #include "Hero.h"
 #include "SoTriistana.h"
+#include "Extension.h"
 
 void Modes::Combo()
 {
@@ -66,13 +67,13 @@ void Modes::Combo()
 			if (!GEntityList->Player()->IsValidTarget(enemy, GHero->GetSpell2("E")->Range()))
 				continue;
 
-			if (!GPlugin->GetMenuBoolean("E.Whitelist", const_cast<char*>(enemy->ChampionName())))
+			if (!GPlugin->GetMenuBoolean("E.Whitelist", enemy->ChampionName()))
 				continue;
 
-			if (GPlugin->GetMenuInteger("E.Priority", const_cast<char*>(enemy->ChampionName())) < ePriority)
+			if (GPlugin->GetMenuInteger("E.Whitelist", GExtension->format("%s.Priority", enemy->ChampionName())) < ePriority)
 				continue;
 
-			ePriority = GPlugin->GetMenuInteger("E.Priority", const_cast<char*>(enemy->ChampionName()));
+			ePriority = GPlugin->GetMenuInteger("E.Whitelist", GExtension->format("%s.Priority", enemy->ChampionName()));
 			target = enemy;
 		}
 

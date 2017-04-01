@@ -118,7 +118,7 @@ void Modes::Combo()
 			if (target != nullptr)
 			{
 				AdvPredictionOutput predictionOutput;
-				GHero->GetSpell2("W")->RunPrediction(target, false, GHero->GetSpell2("W")->GetCollisionFlags(), &predictionOutput);
+				GHero->GetSpell2("Q")->RunPrediction(target, false, GHero->GetSpell2("Q")->GetCollisionFlags(), &predictionOutput);
 
 				if (predictionOutput.HitChance >= kHitChanceHigh && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
 				{
@@ -247,7 +247,7 @@ void Modes::Harass()
 		if (target != nullptr)
 		{
 			AdvPredictionOutput predictionOutput;
-			GHero->GetSpell2("W")->RunPrediction(target, false, GHero->GetSpell2("W")->GetCollisionFlags(), &predictionOutput);
+			GHero->GetSpell2("Q")->RunPrediction(target, false, GHero->GetSpell2("Q")->GetCollisionFlags(), &predictionOutput);
 
 			if (predictionOutput.HitChance >= kHitChanceHigh && GEntityList->Player()->ManaPercent() >= GPlugin->GetMenuInteger("Combo", "Q.Mana") || GDamage->GetSpellDamage(GEntityList->Player(), target, kSlotQ) > target->GetHealth() && GPlugin->GetMenuBoolean("Combo", "Q.Mana.Ignore"))
 			{

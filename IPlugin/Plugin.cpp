@@ -3,54 +3,86 @@
 
 IPlugin* GPlugin;
 
-float IPlugin::LogoDuration;
-ITexture* IPlugin::Logo;
 char* IPlugin::Author;
 char* IPlugin::Name;
 int IPlugin::Version;
-std::map<char*, IMenu*> IPlugin::Menus; 
-std::map<char*, std::map<char*, IMenuOption*>> IPlugin::MenuOptions;
+std::map<std::string, IMenu*> IPlugin::Menus;
+std::map<std::string, std::map<std::string, IMenuOption*>> IPlugin::MenuOptions;
 
-std::function<void(IUnit*)> IPlugin::OrbwalkBeforeAttackEvent;
-std::function<void(IUnit*, IUnit*)> IPlugin::OrbwalkOnAttackEvent;
-std::function<void(IUnit*, IUnit*)> IPlugin::OrbwalkAfterAttackEvent;
-std::function<void(IUnit*, IUnit*)> IPlugin::OrbwalkTargetChangeEvent;
-std::function<void(IUnit*)> IPlugin::OrbwalkNonKillableMinionEvent;
-std::function<void()> IPlugin::GameUpdateEvent;
-std::function<void()> IPlugin::RenderEvent;
-std::function<void(CastedSpell const&)> IPlugin::SpellCastEvent;
-std::function<void(IUnit*)> IPlugin::UnitDeathEvent;
-std::function<void(IUnit*)> IPlugin::CreateObjectEvent;
-std::function<void(IUnit*)> IPlugin::DestroyObjectEvent;
-std::function<void(CastedSpell const&)> IPlugin::DoCastEvent;
-std::function<void(InterruptibleSpell const&)> IPlugin::InterruptibleEvent;
-std::function<void(GapCloserSpell const&)> IPlugin::GapCloserEvent;
-std::function<bool(IUnit*, eGameObjectOrder, Vec3*, IUnit*)> IPlugin::IssueOrderEvent;
-std::function<void(IUnit*, void*)> IPlugin::BuffAddEvent;
-std::function<void(IUnit*, void*)> IPlugin::BuffRemoveEvent;
-std::function<void()> IPlugin::GameEndEvent;
-std::function<void(IUnit*, int)> IPlugin::LevelUpEvent;
-std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> IPlugin::PreCastEvent;
-std::function<IUnit*()> IPlugin::OrbwalkFindTargetEvent;
-std::function<void(UnitDash*)> IPlugin::DashEvent;
-std::function<void(IDirect3DDevice9*)> IPlugin::D3DPresentEvent;
-std::function<void(IDirect3DDevice9*)> IPlugin::D3DPreResetEvent;
-std::function<void(IDirect3DDevice9*)> IPlugin::D3DPostResetEvent;
-std::function<void()> IPlugin::RenderBehindHudEvent;
-std::function<bool(HWND, UINT, WPARAM, LPARAM)> IPlugin::WndProcEvent;
-std::function<void(IUnit*)> IPlugin::EnterVisibleEvent;
-std::function<void(IUnit*)> IPlugin::ExitVisibleEvent;
-std::function<void(eSpellSlot, Vec3*, bool*, bool*)> IPlugin::UpdateChargedSpellEvent;
-std::function<void(IUnit*, std::string const)> IPlugin::PlayAnimationEvent;
-std::function<void(IUnit*)> IPlugin::PauseAnimationEvent;
-std::function<void(JungleNotifyData*)> IPlugin::JungleNotificationEvent;
-std::function<void(IUnit*, std::vector<Vec3> const&)> IPlugin::NewPathEvent;
-std::function<void(OnTeleportArgs* args)> IPlugin::TeleportEvent;
+std::vector<std::function<void(IUnit*)>> IPlugin::OrbwalkBeforeAttackEvents;
+std::vector<std::function<void(IUnit*, IUnit*)>> IPlugin::OrbwalkOnAttackEvents;
+std::vector<std::function<void(IUnit*, IUnit*)>> IPlugin::OrbwalkAfterAttackEvents;
+std::vector<std::function<void(IUnit*, IUnit*)>> IPlugin::OrbwalkTargetChangeEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::OrbwalkNonKillableMinionEvents;
+std::vector<std::function<void()>> IPlugin::GameUpdateEvents;
+std::vector<std::function<void()>> IPlugin::RenderEvents;
+std::vector<std::function<void(CastedSpell const&)>> IPlugin::SpellCastEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::UnitDeathEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::CreateObjectEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::DestroyObjectEvents;
+std::vector<std::function<void(CastedSpell const&)>> IPlugin::DoCastEvents;
+std::vector<std::function<void(InterruptibleSpell const&)>> IPlugin::InterruptibleEvents;
+std::vector<std::function<void(GapCloserSpell const&)>> IPlugin::GapCloserEvents;
+std::vector<std::function<bool(IUnit*, eGameObjectOrder, Vec3*, IUnit*)>> IPlugin::IssueOrderEvents;
+std::vector<std::function<void(IUnit*, void*)>> IPlugin::BuffAddEvents;
+std::vector<std::function<void(IUnit*, void*)>> IPlugin::BuffRemoveEvents;
+std::vector<std::function<void()>> IPlugin::GameEndEvents;
+std::vector<std::function<void(IUnit*, int)>> IPlugin::LevelUpEvents;
+std::vector<std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)>> IPlugin::PreCastEvents;
+std::vector<std::function<IUnit*()>> IPlugin::OrbwalkFindTargetEvents;
+std::vector<std::function<void(UnitDash*)>> IPlugin::DashEvents;
+std::vector<std::function<void(IDirect3DDevice9*)>> IPlugin::D3DPresentEvents;
+std::vector<std::function<void(IDirect3DDevice9*)>> IPlugin::D3DPreResetEvents;
+std::vector<std::function<void(IDirect3DDevice9*)>> IPlugin::D3DPostResetEvents;
+std::vector<std::function<void()>> IPlugin::RenderBehindHudEvents;
+std::vector<std::function<bool(HWND, UINT, WPARAM, LPARAM)>> IPlugin::WndProcEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::EnterVisibleEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::ExitVisibleEvents;
+std::vector<std::function<void(eSpellSlot, Vec3*, bool*, bool*)>> IPlugin::UpdateChargedSpellEvents;
+std::vector<std::function<void(IUnit*, std::string const)>> IPlugin::PlayAnimationEvents;
+std::vector<std::function<void(IUnit*)>> IPlugin::PauseAnimationEvents;
+std::vector<std::function<void(JungleNotifyData*)>> IPlugin::JungleNotificationEvents;
+std::vector<std::function<void(IUnit*, std::vector<Vec3> const&)>> IPlugin::NewPathEvents;
+std::vector<std::function<void(OnTeleportArgs* args)>> IPlugin::TeleportEvents;
+
+bool IPlugin::OrbwalkBeforeAttackEventHandlerAdded = false;
+bool IPlugin::OrbwalkOnAttackEventHandlerAdded = false;
+bool IPlugin::OrbwalkAfterAttackEventHandlerAdded = false;
+bool IPlugin::OrbwalkTargetChangeEventHandlerAdded = false;
+bool IPlugin::OrbwalkNonKillableMinionEventHandlerAdded = false;
+bool IPlugin::GameUpdateEventHandlerAdded = false;
+bool IPlugin::RenderEventHandlerAdded = false;
+bool IPlugin::SpellCastEventHandlerAdded = false;
+bool IPlugin::UnitDeathEventHandlerAdded = false;
+bool IPlugin::CreateObjectEventHandlerAdded = false;
+bool IPlugin::DestroyObjectEventHandlerAdded = false;
+bool IPlugin::DoCastEventHandlerAdded = false;
+bool IPlugin::InterruptibleEventHandlerAdded = false;
+bool IPlugin::GapCloserEventHandlerAdded = false;
+bool IPlugin::IssueOrderEventHandlerAdded = false;
+bool IPlugin::BuffAddEventHandlerAdded = false;
+bool IPlugin::BuffRemoveEventHandlerAdded = false;
+bool IPlugin::GameEndEventHandlerAdded = false;
+bool IPlugin::LevelUpEventHandlerAdded = false;
+bool IPlugin::PreCastEventHandlerAdded = false;
+bool IPlugin::OrbwalkFindTargetEventHandlerAdded = false;
+bool IPlugin::DashEventHandlerAdded = false;
+bool IPlugin::D3DPresentEventHandlerAdded = false;
+bool IPlugin::D3DPreResetEventHandlerAdded = false;
+bool IPlugin::D3DPostResetEventHandlerAdded = false;
+bool IPlugin::RenderBehindHudEventHandlerAdded = false;
+bool IPlugin::WndProcEventHandlerAdded = false;
+bool IPlugin::EnterVisibleEventHandlerAdded = false;
+bool IPlugin::ExitVisibleEventHandlerAdded = false;
+bool IPlugin::UpdateChargedSpellEventHandlerAdded = false;
+bool IPlugin::PlayAnimationEventHandlerAdded = false;
+bool IPlugin::PauseAnimationEventHandlerAdded = false;
+bool IPlugin::JungleNotificationEventHandlerAdded = false;
+bool IPlugin::NewPathEventHandlerAdded = false;
+bool IPlugin::TeleportEventHandlerAdded = false;
 
 IPlugin::IPlugin(char* author, char* name, int version)
 {
-	LogoDuration = GGame->Time() + 3;
-	Logo = GExtension->GetTexture("soniice_sonic.png");
 	Author = author;
 	Name = name;
 	Version = version;
@@ -117,97 +149,136 @@ int IPlugin::GetVersion()
 	return Version;
 }
 
-void IPlugin::AddMenu(char* name, char* title)
+void IPlugin::AddMenu(std::string name, std::string title)
 {
-	Menus[name] = Menus["Main"]->AddMenu(title);
+	Menus[name] = Menus["Main"]->AddMenu(title.c_str());
 }
 
-void IPlugin::AddMenu(char* name, char* title, char* parentName)
+void IPlugin::AddMenu(std::string name, std::string title, std::string parentName)
 {
-	Menus[name] = Menus[parentName]->AddMenu(title);
+	Menus[name] = Menus[parentName]->AddMenu(title.c_str());
 }
 
-void IPlugin::AddCheckBox(char* menu, char* name, char* title, bool value)
+void IPlugin::AddCheckBox(std::string menu, std::string name, std::string title, bool value)
 {
-	MenuOptions[menu][name] = Menus[menu]->CheckBox(title, value);
+	MenuOptions[menu][name] = Menus[menu]->CheckBox(title.c_str(), value);
 }
 
-void IPlugin::AddCheckBox(char* name, char* title, bool value)
+void IPlugin::AddCheckBox(std::string name, std::string title, bool value)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->CheckBox(title, value);
+	MenuOptions["Main"][name] = Menus["Main"]->CheckBox(title.c_str(), value);
 }
 
-void IPlugin::AddColor(char* menu, char* name, char* title, DWORD value)
+// Credits: Tsuhgi (Had this briliant idea)
+void IPlugin::AddToggle(std::string menu, std::string name, std::string title, bool value, int defaultKey)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddColor(title, value);
+	AddCheckBox(menu, name, title, value);
+	AddKey(menu, name + ".ToggleKey", "^-> " + title + " - Toggle", defaultKey);
+
+	RegisterGameUpdateEvent([=]() 
+		{
+			static auto previousState = false;
+			auto currentState = GetAsyncKeyState(GetMenuInteger(menu, name + ".ToggleKey"));
+
+			if (previousState && !currentState)
+			{
+				UpdateInteger(menu, name, !GetMenuBoolean(menu, name));
+			}
+
+			previousState = currentState;
+		});
 }
 
-void IPlugin::AddColor(char* menu, char* name, char* title, float R, float G, float B, float A)
+void IPlugin::AddToggle(std::string name, std::string title, bool value, int defaultKey)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddColor(title, R, G, B, A);
+	AddCheckBox(name, title, value);
+	AddKey(name + ".ToggleKey", "^-> " + title + " - Toggle", defaultKey);
+
+	RegisterGameUpdateEvent([=]() 
+		{
+			static auto previousState = false;
+			auto currentState = GetAsyncKeyState(GetMenuInteger(name + ".ToggleKey"));
+
+			if (previousState && !currentState)
+			{
+				UpdateInteger(name, !GetMenuBoolean(name));
+			}
+
+			previousState = currentState;
+		});
 }
 
-void IPlugin::AddColor(char* name, char* title, DWORD value)
+void IPlugin::AddColor(std::string menu, std::string name, std::string title, DWORD value)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title, value);
+	MenuOptions[menu][name] = Menus[menu]->AddColor(title.c_str(), value);
 }
 
-void IPlugin::AddColor(char* name, char* title, float R, float G, float B, float A)
+void IPlugin::AddColor(std::string menu, std::string name, std::string title, float R, float G, float B, float A)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title, R, G, B, A);
+	MenuOptions[menu][name] = Menus[menu]->AddColor(title.c_str(), R, G, B, A);
 }
 
-void IPlugin::AddFloat(char* menu, char* name, char* title, float minValue, float maxValue, float value)
+void IPlugin::AddColor(std::string name, std::string title, DWORD value)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddFloat(title, minValue, maxValue, value);
+	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title.c_str(), value);
 }
 
-void IPlugin::AddFloat(char* name, char* title, float minValue, float maxValue, float value)
+void IPlugin::AddColor(std::string name, std::string title, float R, float G, float B, float A)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddFloat(title, minValue, maxValue, value);
+	MenuOptions["Main"][name] = Menus["Main"]->AddColor(title.c_str(), R, G, B, A);
 }
 
-void IPlugin::AddInteger(char* menu, char* name, char* title, int minValue, int maxValue, int value)
+void IPlugin::AddFloat(std::string menu, std::string name, std::string title, float minValue, float maxValue, float value)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddInteger(title, minValue, maxValue, value);
+	MenuOptions[menu][name] = Menus[menu]->AddFloat(title.c_str(), minValue, maxValue, value);
 }
 
-void IPlugin::AddInteger(char* name, char* title, int minValue, int maxValue, int value)
+void IPlugin::AddFloat(std::string name, std::string title, float minValue, float maxValue, float value)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddInteger(title, minValue, maxValue, value);
+	MenuOptions["Main"][name] = Menus["Main"]->AddFloat(title.c_str(), minValue, maxValue, value);
 }
 
-void IPlugin::AddKey(char* menu, char* name, char* title, int defaultKey)
+void IPlugin::AddInteger(std::string menu, std::string name, std::string title, int minValue, int maxValue, int value)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddKey(title, defaultKey);
+	MenuOptions[menu][name] = Menus[menu]->AddInteger(title.c_str(), minValue, maxValue, value);
 }
 
-void IPlugin::AddKey(char* name, char* title, int defaultKey)
+void IPlugin::AddInteger(std::string name, std::string title, int minValue, int maxValue, int value)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddKey(title, defaultKey);
+	MenuOptions["Main"][name] = Menus["Main"]->AddInteger(title.c_str(), minValue, maxValue, value);
 }
 
-void IPlugin::AddSelection(char* menu, char* name, char* title, int defaultIdx, std::vector<std::string> const& names)
+void IPlugin::AddKey(std::string menu, std::string name, std::string title, int defaultKey)
 {
-	MenuOptions[menu][name] = Menus[menu]->AddSelection(title, defaultIdx, names);
+	MenuOptions[menu][name] = Menus[menu]->AddKey(title.c_str(), defaultKey);
 }
 
-void IPlugin::AddSelection(char* name, char* title, int defaultIdx, std::vector<std::string> const& names)
+void IPlugin::AddKey(std::string name, std::string title, int defaultKey)
 {
-	MenuOptions["Main"][name] = Menus["Main"]->AddSelection(title, defaultIdx, names);
+	MenuOptions["Main"][name] = Menus["Main"]->AddKey(title.c_str(), defaultKey);
 }
 
-void IPlugin::UpdateInteger(char* menu, char* name, int value)
+void IPlugin::AddSelection(std::string menu, std::string name, std::string title, int defaultIdx, std::vector<std::string> const& names)
+{
+	MenuOptions[menu][name] = Menus[menu]->AddSelection(title.c_str(), defaultIdx, names);
+}
+
+void IPlugin::AddSelection(std::string name, std::string title, int defaultIdx, std::vector<std::string> const& names)
+{
+	MenuOptions["Main"][name] = Menus["Main"]->AddSelection(title.c_str(), defaultIdx, names);
+}
+
+void IPlugin::UpdateInteger(std::string menu, std::string name, int value)
 {
 	MenuOptions[menu][name]->UpdateInteger(value);
 }
 
-void IPlugin::UpdateInteger(char* name, int value)
+void IPlugin::UpdateInteger(std::string name, int value)
 {
 	MenuOptions["Main"][name]->UpdateInteger(value);
 }
 
-IMenu* IPlugin::GetMenu(char* name)
+IMenu* IPlugin::GetMenu(std::string name)
 {
 	return Menus[name];
 }
@@ -217,12 +288,12 @@ IMenu* IPlugin::GetMenu()
 	return Menus["Main"];
 }
 
-bool IPlugin::MenuExists(char* name)
+bool IPlugin::MenuExists(std::string name)
 {
 	return Menus.count(name) == 1;
 }
 
-bool IPlugin::MenuOptionExists(char* menu, char* name)
+bool IPlugin::MenuOptionExists(std::string menu, std::string name)
 {
 	if (Menus.count(menu) == 0)
 		return false;
@@ -230,27 +301,27 @@ bool IPlugin::MenuOptionExists(char* menu, char* name)
 	return MenuOptions[menu].count(name) == 1;
 }
 
-IMenuOption* IPlugin::GetMenuOption(char* menu, char* name)
+IMenuOption* IPlugin::GetMenuOption(std::string menu, std::string name)
 {
 	return MenuOptions[menu][name];
 }
 
-IMenuOption* IPlugin::GetMenuOption(char* name)
+IMenuOption* IPlugin::GetMenuOption(std::string name)
 {
 	return MenuOptions["Main"][name];
 }
 
-bool IPlugin::GetMenuBoolean(char* menu, char* name)
+bool IPlugin::GetMenuBoolean(std::string menu, std::string name)
 {
 	return MenuOptions[menu][name]->Enabled();
 }
 
-bool IPlugin::GetMenuBoolean(char* name)
+bool IPlugin::GetMenuBoolean(std::string name)
 {
 	return MenuOptions["Main"][name]->Enabled();
 }
 
-Vec4 IPlugin::GetMenuColor(char* menu, char* name)
+Vec4 IPlugin::GetMenuColor(std::string menu, std::string name)
 {
 	Vec4 color;
 	MenuOptions[menu][name]->GetColor(&color);
@@ -258,7 +329,7 @@ Vec4 IPlugin::GetMenuColor(char* menu, char* name)
 	return color;
 }
 
-Vec4 IPlugin::GetMenuColor(char* name)
+Vec4 IPlugin::GetMenuColor(std::string name)
 {
 	Vec4 color;
 	MenuOptions["Main"][name]->GetColor(&color);
@@ -266,423 +337,625 @@ Vec4 IPlugin::GetMenuColor(char* name)
 	return color;
 }
 
-float IPlugin::GetMenuFloat(char* menu, char* name)
+float IPlugin::GetMenuFloat(std::string menu, std::string name)
 {
 	return MenuOptions[menu][name]->GetFloat();
 }
 
-float IPlugin::GetMenuFloat(char* name)
+float IPlugin::GetMenuFloat(std::string name)
 {
 	return MenuOptions["Main"][name]->GetFloat();
 }
 
-int IPlugin::GetMenuInteger(char* menu, char* name)
+int IPlugin::GetMenuInteger(std::string menu, std::string name)
 {
 	return MenuOptions[menu][name]->GetInteger();
 }
 
-int IPlugin::GetMenuInteger(char* name)
+int IPlugin::GetMenuInteger(std::string name)
 {
 	return MenuOptions["Main"][name]->GetInteger();
 }
 
 void IPlugin::RegisterOrbwalkBeforeAttackEvent(std::function<void(IUnit*)> function)
 {
-	GEventManager->AddEventHandler(kEventOrbwalkBeforeAttack, OnOrbwalkBeforeAttack);
-	OrbwalkBeforeAttackEvent = function;
-}
-void IPlugin::RegisterOrbwalkOnAttackEvent(std::function<void(IUnit*, IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOrbwalkOnAttack, OnOrbwalkOnAttack);
-	OrbwalkOnAttackEvent = function;
-}
-void IPlugin::RegisterOrbwalkAfterAttackEvent(std::function<void(IUnit*, IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOrbwalkAfterAttack, OnOrbwalkAfterAttack);
-	OrbwalkAfterAttackEvent = function;
-}
-void IPlugin::RegisterOrbwalkTargetChangeEvent(std::function<void(IUnit*, IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOrbwalkTargetChange, OnOrbwalkTargetChange);
-	OrbwalkTargetChangeEvent = function;
-}
-void IPlugin::RegisterOrbwalkNonKillableMinionEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOrbwalkNonKillableMinion, OnOrbwalkNonKillableMinion);
-	OrbwalkNonKillableMinionEvent = function;
-}
-void IPlugin::RegisterGameUpdateEvent(std::function<void()> function)
-{
-	GEventManager->AddEventHandler(kEventOnGameUpdate, OnGameUpdate);
-	GameUpdateEvent = function;
-}
-void IPlugin::RegisterRenderEvent(std::function<void()> function)
-{
-	GEventManager->AddEventHandler(kEventOnRender, OnRender);
-	RenderEvent = function;
-}
-void IPlugin::RegisterSpellCastEvent(std::function<void(CastedSpell const&)> function)
-{
-	GEventManager->AddEventHandler(kEventOnSpellCast, OnSpellCast);
-	SpellCastEvent = function;
-}
-void IPlugin::RegisterUnitDeathEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnUnitDeath, OnUnitDeath);
-	UnitDeathEvent = function;
-}
-void IPlugin::RegisterCreateObjectEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnCreateObject, OnCreateObject);
-	CreateObjectEvent = function;
-}
-void IPlugin::RegisterDestroyObjectEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnDestroyObject, OnDestroyObject);
-	DestroyObjectEvent = function;
-}
-void IPlugin::RegisterDoCastEvent(std::function<void(CastedSpell const&)> function)
-{
-	GEventManager->AddEventHandler(kEventOnDoCast, OnDoCast);
-	DoCastEvent = function;
-}
-void IPlugin::RegisterInterruptibleEvent(std::function<void(InterruptibleSpell const&)> function)
-{
-	GEventManager->AddEventHandler(kEventOnInterruptible, OnInterruptible);
-	InterruptibleEvent = function;
-}
-void IPlugin::RegisterGapCloserEvent(std::function<void(GapCloserSpell const&)> function)
-{
-	GEventManager->AddEventHandler(kEventOnGapCloser, OnGapCloser);
-	GapCloserEvent = function;
-}
-void IPlugin::RegisterIssueOrderEvent(std::function<bool(IUnit*, eGameObjectOrder, Vec3*, IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnIssueOrder, OnIssueOrder);
-	IssueOrderEvent = function;
-}
-void IPlugin::RegisterBuffAddEvent(std::function<void(IUnit*, void*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnBuffAdd, OnBuffAdd);
-	BuffAddEvent = function;
-}
-void IPlugin::RegisterBuffRemoveEvent(std::function<void(IUnit*, void*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnBuffRemove, OnBuffRemove);
-	BuffRemoveEvent = function;
-}
-void IPlugin::RegisterGameEndEvent(std::function<void()> function)
-{
-	GEventManager->AddEventHandler(kEventOnGameEnd, OnGameEnd);
-	GameEndEvent = function;
-}
-void IPlugin::RegisterLevelUpEvent(std::function<void(IUnit*, int)> function)
-{
-	GEventManager->AddEventHandler(kEventOnLevelUp, OnLevelUp);
-	LevelUpEvent = function;
-}
-void IPlugin::RegisterPreCastEvent(std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnPreCast, OnPreCast);
-	PreCastEvent = function;
-}
-void IPlugin::RegisterOrbwalkFindTargetEvent(std::function<IUnit*()> function)
-{
-	GEventManager->AddEventHandler(kEventOrbwalkFindTarget, OnOrbwalkFindTarget);
-	OrbwalkFindTargetEvent = function;
-}
-void IPlugin::RegisterDashEvent(std::function<void(UnitDash*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnDash, OnDash);
-	DashEvent = function;
-}
-void IPlugin::RegisterD3DPresentEvent(std::function<void(IDirect3DDevice9*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnD3DPresent, OnD3DPresent);
-	D3DPresentEvent = function;
-}
-void IPlugin::RegisterD3DPreResetEvent(std::function<void(IDirect3DDevice9*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnD3DPreReset, OnD3DPreReset);
-	D3DPreResetEvent = function;
-}
-void IPlugin::RegisterD3DPostResetEvent(std::function<void(IDirect3DDevice9*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnD3DPostReset, OnD3DPostReset);
-	D3DPostResetEvent = function;
-}
-void IPlugin::RegisterRenderBehindHudEvent(std::function<void()> function)
-{
-	GEventManager->AddEventHandler(kEventOnRenderBehindHud, OnRenderBehindHud);
-	RenderBehindHudEvent = function;
-}
-void IPlugin::RegisterWndProcEvent(std::function<bool(HWND, UINT, WPARAM, LPARAM)> function)
-{
-	GEventManager->AddEventHandler(kEventOnWndProc, OnWndProc);
-	WndProcEvent = function;
-}
-void IPlugin::RegisterEnterVisibleEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnEnterVisible, OnEnterVisible);
-	EnterVisibleEvent = function;
-}
-void IPlugin::RegisterExitVisibleEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnExitVisible, OnExitVisible);
-	ExitVisibleEvent = function;
-}
-void IPlugin::RegisterUpdateChargedSpellEvent(std::function<void(eSpellSlot, Vec3*, bool*, bool*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnUpdateChargedSpell, OnUpdateChargedSpell);
-	UpdateChargedSpellEvent = function;
-}
-void IPlugin::RegisterPlayAnimationEvent(std::function<void(IUnit*, std::string const)> function)
-{
-	GEventManager->AddEventHandler(kEventOnPlayAnimation, OnPlayAnimation);
-	PlayAnimationEvent = function;
-}
-void IPlugin::RegisterPauseAnimationEvent(std::function<void(IUnit*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnPauseAnimation, OnPauseAnimation);
-	PauseAnimationEvent = function;
-}
-void IPlugin::RegisterJungleNotificationEvent(std::function<void(JungleNotifyData*)> function)
-{
-	GEventManager->AddEventHandler(kEventOnJungleNotification, OnJungleNotification);
-	JungleNotificationEvent = function;
-}
-void IPlugin::RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> const&)> function)
-{
-	GEventManager->AddEventHandler(kEventOnNewPath, OnNewPath); 
-	NewPathEvent = function;
+	if (!OrbwalkBeforeAttackEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkBeforeAttack, OnOrbwalkBeforeAttack);
+		OrbwalkBeforeAttackEventHandlerAdded = true;
+	}
+
+	OrbwalkBeforeAttackEvents.push_back(function);
 }
 
-void IPlugin::RegisterTeleportEvent(std::function<void(OnTeleportArgs* args)> function)
+void IPlugin::RegisterOrbwalkOnAttackEvent(std::function<void(IUnit*, IUnit*)> function)
 {
-	GEventManager->AddEventHandler(kEventOnTeleport, OnTeleport);
-	TeleportEvent = function;
+	if (!OrbwalkOnAttackEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkOnAttack, OnOrbwalkOnAttack);
+		OrbwalkOnAttackEventHandlerAdded = true;
+	}
+
+	OrbwalkOnAttackEvents.push_back(function);
+}
+
+void IPlugin::RegisterOrbwalkAfterAttackEvent(std::function<void(IUnit*, IUnit*)> function)
+{
+	if (!OrbwalkAfterAttackEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkAfterAttack, OnOrbwalkAfterAttack);
+		OrbwalkAfterAttackEventHandlerAdded = true;
+	}
+
+	OrbwalkAfterAttackEvents.push_back(function);
+}
+
+void IPlugin::RegisterOrbwalkTargetChangeEvent(std::function<void(IUnit*, IUnit*)> function)
+{
+	if (!OrbwalkTargetChangeEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkTargetChange, OnOrbwalkTargetChange);
+		OrbwalkTargetChangeEventHandlerAdded = true;
+	}
+
+	OrbwalkTargetChangeEvents.push_back(function);
+}
+
+void IPlugin::RegisterOrbwalkNonKillableMinionEvent(std::function<void(IUnit*)> function)
+{
+	if (!OrbwalkNonKillableMinionEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkNonKillableMinion, OnOrbwalkNonKillableMinion);
+		OrbwalkNonKillableMinionEventHandlerAdded = true;
+	}
+
+	OrbwalkNonKillableMinionEvents.push_back(function);
+}
+
+void IPlugin::RegisterGameUpdateEvent(std::function<void()> function)
+{
+	if (!GameUpdateEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnGameUpdate, OnGameUpdate);
+		GameUpdateEventHandlerAdded = true;
+	}
+
+	GameUpdateEvents.push_back(function);
+}
+
+void IPlugin::RegisterRenderEvent(std::function<void()> function)
+{
+	if (!RenderEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnRender, OnRender);
+		RenderEventHandlerAdded = true;
+	}
+
+	RenderEvents.push_back(function);
+}
+
+void IPlugin::RegisterSpellCastEvent(std::function<void(CastedSpell const&)> function)
+{
+	if (!SpellCastEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnSpellCast, OnSpellCast);
+		SpellCastEventHandlerAdded = true;
+	}
+
+	SpellCastEvents.push_back(function);
+}
+
+void IPlugin::RegisterUnitDeathEvent(std::function<void(IUnit*)> function)
+{
+	if (!UnitDeathEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnUnitDeath, OnUnitDeath);
+		UnitDeathEventHandlerAdded = true;
+	}
+
+	UnitDeathEvents.push_back(function);
+}
+
+void IPlugin::RegisterCreateObjectEvent(std::function<void(IUnit*)> function)
+{
+	if (!CreateObjectEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnCreateObject, OnCreateObject);
+		CreateObjectEventHandlerAdded = true;
+	}
+
+	CreateObjectEvents.push_back(function);
+}
+
+void IPlugin::RegisterDestroyObjectEvent(std::function<void(IUnit*)> function)
+{
+	if (!DestroyObjectEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnDestroyObject, OnDestroyObject);
+		DestroyObjectEventHandlerAdded = true;
+	}
+
+	DestroyObjectEvents.push_back(function);
+}
+
+void IPlugin::RegisterDoCastEvent(std::function<void(CastedSpell const&)> function)
+{
+	if (!DoCastEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnDoCast, OnDoCast);
+		DoCastEventHandlerAdded = true;
+	}
+
+	DoCastEvents.push_back(function);
+}
+
+void IPlugin::RegisterInterruptibleEvent(std::function<void(InterruptibleSpell const&)> function)
+{
+	if (!InterruptibleEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnInterruptible, OnInterruptible);
+		InterruptibleEventHandlerAdded = true;
+	}
+
+	InterruptibleEvents.push_back(function);
+}
+
+void IPlugin::RegisterGapCloserEvent(std::function<void(GapCloserSpell const&)> function)
+{
+	if (!GapCloserEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnGapCloser, OnGapCloser);
+		GapCloserEventHandlerAdded = true;
+	}
+
+	GapCloserEvents.push_back(function);
+}
+
+void IPlugin::RegisterIssueOrderEvent(std::function<bool(IUnit*, eGameObjectOrder, Vec3*, IUnit*)> function)
+{
+	if (!IssueOrderEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnIssueOrder, OnIssueOrder);
+		IssueOrderEventHandlerAdded = true;
+	}
+
+	IssueOrderEvents.push_back(function);
+}
+
+void IPlugin::RegisterBuffAddEvent(std::function<void(IUnit*, void*)> function)
+{
+	if (!BuffAddEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnBuffAdd, OnBuffAdd);
+		BuffAddEventHandlerAdded = true;
+	}
+
+	BuffAddEvents.push_back(function);
+}
+
+void IPlugin::RegisterBuffRemoveEvent(std::function<void(IUnit*, void*)> function)
+{
+	if (!BuffRemoveEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnBuffRemove, OnBuffRemove);
+		BuffRemoveEventHandlerAdded = true;
+	}
+
+	BuffRemoveEvents.push_back(function);
+}
+
+void IPlugin::RegisterGameEndEvent(std::function<void()> function)
+{
+	if (!GameEndEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnGameEnd, OnGameEnd);
+		GameEndEventHandlerAdded = true;
+	}
+
+	GameEndEvents.push_back(function);
+}
+
+void IPlugin::RegisterLevelUpEvent(std::function<void(IUnit*, int)> function)
+{
+	if (!LevelUpEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnLevelUp, OnLevelUp);
+		LevelUpEventHandlerAdded = true;
+	}
+
+	LevelUpEvents.push_back(function);
+}
+
+void IPlugin::RegisterPreCastEvent(std::function<bool(eSpellSlot, IUnit*, Vec3*, Vec3*)> function)
+{
+	if (!PreCastEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnPreCast, OnPreCast);
+		PreCastEventHandlerAdded = true;
+	}
+
+	PreCastEvents.push_back(function);
+}
+
+void IPlugin::RegisterOrbwalkFindTargetEvent(std::function<IUnit*()> function)
+{
+	if (!OrbwalkFindTargetEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOrbwalkFindTarget, OnOrbwalkFindTarget);
+		OrbwalkFindTargetEventHandlerAdded = true;
+	}
+
+	OrbwalkFindTargetEvents.push_back(function);
+}
+
+void IPlugin::RegisterDashEvent(std::function<void(UnitDash*)> function)
+{
+	if (!DashEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnDash, OnDash);
+		DashEventHandlerAdded = true;
+	}
+
+	DashEvents.push_back(function);
+}
+
+void IPlugin::RegisterD3DPresentEvent(std::function<void(IDirect3DDevice9*)> function)
+{
+	if (!D3DPresentEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnD3DPresent, OnD3DPresent);
+		D3DPresentEventHandlerAdded = true;
+	}
+
+	D3DPresentEvents.push_back(function);
+}
+
+void IPlugin::RegisterD3DPreResetEvent(std::function<void(IDirect3DDevice9*)> function)
+{
+	if (!D3DPreResetEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnD3DPreReset, OnD3DPreReset);
+		D3DPreResetEventHandlerAdded = true;
+	}
+
+	D3DPreResetEvents.push_back(function);
+}
+
+void IPlugin::RegisterD3DPostResetEvent(std::function<void(IDirect3DDevice9*)> function)
+{
+	if (!D3DPostResetEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnD3DPostReset, OnD3DPostReset);
+		D3DPostResetEventHandlerAdded = true;
+	}
+
+	D3DPostResetEvents.push_back(function);
+}
+
+void IPlugin::RegisterRenderBehindHudEvent(std::function<void()> function)
+{
+	if (!RenderBehindHudEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnRenderBehindHud, OnRenderBehindHud);
+		RenderBehindHudEventHandlerAdded = true;
+	}
+
+	RenderBehindHudEvents.push_back(function);
+}
+
+void IPlugin::RegisterWndProcEvent(std::function<bool(HWND, UINT, WPARAM, LPARAM)> function)
+{
+	if (!WndProcEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnWndProc, OnWndProc);
+		WndProcEventHandlerAdded = true;
+	}
+
+	WndProcEvents.push_back(function);
+}
+
+void IPlugin::RegisterEnterVisibleEvent(std::function<void(IUnit*)> function)
+{
+	if (!EnterVisibleEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnEnterVisible, OnEnterVisible);
+		EnterVisibleEventHandlerAdded = true;
+	}
+
+	EnterVisibleEvents.push_back(function);
+}
+
+void IPlugin::RegisterExitVisibleEvent(std::function<void(IUnit*)> function)
+{
+	if (!ExitVisibleEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnExitVisible, OnExitVisible);
+		ExitVisibleEventHandlerAdded = true;
+	}
+
+	ExitVisibleEvents.push_back(function);
+}
+
+void IPlugin::RegisterUpdateChargedSpellEvent(std::function<void(eSpellSlot, Vec3*, bool*, bool*)> function)
+{
+	if (!UpdateChargedSpellEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnUpdateChargedSpell, OnUpdateChargedSpell);
+		UpdateChargedSpellEventHandlerAdded = true;
+	}
+
+	UpdateChargedSpellEvents.push_back(function);
+}
+
+void IPlugin::RegisterPlayAnimationEvent(std::function<void(IUnit*, std::string const)> function)
+{
+	if (!PlayAnimationEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnPlayAnimation, OnPlayAnimation);
+		PlayAnimationEventHandlerAdded = true;
+	}
+
+	PlayAnimationEvents.push_back(function);
+}
+
+void IPlugin::RegisterPauseAnimationEvent(std::function<void(IUnit*)> function)
+{
+	if (!PauseAnimationEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnPauseAnimation, OnPauseAnimation);
+		PauseAnimationEventHandlerAdded = true;
+	}
+
+	PauseAnimationEvents.push_back(function);
+}
+
+void IPlugin::RegisterJungleNotificationEvent(std::function<void(JungleNotifyData*)> function)
+{
+	if (!JungleNotificationEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnJungleNotification, OnJungleNotification);
+		JungleNotificationEventHandlerAdded = true;
+	}
+
+	JungleNotificationEvents.push_back(function);
+}
+
+void IPlugin::RegisterNewPathEvent(std::function<void(IUnit*, std::vector<Vec3> const&)> function)
+{
+	if (!NewPathEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnNewPath, OnNewPath);
+		NewPathEventHandlerAdded = true;
+	}
+
+	NewPathEvents.push_back(function);
+}
+
+void IPlugin::RegisterTeleportEvent(std::function<void(OnTeleportArgs* argHandlerAdded)> function)
+{
+	if (!TeleportEventHandlerAdded)
+	{
+		GEventManager->AddEventHandler(kEventOnTeleport, OnTeleport);
+		TeleportEventHandlerAdded = true;
+	}
+
+	TeleportEvents.push_back(function);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkBeforeAttack(IUnit* target)
 {
-	if (OrbwalkBeforeAttackEvent != nullptr)
-		OrbwalkBeforeAttackEvent(target);
+	for (auto event : OrbwalkBeforeAttackEvents)
+		event(target);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkOnAttack(IUnit* source, IUnit* target)
 {
-	if (OrbwalkOnAttackEvent != nullptr)
-		OrbwalkOnAttackEvent(source, target);
+	for (auto event : OrbwalkOnAttackEvents)
+		event(source, target);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkAfterAttack(IUnit* source, IUnit* target)
 {
-	if (OrbwalkAfterAttackEvent != nullptr)
-		OrbwalkAfterAttackEvent(source, target);
+	for (auto event : OrbwalkAfterAttackEvents)
+		event(source, target);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkTargetChange(IUnit* oldTarget, IUnit* newTarget)
 {
-	if (OrbwalkTargetChangeEvent != nullptr)
-		OrbwalkTargetChangeEvent(oldTarget, newTarget);
+	for (auto event : OrbwalkTargetChangeEvents)
+		event(oldTarget, newTarget);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnOrbwalkNonKillableMinion(IUnit* minion)
 {
-	if (OrbwalkNonKillableMinionEvent != nullptr)
-		OrbwalkNonKillableMinionEvent(minion);
+	for (auto event : OrbwalkNonKillableMinionEvents)
+		event(minion);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnGameUpdate()
 {
-	if (GameUpdateEvent != nullptr)
-		GameUpdateEvent();
+	for (auto event : GameUpdateEvents)
+		event();
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnRender()
 {
-	if (LogoDuration >= GGame->Time())
-	{
-		Logo->Draw(GRender->ScreenSize().x - Logo->GetSize().x, GRender->ScreenSize().y - Logo->GetSize().y);
-	}
-
-	if (RenderEvent != nullptr)
-		RenderEvent();
+	for (auto event : RenderEvents)
+		event();
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnSpellCast(CastedSpell const& spell)
 {
-	if (SpellCastEvent != nullptr)
-		SpellCastEvent(spell);
+	for (auto event : SpellCastEvents)
+		event(spell);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnUnitDeath(IUnit* source)
 {
-	if (UnitDeathEvent != nullptr)
-		UnitDeathEvent(source);
+	for (auto event : UnitDeathEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnCreateObject(IUnit* source)
 {
-	if (CreateObjectEvent != nullptr)
-		CreateObjectEvent(source);
+	for (auto event : CreateObjectEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnDestroyObject(IUnit* source)
 {
-	if (DestroyObjectEvent != nullptr)
-		DestroyObjectEvent(source);
+	for (auto event : DestroyObjectEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnDoCast(CastedSpell const& spell)
 {
-	if (DoCastEvent != nullptr)
-		DoCastEvent(spell);
+	for (auto event : DoCastEvents)
+		event(spell);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnInterruptible(InterruptibleSpell const& spell)
 {
-	if (InterruptibleEvent != nullptr)
-		InterruptibleEvent(spell);
+	for (auto event : InterruptibleEvents)
+		event(spell);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnGapCloser(GapCloserSpell const& spell)
 {
-	if (GapCloserEvent != nullptr)
-		GapCloserEvent(spell);
+	for (auto event : GapCloserEvents)
+		event(spell);
 }
 
 PLUGIN_EVENTD(bool) IPlugin::OnIssueOrder(IUnit* source, eGameObjectOrder orderIdx, Vec3* position, IUnit* target)
 {
-	if (IssueOrderEvent != nullptr)
-		IssueOrderEvent(source, orderIdx, position, target);
+	for (auto event : IssueOrderEvents)
+		event(source, orderIdx, position, target);
 
 	return true;
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnBuffAdd(IUnit* source, void* buffData)
 {
-	if (BuffAddEvent != nullptr)
-		BuffAddEvent(source, buffData);
+	for (auto event : BuffAddEvents)
+		event(source, buffData);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnBuffRemove(IUnit* source, void* buffData)
 {
-	if (BuffRemoveEvent != nullptr)
-		BuffRemoveEvent(source, buffData);
+	for (auto event : BuffRemoveEvents)
+		event(source, buffData);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnGameEnd()
 {
-	if (GameEndEvent != nullptr)
-		GameEndEvent();
+	for (auto event : GameEndEvents)
+		event();
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnLevelUp(IUnit* source, int newLevel)
 {
-	if (LevelUpEvent != nullptr)
-		LevelUpEvent(source, newLevel);
+	for (auto event : LevelUpEvents)
+		event(source, newLevel);
 }
 
 PLUGIN_EVENTD(bool) IPlugin::OnPreCast(eSpellSlot slot, IUnit* target, Vec3* startPosition, Vec3* endPosition)
 {
-	if (PreCastEvent != nullptr)
-		PreCastEvent(slot, target, startPosition, endPosition);
+	for (auto event : PreCastEvents)
+		event(slot, target, startPosition, endPosition);
 
 	return true;
 }
 
 PLUGIN_EVENTD(IUnit*) IPlugin::OnOrbwalkFindTarget()
 {
-	if (OrbwalkFindTargetEvent != nullptr)
-		OrbwalkFindTargetEvent();
+	for (auto event : OrbwalkFindTargetEvents)
+		event();
 
 	return nullptr;
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnDash(UnitDash* dash)
 {
-	if (DashEvent != nullptr)
-		DashEvent(dash);
+	for (auto event : DashEvents)
+		event(dash);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnD3DPresent(IDirect3DDevice9* device)
 {
-	if (D3DPresentEvent != nullptr)
-		D3DPresentEvent(device);
+	for (auto event : D3DPresentEvents)
+		event(device);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnD3DPreReset(IDirect3DDevice9* device)
 {
-	if (D3DPreResetEvent != nullptr)
-		D3DPreResetEvent(device);
+	for (auto event : D3DPreResetEvents)
+		event(device);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnD3DPostReset(IDirect3DDevice9* device)
 {
-	if (D3DPostResetEvent != nullptr)
-		D3DPostResetEvent(device);
+	for (auto event : D3DPostResetEvents)
+		event(device);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnRenderBehindHud()
 {
-	if (RenderBehindHudEvent != nullptr)
-		RenderBehindHudEvent();
+	for (auto event : RenderBehindHudEvents)
+		event();
 }
 
 PLUGIN_EVENTD(bool) IPlugin::OnWndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-	if (WndProcEvent != nullptr)
-		WndProcEvent(hwnd, message, wParam, lParam);
+	for (auto event : WndProcEvents)
+		event(hwnd, message, wParam, lParam);
 
 	return false;
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnEnterVisible(IUnit* source)
 {
-	if (EnterVisibleEvent != nullptr)
-		EnterVisibleEvent(source);
+	for (auto event : EnterVisibleEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnExitVisible(IUnit* source)
 {
-	if (ExitVisibleEvent != nullptr)
-		ExitVisibleEvent(source);
+	for (auto event : ExitVisibleEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnUpdateChargedSpell(eSpellSlot slot, Vec3* position, bool* releaseCast, bool* triggerEvent)
 {
-	if (UpdateChargedSpellEvent != nullptr)
-		UpdateChargedSpellEvent(slot, position, releaseCast, triggerEvent);
+	for (auto event : UpdateChargedSpellEvents)
+		event(slot, position, releaseCast, triggerEvent);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnPlayAnimation(IUnit* source, std::string const animation)
 {
-	if (PlayAnimationEvent != nullptr)
-		PlayAnimationEvent(source, animation);
+	for (auto event : PlayAnimationEvents)
+		event(source, animation);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnPauseAnimation(IUnit* source)
 {
-	if (PauseAnimationEvent != nullptr)
-		PauseAnimationEvent(source);
-
+	for (auto event : PauseAnimationEvents)
+		event(source);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnJungleNotification(JungleNotifyData* data)
 {
-	if (JungleNotificationEvent != nullptr)
-		JungleNotificationEvent(data);
+	for (auto event : JungleNotificationEvents)
+		event(data);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnNewPath(IUnit* source, std::vector<Vec3> const& path)
 {
-	if (NewPathEvent != nullptr)
-		NewPathEvent(source, path);
+	for (auto event : NewPathEvents)
+		event(source, path);
 }
 
 PLUGIN_EVENTD(void) IPlugin::OnTeleport(OnTeleportArgs* args)
 {
-	if (TeleportEvent != nullptr)
-		TeleportEvent(args);
+	for (auto event : TeleportEvents)
+		event(args);
 }
