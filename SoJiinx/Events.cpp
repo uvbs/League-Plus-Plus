@@ -57,7 +57,7 @@ void Events::OnRender()
 {
 	if (GPlugin->GetMenuBoolean("Drawings", "Q") && (GHero->GetSpell2("Q")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
 	{
-		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "Q.Color"), SoJiinx::HasFishbone() ? 525 : SoJiinx::GetFishboneRange() + 525);
+		GRender->DrawOutlinedCircle(GEntityList->Player()->GetPosition(), GPlugin->GetMenuColor("Drawings", "Q.Color"), SoJiinx::HasFishbone() ? 525.f + GEntityList->Player()->BoundingRadius() : 590.f + SoJiinx::GetFishboneRange());
 	}
 
 	if (GPlugin->GetMenuBoolean("Drawings", "W") && (GHero->GetSpell2("W")->IsReady() || !GPlugin->GetMenuBoolean("Drawings", "Ready")))
